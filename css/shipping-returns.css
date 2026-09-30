@@ -1,0 +1,860 @@
+/* =====================================================
+   LUXURY JEWELRY
+   SHIPPING & RETURNS PAGE
+===================================================== */
+
+
+/* =========================
+   CONTAINER
+========================= */
+
+.shipping-container {
+    width: min(1200px, 92%);
+    margin: auto;
+}
+
+
+/* =====================================================
+   HERO SECTION
+   FULL BACKGROUND IMAGE
+   NO HERO LOGO
+   NO WHITE CARD
+   NO SHADOW
+   NO OVERLAY
+   NO GRADIENT
+===================================================== */
+
+.shipping-hero {
+    position: relative;
+
+    width: 100%;
+
+    min-height: 320px;
+
+    display: flex;
+
+    align-items: center;
+
+    overflow: hidden;
+
+    padding: 70px 80px;
+
+    background-image: url("../images/shipping7.jpg");
+
+    background-size: cover;
+
+    background-position: center;
+
+    background-repeat: no-repeat;
+
+    box-shadow: none;
+
+    border: none;
+}
+
+
+/* =========================
+   REMOVE ALL HERO SHADOWS
+========================= */
+
+.shipping-hero::before,
+.shipping-hero::after,
+.shipping-hero-overlay {
+    display: none !important;
+
+    content: none !important;
+
+    background: none !important;
+
+    box-shadow: none !important;
+}
+
+
+/* =========================
+   HERO CONTENT
+========================= */
+
+.shipping-hero-content {
+    position: relative;
+
+    z-index: 2;
+
+    width: min(1200px, 92%);
+
+    margin: 0 auto;
+
+    padding: 55px 0;
+
+    text-align: left;
+
+    color: #2d2119;
+
+    background: transparent;
+
+    box-shadow: none;
+
+    border: none;
+}
+
+
+/* =========================
+   HERO SUBTITLE
+========================= */
+
+.shipping-hero-content .section-subtitle {
+    margin: 0 0 12px;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 13px;
+
+    font-weight: 500;
+
+    letter-spacing: 6px;
+
+    color: #51443a;
+}
+
+
+/* =========================
+   HERO TITLE
+========================= */
+
+.shipping-hero-content h1 {
+    margin: 0 0 20px;
+
+    font-family: "Cormorant Garamond", serif;
+
+    font-size: 64px;
+
+    line-height: 0.98;
+
+    font-weight: 500;
+
+    letter-spacing: 1px;
+
+    color: #2d2119;
+
+    text-shadow: none;
+}
+
+
+/* =========================
+   GOLD WORD
+========================= */
+
+.shipping-hero-content h1 span {
+    color: #b98532;
+}
+
+
+/* =========================
+   HERO DESCRIPTION
+========================= */
+
+.shipping-hero-description {
+    max-width: 560px;
+
+    margin: 0 0 32px;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 15px;
+
+    line-height: 1.8;
+
+    font-weight: 400;
+
+    color: #665a51;
+
+    text-shadow: none;
+}
+
+
+/* =========================
+   HERO FEATURES
+========================= */
+
+.shipping-hero-features {
+    display: flex;
+
+    align-items: center;
+
+    gap: 25px;
+
+    margin-top: 20px;
+}
+
+
+/* =========================
+   FEATURE
+========================= */
+
+.hero-feature {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+}
+
+
+/* =========================
+   FEATURE ICON
+========================= */
+
+.hero-feature-icon {
+    width: 48px;
+
+    height: 48px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.35);
+
+    border: 1px solid rgba(185, 133, 50, 0.25);
+
+    font-size: 22px;
+}
+
+
+/* =========================
+   FEATURE TITLE
+========================= */
+
+.hero-feature strong {
+    display: block;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 11px;
+
+    letter-spacing: 2px;
+
+    font-weight: 500;
+
+    color: #4d4037;
+}
+
+
+/* =========================
+   FEATURE SMALL TEXT
+========================= */
+
+.hero-feature small {
+    display: block;
+
+    margin-top: 4px;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 9px;
+
+    letter-spacing: 2px;
+
+    color: #806f61;
+}
+
+
+/* =========================
+   FEATURE DIVIDER
+========================= */
+
+.hero-feature-divider {
+    width: 1px;
+
+    height: 55px;
+
+    background: rgba(185, 133, 50, 0.55);
+}
+
+
+/* =====================================================
+   INTRO SECTION
+===================================================== */
+
+.shipping-intro {
+    padding: 100px 0;
+
+    background: var(--cream);
+}
+
+.shipping-container {
+    display: block;
+}
+
+.shipping-intro .shipping-container {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 70px;
+
+    align-items: center;
+}
+
+.shipping-intro-text h2,
+.shipping-section-heading h2,
+.policy-content h2,
+.returns-heading h2,
+.conditions-content h2 {
+    font-family: "Cormorant Garamond", serif;
+
+    font-size: 48px;
+
+    font-weight: 500;
+
+    line-height: 1.2;
+
+    margin: 15px 0 25px;
+}
+
+.shipping-intro-text p:not(.section-subtitle) {
+    color: var(--text-light);
+
+    font-size: 15px;
+
+    line-height: 1.9;
+
+    margin-bottom: 20px;
+}
+
+.shipping-intro-image img {
+    width: 100%;
+
+    height: 600px;
+
+    object-fit: cover;
+
+    display: block;
+}
+
+
+/* =====================================================
+   SHIPPING INFO
+===================================================== */
+
+.shipping-info-section {
+    padding: 100px 0;
+
+    background: var(--white);
+}
+
+.shipping-section-heading {
+    text-align: center;
+
+    max-width: 650px;
+
+    margin: 0 auto 55px;
+}
+
+.shipping-cards {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 25px;
+}
+
+.shipping-card {
+    padding: 40px 30px;
+
+    text-align: center;
+
+    background: var(--cream);
+
+    border: 1px solid var(--border);
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.shipping-card:hover {
+    transform: translateY(-8px);
+
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+}
+
+.shipping-card-icon {
+    font-size: 42px;
+
+    margin-bottom: 20px;
+}
+
+.shipping-card h3 {
+    font-family: "Cormorant Garamond", serif;
+
+    font-size: 28px;
+
+    margin-bottom: 15px;
+}
+
+.shipping-card p {
+    color: var(--text-light);
+
+    font-size: 14px;
+
+    line-height: 1.8;
+
+    margin-bottom: 20px;
+}
+
+.shipping-card span {
+    color: var(--gold-dark);
+
+    font-size: 13px;
+
+    font-weight: 500;
+}
+
+
+/* =====================================================
+   POLICY SECTION
+===================================================== */
+
+.policy-section {
+    padding: 100px 0;
+
+    background: var(--cream);
+}
+
+.policy-grid {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 70px;
+
+    align-items: center;
+}
+
+.policy-content ul {
+    list-style: none;
+
+    padding: 0;
+
+    margin: 30px 0 0;
+}
+
+.policy-content li {
+    position: relative;
+
+    padding-left: 30px;
+
+    margin-bottom: 18px;
+
+    color: var(--text-light);
+
+    font-size: 15px;
+
+    line-height: 1.8;
+}
+
+.policy-content li::before {
+    content: "✓";
+
+    position: absolute;
+
+    left: 0;
+
+    top: 0;
+
+    color: var(--gold);
+
+    font-weight: bold;
+}
+
+.policy-image img {
+    width: 100%;
+
+    height: 500px;
+
+    object-fit: cover;
+
+    display: block;
+}
+
+
+/* =====================================================
+   RETURNS SECTION
+===================================================== */
+
+.returns-section {
+    padding: 100px 0;
+
+    background: var(--white);
+}
+
+.returns-heading {
+    max-width: 700px;
+
+    margin-bottom: 60px;
+}
+
+.returns-heading p:not(.section-subtitle) {
+    color: var(--text-light);
+
+    font-size: 15px;
+
+    line-height: 1.9;
+}
+
+.returns-grid {
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 25px;
+}
+
+.return-step {
+    padding: 30px;
+
+    border-top: 2px solid var(--gold);
+
+    background: var(--cream);
+}
+
+.return-number {
+    display: block;
+
+    font-family: "Cormorant Garamond", serif;
+
+    font-size: 36px;
+
+    color: var(--gold);
+
+    margin-bottom: 20px;
+}
+
+.return-step h3 {
+    font-family: "Cormorant Garamond", serif;
+
+    font-size: 25px;
+
+    margin-bottom: 15px;
+}
+
+.return-step p {
+    color: var(--text-light);
+
+    font-size: 14px;
+
+    line-height: 1.8;
+}
+
+
+/* =====================================================
+   CONDITIONS SECTION
+===================================================== */
+
+.conditions-section {
+    padding: 80px 0;
+
+    background: var(--cream);
+}
+
+.conditions-box {
+    padding: 65px;
+
+    background: var(--white);
+
+    border: 1px solid var(--border);
+}
+
+.conditions-content {
+    max-width: 850px;
+}
+
+.conditions-content p:not(.section-subtitle) {
+    color: var(--text-light);
+
+    font-size: 15px;
+
+    line-height: 1.8;
+}
+
+.conditions-content ul {
+    margin-top: 25px;
+
+    padding-left: 20px;
+}
+
+.conditions-content li {
+    color: var(--text-light);
+
+    margin-bottom: 12px;
+
+    line-height: 1.8;
+}
+
+
+/* =====================================================
+   CTA SECTION
+===================================================== */
+
+.shipping-cta {
+    position: relative;
+
+    min-height: 350px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+
+    background-image: url("../images/shipping4.jpg");
+
+    background-size: cover;
+
+    background-position: center;
+
+    overflow: hidden;
+}
+
+.shipping-cta-overlay {
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            rgba(35, 23, 15, 0.75),
+            rgba(35, 23, 15, 0.85)
+        );
+}
+
+.shipping-cta-content {
+    position: relative;
+
+    z-index: 2;
+
+    color: #ffffff;
+
+    max-width: 700px;
+
+    padding: 40px 20px;
+}
+
+.shipping-cta-content h2 {
+    font-family: "Cormorant Garamond", serif;
+
+    font-size: 52px;
+
+    font-weight: 500;
+
+    margin-bottom: 15px;
+}
+
+.shipping-cta-content p {
+    font-size: 16px;
+
+    margin-bottom: 30px;
+}
+
+.shipping-cta-buttons {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 15px;
+
+    flex-wrap: wrap;
+}
+
+.shipping-cta .btn-primary,
+.shipping-cta .btn-secondary {
+    display: inline-block;
+
+    text-decoration: none;
+}
+
+
+/* =====================================================
+   DARK MODE
+===================================================== */
+
+body.dark-mode .shipping-intro,
+body.dark-mode .policy-section,
+body.dark-mode .conditions-section {
+    background: var(--cream);
+}
+
+body.dark-mode .shipping-info-section,
+body.dark-mode .returns-section {
+    background: var(--white);
+}
+
+body.dark-mode .shipping-card,
+body.dark-mode .return-step {
+    background: var(--cream);
+}
+
+body.dark-mode .conditions-box {
+    background: var(--white);
+}
+
+
+/* =====================================================
+   RESPONSIVE TABLET
+===================================================== */
+
+@media (max-width: 992px) {
+
+    .shipping-hero {
+        min-height: 500px;
+
+        background-position: center;
+    }
+
+    .shipping-hero-content h1 {
+        font-size: 52px;
+    }
+
+    .shipping-intro .shipping-container,
+    .policy-grid {
+        grid-template-columns: 1fr;
+
+        gap: 45px;
+    }
+
+    .shipping-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .returns-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .shipping-intro-image img,
+    .policy-image img {
+        height: 350px;
+    }
+}
+
+
+/* =====================================================
+   RESPONSIVE MOBILE
+===================================================== */
+
+@media (max-width: 768px) {
+
+    .shipping-hero {
+        min-height: 600px;
+
+        background-position: center;
+    }
+
+    .shipping-hero-content {
+        width: 88%;
+
+        padding: 45px 0;
+    }
+
+    .shipping-hero-content .section-subtitle {
+        font-size: 10px;
+
+        letter-spacing: 4px;
+    }
+
+    .shipping-hero-content h1 {
+        font-size: 44px;
+
+        line-height: 1;
+    }
+
+    .shipping-hero-description {
+        max-width: 430px;
+
+        font-size: 13px;
+    }
+
+    .shipping-hero-features {
+        gap: 15px;
+
+        flex-wrap: wrap;
+    }
+
+    .hero-feature-divider {
+        display: none;
+    }
+
+    .shipping-intro,
+    .shipping-info-section,
+    .policy-section,
+    .returns-section {
+        padding: 70px 0;
+    }
+
+    .shipping-intro-text h2,
+    .shipping-section-heading h2,
+    .policy-content h2,
+    .returns-heading h2,
+    .conditions-content h2 {
+        font-size: 38px;
+    }
+
+    .shipping-cards,
+    .returns-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .conditions-box {
+        padding: 35px 25px;
+    }
+
+    .shipping-cta-content h2 {
+        font-size: 42px;
+    }
+}
+
+
+/* =====================================================
+   SMALL MOBILE
+===================================================== */
+
+@media (max-width: 480px) {
+
+    .shipping-container {
+        width: 90%;
+    }
+
+    .shipping-hero {
+        min-height: 620px;
+
+        background-position: center;
+    }
+
+    .shipping-hero-content h1 {
+        font-size: 38px;
+    }
+
+    .shipping-hero-content p:last-child {
+        font-size: 14px;
+    }
+
+    .shipping-intro-text h2,
+    .shipping-section-heading h2,
+    .policy-content h2,
+    .returns-heading h2,
+    .conditions-content h2 {
+        font-size: 32px;
+    }
+
+    .shipping-cta-buttons {
+        flex-direction: column;
+
+        align-items: center;
+    }
+
+}

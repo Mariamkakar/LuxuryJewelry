@@ -1,0 +1,1161 @@
+/* =========================================
+   LUXURY JEWELRY - PAYMENT PAGE
+========================================= */
+
+:root {
+    --gold: #c99a3b;
+    --gold-light: #e2bd70;
+    --gold-dark: #9d7020;
+
+    --cream: #faf8f3;
+    --white: #ffffff;
+    --black: #171513;
+
+    --text: #333333;
+    --text-light: #777777;
+
+    --border: #e8e2d8;
+
+    --success: #4f7d52;
+    --error: #a94442;
+
+    --heading-font: "Cormorant Garamond", serif;
+    --body-font: "Poppins", sans-serif;
+}
+
+
+/* =========================================
+   RESET
+========================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--body-font);
+    background: var(--cream);
+    color: var(--text);
+    line-height: 1.6;
+
+    transition:
+        background 0.3s ease,
+        color 0.3s ease;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button,
+input {
+    font-family: inherit;
+}
+
+
+/* =========================================
+   SCROLLBAR
+========================================= */
+
+html {
+    scrollbar-width: thin;
+    scrollbar-color: var(--gold) var(--cream);
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--cream);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--gold);
+    border: 2px solid var(--cream);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--gold-dark);
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.payment-header {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+
+    transition:
+        background 0.3s ease,
+        border-color 0.3s ease;
+}
+
+.payment-header-container {
+    width: min(1200px, 92%);
+    min-height: 78px;
+
+    margin: 0 auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+.payment-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    color: var(--gold-dark);
+
+    font-family: var(--heading-font);
+    font-size: 27px;
+    font-weight: 600;
+}
+
+.payment-logo img {
+    width: 48px;
+    height: 48px;
+
+    object-fit: cover;
+
+    border-radius: 50%;
+}
+
+.payment-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.secure-checkout {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    color: var(--text-light);
+
+    font-size: 13px;
+}
+
+.secure-lock {
+    color: var(--gold-dark);
+    font-size: 16px;
+}
+
+
+/* =========================================
+   THEME TOGGLE
+========================================= */
+
+.theme-toggle {
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid var(--border);
+    border-radius: 50%;
+
+    background: transparent;
+    color: var(--gold-dark);
+
+    font-size: 20px;
+
+    cursor: pointer;
+
+    /* Move Dark Mode button slightly toward scrollbar */
+    position: relative;
+    left: 100px;
+
+    transition:
+        background 0.3s ease,
+        color 0.3s ease,
+        border-color 0.3s ease,
+        transform 0.3s ease;
+}
+
+.theme-toggle:hover {
+    background: var(--gold);
+    color: var(--white);
+    border-color: var(--gold);
+
+    transform: rotate(15deg);
+}
+
+
+/* =========================================
+   HERO
+========================================= */
+
+.payment-hero {
+    min-height: 500px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    background:
+        linear-gradient(
+            rgba(23, 21, 19, 0.62),
+            rgba(23, 21, 19, 0.62)
+        ),
+        url("../images/payment.jpg")
+        center / cover no-repeat;
+
+    color: var(--white);
+}
+
+.payment-hero-content {
+    width: min(90%, 900px);
+}
+
+.payment-breadcrumb {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 12px;
+
+    font-size: 13px;
+}
+
+.payment-breadcrumb a {
+    color: var(--gold-light);
+
+    transition: color 0.3s ease;
+}
+
+.payment-breadcrumb a:hover {
+    color: var(--white);
+}
+
+.payment-breadcrumb span {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.payment-hero h1 {
+    font-family: var(--heading-font);
+
+    font-size: clamp(40px, 6vw, 62px);
+    font-weight: 500;
+
+    letter-spacing: 1px;
+}
+
+.payment-hero p {
+    margin-top: 8px;
+
+    color: rgba(255, 255, 255, 0.85);
+
+    font-size: 14px;
+}
+
+
+/* =========================================
+   PAYMENT PAGE
+========================================= */
+
+.payment-page {
+    padding: 65px 20px;
+}
+
+.payment-container {
+    width: min(1200px, 100%);
+
+    margin: 0 auto;
+
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 390px;
+
+    gap: 45px;
+
+    align-items: start;
+}
+
+
+/* =========================================
+   FORM SECTION
+========================================= */
+
+.payment-form-section {
+    background: var(--white);
+
+    border: 1px solid var(--border);
+
+    padding: 38px;
+
+    transition:
+        background 0.3s ease,
+        border-color 0.3s ease;
+}
+
+.section-heading {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 15px;
+
+    margin-bottom: 28px;
+}
+
+.section-number {
+    color: var(--gold-dark);
+
+    font-family: var(--heading-font);
+
+    font-size: 17px;
+    font-weight: 600;
+
+    padding-top: 4px;
+}
+
+.section-heading h2 {
+    margin-bottom: 3px;
+
+    color: var(--gold-dark);
+
+    font-family: var(--heading-font);
+
+    font-size: 31px;
+    font-weight: 600;
+}
+
+.section-heading p {
+    color: var(--text-light);
+
+    font-size: 12px;
+}
+
+.billing-heading {
+    margin-top: 38px;
+    padding-top: 32px;
+
+    border-top: 1px solid var(--border);
+}
+
+
+/* =========================================
+   FORM
+========================================= */
+
+.payment-form {
+    width: 100%;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: var(--gold-dark);
+
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.form-group input {
+    width: 100%;
+    height: 50px;
+
+    padding: 0 15px;
+
+    border: 1px solid var(--border);
+
+    outline: none;
+
+    background: var(--cream);
+
+    color: var(--text);
+
+    font-size: 13px;
+
+    transition:
+        border-color 0.3s ease,
+        box-shadow 0.3s ease,
+        background 0.3s ease,
+        color 0.3s ease;
+}
+
+.form-group input::placeholder {
+    color: #aaa39b;
+}
+
+.form-group input:focus {
+    border-color: var(--gold);
+
+    background: var(--white);
+
+    box-shadow:
+        0 0 0 3px rgba(201, 154, 59, 0.10);
+}
+
+.form-group input.input-error {
+    border-color: var(--error);
+}
+
+.form-error {
+    display: block;
+
+    min-height: 16px;
+
+    margin-top: 5px;
+
+    color: var(--error);
+
+    font-size: 11px;
+}
+
+.input-with-icon {
+    position: relative;
+}
+
+.input-with-icon > span {
+    position: absolute;
+
+    left: 15px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    font-size: 17px;
+
+    pointer-events: none;
+}
+
+.input-with-icon input {
+    padding-left: 45px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    gap: 18px;
+}
+
+
+/* =========================================
+   SECURITY
+========================================= */
+
+.payment-security {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 12px;
+
+    margin: 10px 0 22px;
+
+    padding: 17px;
+
+    background: var(--cream);
+
+    border: 1px solid var(--border);
+
+    transition:
+        background 0.3s ease,
+        border-color 0.3s ease;
+}
+
+.payment-security > span {
+    font-size: 17px;
+}
+
+.payment-security strong {
+    display: block;
+
+    margin-bottom: 2px;
+
+    color: var(--gold-dark);
+
+    font-size: 12px;
+}
+
+.payment-security p {
+    color: var(--text-light);
+
+    font-size: 10px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================
+   PAY BUTTON
+========================================= */
+
+.pay-button {
+    width: 100%;
+    min-height: 55px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 20px;
+
+    border: none;
+
+    background: var(--gold);
+
+    color: var(--white);
+
+    font-size: 13px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition:
+        background 0.3s ease,
+        transform 0.3s ease;
+}
+
+.pay-button:hover {
+    background: var(--gold-dark);
+
+    transform: translateY(-1px);
+}
+
+.pay-button:disabled {
+    opacity: 0.6;
+
+    cursor: not-allowed;
+
+    transform: none;
+}
+
+.back-cart {
+    display: block;
+
+    width: max-content;
+
+    margin: 20px auto 0;
+
+    color: var(--gold-dark);
+
+    font-size: 13px;
+
+    transition: color 0.3s ease;
+}
+
+.back-cart:hover {
+    color: var(--gold);
+}
+
+
+/* =========================================
+   SUMMARY
+========================================= */
+
+.payment-summary {
+    position: sticky;
+    top: 25px;
+}
+
+.summary-card {
+    background: var(--white);
+
+    border: 1px solid var(--border);
+
+    padding: 30px;
+
+    transition:
+        background 0.3s ease,
+        border-color 0.3s ease;
+}
+
+.summary-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding-bottom: 20px;
+
+    border-bottom: 1px solid var(--border);
+}
+
+.summary-title h2 {
+    color: var(--gold-dark);
+
+    font-family: var(--heading-font);
+
+    font-size: 30px;
+    font-weight: 600;
+}
+
+.summary-title span {
+    color: var(--text-light);
+
+    font-size: 12px;
+}
+
+
+/* =========================================
+   PRODUCTS
+========================================= */
+
+.payment-products {
+    display: flex;
+    flex-direction: column;
+
+    gap: 15px;
+
+    padding: 22px 0;
+}
+
+.payment-product {
+    display: grid;
+
+    grid-template-columns: 65px minmax(0, 1fr) auto;
+
+    align-items: center;
+
+    gap: 12px;
+}
+
+.payment-product-image {
+    width: 65px;
+    height: 65px;
+
+    object-fit: cover;
+
+    background: var(--cream);
+
+    border: 1px solid var(--border);
+}
+
+.payment-product-info {
+    min-width: 0;
+}
+
+.payment-product-info h3 {
+    overflow: hidden;
+
+    margin-bottom: 3px;
+
+    color: var(--gold-dark);
+
+    font-family: var(--heading-font);
+
+    font-size: 18px;
+    font-weight: 600;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.payment-product-info p {
+    color: var(--text-light);
+
+    font-size: 11px;
+}
+
+.payment-product-price {
+    color: var(--gold-dark);
+
+    font-size: 13px;
+    font-weight: 600;
+
+    text-align: right;
+}
+
+
+/* =========================================
+   SUMMARY LINES
+========================================= */
+
+.summary-lines {
+    padding-top: 5px;
+}
+
+.summary-line {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 12px;
+
+    font-size: 13px;
+}
+
+.summary-line span {
+    color: var(--text-light);
+}
+
+.summary-line strong {
+    color: var(--gold-dark);
+
+    font-weight: 500;
+}
+
+.summary-divider {
+    height: 1px;
+
+    margin: 20px 0;
+
+    background: var(--border);
+}
+
+.summary-total {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 25px;
+}
+
+.summary-total span {
+    color: var(--gold-dark);
+
+    font-size: 17px;
+    font-weight: 500;
+}
+
+.summary-total strong {
+    color: var(--gold-dark);
+
+    font-family: var(--heading-font);
+
+    font-size: 30px;
+}
+
+
+/* =========================================
+   TRUST ITEMS
+========================================= */
+
+.payment-trust {
+    padding-top: 22px;
+
+    border-top: 1px solid var(--border);
+}
+
+.trust-item {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 10px;
+
+    margin-bottom: 17px;
+}
+
+.trust-item:last-child {
+    margin-bottom: 0;
+}
+
+.trust-item > span {
+    color: var(--gold-dark);
+
+    font-size: 15px;
+}
+
+.trust-item strong {
+    display: block;
+
+    margin-bottom: 2px;
+
+    color: var(--gold-dark);
+
+    font-size: 11px;
+}
+
+.trust-item p {
+    color: var(--text-light);
+
+    font-size: 10px;
+}
+
+
+/* =========================================
+   EMPTY PAYMENT
+========================================= */
+
+.payment-empty {
+    padding: 35px 15px;
+
+    text-align: center;
+}
+
+.payment-empty-icon {
+    margin-bottom: 10px;
+
+    font-size: 35px;
+}
+
+.payment-empty h3 {
+    margin-bottom: 5px;
+
+    color: var(--gold-dark);
+
+    font-family: var(--heading-font);
+
+    font-size: 24px;
+}
+
+.payment-empty p {
+    color: var(--text-light);
+
+    font-size: 12px;
+}
+
+
+/* =========================================
+   MODAL
+========================================= */
+
+.payment-modal[hidden] {
+    display: none;
+}
+
+.payment-modal {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 9999;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+}
+
+.payment-modal-backdrop {
+    position: absolute;
+
+    inset: 0;
+
+    background: rgba(0, 0, 0, 0.65);
+}
+
+.payment-modal-card {
+    position: relative;
+    z-index: 2;
+
+    width: min(440px, 100%);
+
+    padding: 45px 30px;
+
+    background: var(--white);
+
+    border: 1px solid var(--border);
+
+    text-align: center;
+
+    transition:
+        background 0.3s ease,
+        border-color 0.3s ease;
+}
+
+.success-icon {
+    width: 65px;
+    height: 65px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: 0 auto 20px;
+
+    border-radius: 50%;
+
+    background: rgba(79, 125, 82, 0.12);
+
+    color: var(--success);
+
+    font-size: 30px;
+}
+
+.payment-modal-card h2 {
+    margin-bottom: 8px;
+
+    color: var(--gold-dark);
+
+    font-family: var(--heading-font);
+
+    font-size: 34px;
+}
+
+.payment-modal-card p {
+    margin-bottom: 12px;
+
+    color: var(--text-light);
+
+    font-size: 13px;
+}
+
+.payment-modal-card > span {
+    display: block;
+
+    margin-bottom: 25px;
+
+    color: var(--gold-dark);
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.payment-modal-card button {
+    width: 100%;
+    height: 48px;
+
+    border: none;
+
+    background: var(--gold);
+
+    color: var(--white);
+
+    cursor: pointer;
+
+    transition: background 0.3s ease;
+}
+
+.payment-modal-card button:hover {
+    background: var(--gold-dark);
+}
+
+
+/* =========================================
+   DARK MODE
+========================================= */
+
+body.dark-mode {
+    --white: #171513;
+    --cream: #11100f;
+
+    --black: #ffffff;
+
+    --text: #eeeeee;
+    --text-light: #aaa39b;
+
+    --border: #342f2a;
+}
+
+
+/* =========================================
+   DARK MODE ELEMENTS
+========================================= */
+
+body.dark-mode .payment-header {
+    background: #171513;
+}
+
+body.dark-mode .payment-form-section,
+body.dark-mode .summary-card,
+body.dark-mode .payment-modal-card {
+    background: #171513;
+}
+
+body.dark-mode .form-group input {
+    background: #11100f;
+
+    color: #ffffff;
+}
+
+body.dark-mode .form-group input:focus {
+    background: #171513;
+}
+
+body.dark-mode .payment-security {
+    background: #11100f;
+}
+
+body.dark-mode .payment-product-image {
+    background: #11100f;
+}
+
+body.dark-mode .theme-toggle {
+    color: var(--gold-light);
+    border-color: var(--border);
+}
+
+body.dark-mode .theme-toggle:hover {
+    background: var(--gold);
+    color: #ffffff;
+    border-color: var(--gold);
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 1000px) {
+
+    .payment-container {
+        grid-template-columns: 1fr;
+
+        max-width: 760px;
+    }
+
+    .payment-summary {
+        position: static;
+    }
+
+}
+
+
+@media (max-width: 650px) {
+
+    .payment-header-container {
+        min-height: 68px;
+    }
+
+    .payment-logo {
+        font-size: 23px;
+    }
+
+    .payment-logo img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .secure-checkout {
+        font-size: 11px;
+    }
+
+    .payment-header-actions {
+        gap: 10px;
+    }
+
+    .theme-toggle {
+        width: 36px;
+        height: 36px;
+
+        font-size: 18px;
+
+        /* Keep it slightly toward the scrollbar on mobile */
+        left: 10px;
+    }
+
+    .payment-hero {
+        min-height: 220px;
+    }
+
+    .payment-hero h1 {
+        font-size: 40px;
+    }
+
+    .payment-page {
+        padding: 40px 15px;
+    }
+
+    .payment-form-section {
+        padding: 25px 20px;
+    }
+
+    .section-heading h2 {
+        font-size: 27px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+
+        gap: 0;
+    }
+
+    .summary-card {
+        padding: 22px;
+    }
+
+}
+
+
+@media (max-width: 430px) {
+
+    .payment-header-container {
+        width: 94%;
+    }
+
+    .payment-logo span {
+        display: none;
+    }
+
+    .secure-checkout span:last-child {
+        display: none;
+    }
+
+    .payment-header-actions {
+        gap: 8px;
+    }
+
+    .theme-toggle {
+        width: 34px;
+        height: 34px;
+
+        font-size: 17px;
+
+        /* Keep it slightly toward the scrollbar on small screens */
+        left: 10px;
+    }
+
+    .payment-hero {
+        min-height: 200px;
+    }
+
+    .payment-hero h1 {
+        font-size: 34px;
+    }
+
+    .payment-hero p {
+        font-size: 12px;
+    }
+
+    .payment-form-section {
+        padding: 22px 16px;
+    }
+
+    .section-heading {
+        gap: 10px;
+    }
+
+    .section-heading h2 {
+        font-size: 25px;
+    }
+
+    .summary-title h2 {
+        font-size: 27px;
+    }
+
+    .payment-product {
+        grid-template-columns: 58px minmax(0, 1fr) auto;
+    }
+
+    .payment-product-image {
+        width: 58px;
+        height: 58px;
+    }
+
+    .payment-product-info h3 {
+        font-size: 16px;
+    }
+
+}

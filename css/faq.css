@@ -1,0 +1,800 @@
+/* =====================================================
+   LUXURY JEWELRY
+   FAQ PAGE STYLES
+===================================================== */
+
+
+/* =====================================================
+   FAQ HERO SECTION
+===================================================== */
+
+.faq-hero {
+    position: relative;
+
+    min-height: 320px;
+
+    display: flex;
+    align-items: center;
+
+    background-image: url("../images/jelwery3.jpg");
+
+    background-size: cover;
+    background-position: center;
+
+    overflow: hidden;
+}
+
+
+.faq-hero-overlay {
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(30, 18, 10, 0.82),
+            rgba(30, 18, 10, 0.55),
+            rgba(30, 18, 10, 0.20)
+        );
+}
+
+
+.faq-hero-content {
+    position: relative;
+
+    z-index: 2;
+
+    width: 100%;
+    max-width: 1250px;
+
+    margin: 0 auto;
+
+    padding: 55px 5%;
+}
+
+
+.faq-small-title {
+    display: block;
+
+    margin-bottom: 12px;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 12px;
+    letter-spacing: 5px;
+
+    color: #e2bd70;
+}
+
+
+.faq-hero-content h1 {
+    margin: 0 0 14px;
+
+    font-family: "Cormorant Garamond", serif;
+
+    font-size: clamp(42px, 5vw, 56px);
+
+    font-weight: 500;
+
+    line-height: 1.1;
+
+    color: #ffffff;
+}
+
+
+.faq-hero-content p {
+    max-width: 500px;
+
+    margin: 0;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 13px;
+
+    line-height: 1.8;
+
+    color: rgba(255, 255, 255, 0.9);
+}
+
+
+/* =====================================================
+   HERO DECORATION
+===================================================== */
+
+.faq-decoration {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    margin-top: 20px;
+}
+
+
+.faq-decoration span {
+    width: 36px;
+    height: 1px;
+
+    background: #c99a3b;
+}
+
+
+.faq-decoration i {
+    font-style: normal;
+
+    font-size: 20px;
+
+    color: #c99a3b;
+}
+
+
+/* =====================================================
+   FAQ CONTENT SECTION
+===================================================== */
+
+.faq-content-section {
+    padding: 45px 5%;
+
+    background: #faf8f3;
+}
+
+
+.faq-layout {
+    max-width: 1250px;
+
+    margin: 0 auto;
+
+    display: grid;
+
+    grid-template-columns: 280px 1fr;
+
+    gap: 25px;
+
+    align-items: start;
+}
+
+
+/* =====================================================
+   LEFT SIDEBAR
+===================================================== */
+
+.faq-sidebar {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 18px;
+}
+
+
+/* =====================================================
+   HELP CARD
+===================================================== */
+
+.faq-help-card {
+    padding: 20px;
+
+    text-align: center;
+
+    background: #f7f4ee;
+
+    border: 1px solid #e7dfd2;
+
+    border-radius: 4px;
+}
+
+
+.faq-help-icon {
+    margin-bottom: 8px;
+
+    font-size: 40px;
+
+    color: #a67b32;
+}
+
+
+.faq-help-card h2 {
+    margin: 0 0 10px;
+
+    font-family: "Cormorant Garamond", serif;
+
+    font-size: 27px;
+
+    font-weight: 600;
+
+    color: #302a23;
+}
+
+
+.faq-help-card p {
+    margin: 0 auto 18px;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 11.5px;
+
+    line-height: 1.9;
+
+    color: #777;
+}
+
+
+/* =====================================================
+   CONTACT BUTTON
+===================================================== */
+
+.faq-contact-btn {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 10px 30px;
+
+    background: #b4873b;
+
+    color: #ffffff;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 12px;
+
+    text-decoration: none;
+
+    border-radius: 3px;
+
+    transition: all 0.3s ease;
+}
+
+
+.faq-contact-btn:hover {
+    background: #926a27;
+
+    transform: translateY(-2px);
+}
+
+
+/* =====================================================
+   FAQ CATEGORIES
+===================================================== */
+
+.faq-categories {
+    background: #f7f4ee;
+
+    border: 1px solid #e7dfd2;
+
+    border-radius: 4px;
+
+    overflow: hidden;
+}
+
+
+.faq-category {
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    padding: 13px 20px;
+
+    border: none;
+
+    border-bottom: 1px solid #e8e1d7;
+
+    background: transparent;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 11.5px;
+
+    text-align: left;
+
+    color: #777;
+
+    cursor: pointer;
+
+    transition: all 0.3s ease;
+}
+
+
+.faq-category:last-child {
+    border-bottom: none;
+}
+
+
+.faq-category span:first-child {
+    width: 20px;
+
+    font-size: 18px;
+
+    color: #a67b32;
+}
+
+
+.faq-category:hover {
+    background: #eee5d7;
+
+    color: #8e672c;
+}
+
+
+.faq-category.active {
+    background: #eee5d7;
+
+    color: #514638;
+}
+
+
+/* =====================================================
+   SIDEBAR IMAGE
+===================================================== */
+
+.faq-sidebar-image {
+    width: 100%;
+
+    height: 220px;
+
+    overflow: hidden;
+
+    border-radius: 4px;
+}
+
+
+.faq-sidebar-image img {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+
+    transition: transform 0.5s ease;
+}
+
+
+.faq-sidebar-image:hover img {
+    transform: scale(1.05);
+}
+
+
+/* =====================================================
+   RIGHT QUESTIONS AREA
+===================================================== */
+
+.faq-questions {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 7px;
+}
+
+
+.faq-item {
+    background: #fcfbf8;
+
+    border: 1px solid #e5ded3;
+
+    border-radius: 4px;
+
+    overflow: hidden;
+
+    transition: all 0.3s ease;
+}
+
+
+.faq-item:hover {
+    border-color: #c7a15c;
+}
+
+
+/* =====================================================
+   FAQ QUESTION
+===================================================== */
+
+.faq-question {
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 14px 17px;
+
+    border: none;
+
+    background: transparent;
+
+    cursor: pointer;
+
+    text-align: left;
+
+    font-family: "Cormorant Garamond", serif;
+
+    font-size: 17px;
+
+    font-weight: 500;
+
+    color: #3c352d;
+}
+
+
+.faq-question:hover {
+    color: #9d7020;
+}
+
+
+.faq-icon {
+    font-family: Arial, sans-serif;
+
+    font-size: 20px;
+
+    font-weight: 300;
+
+    color: #9d7020;
+
+    transition: transform 0.3s ease;
+}
+
+
+/* =====================================================
+   FAQ ANSWER
+===================================================== */
+
+.faq-answer {
+    max-height: 0;
+
+    overflow: hidden;
+
+    padding: 0 17px;
+
+    opacity: 0;
+
+    transition:
+        max-height 0.4s ease,
+        opacity 0.3s ease;
+}
+
+
+.faq-answer p {
+    margin: 0;
+
+    padding-bottom: 15px;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 12px;
+
+    line-height: 1.8;
+
+    color: #777;
+}
+
+
+.faq-item.active .faq-answer {
+    max-height: 180px;
+
+    opacity: 1;
+}
+
+
+.faq-item.active .faq-icon {
+    transform: rotate(45deg);
+}
+
+
+/* =====================================================
+   STILL HAVE QUESTIONS SECTION
+===================================================== */
+
+.faq-cta-section {
+    position: relative;
+
+    min-height: 320px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: flex-start;
+
+    text-align: left;
+
+    background-image: url("../images/jelwery5.jpg");
+
+    background-size: cover;
+
+    background-position: center;
+
+    overflow: hidden;
+
+}
+
+
+.faq-cta-overlay {
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            rgba(35, 23, 15, 0.78),
+            rgba(35, 23, 15, 0.84)
+        );
+}
+
+
+.faq-cta-content {
+    position: relative;
+
+    z-index: 2;
+
+    max-width: 700px;
+
+    padding: 40px 20px;
+
+    margin-left: 10%;
+
+    color: #ffffff;
+
+    text-align: left;
+}
+
+
+.faq-cta-content h2 {
+    font-family: "Cormorant Garamond", serif;
+
+    font-size: 58px;
+
+    font-weight: 500;
+
+    margin-bottom: 15px;
+}
+
+
+.faq-cta-content p {
+    font-size: 16px;
+
+    margin-bottom: 25px;
+}
+
+
+.faq-cta-content .btn-primary {
+    display: inline-block;
+}
+
+
+
+/* =====================================================
+   CTA DECORATION
+===================================================== */
+
+.faq-cta-decoration {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    margin-bottom: 15px;
+}
+
+
+.faq-cta-decoration span {
+    width: 35px;
+    height: 1px;
+
+    background: #c99a3b;
+}
+
+
+.faq-cta-decoration i {
+    font-style: normal;
+
+    font-size: 19px;
+
+    color: #c99a3b;
+}
+
+
+/* =====================================================
+   CTA LABEL
+===================================================== */
+
+.faq-cta-label {
+    display: block;
+
+    margin-bottom: 12px;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 11px;
+
+    letter-spacing: 4px;
+
+    color: #e2bd70;
+}
+
+
+/* =====================================================
+   CTA TITLE
+===================================================== */
+
+.faq-cta-content h2 {
+    margin: 0 0 12px;
+
+    font-family: "Cormorant Garamond", serif;
+
+    font-size: clamp(38px, 5vw, 48px);
+
+    font-weight: 500;
+
+    color: #ffffff;
+}
+
+
+/* =====================================================
+   CTA TEXT
+===================================================== */
+
+.faq-cta-content p {
+    max-width: 620px;
+
+    margin: 0 auto 22px;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 12px;
+
+    line-height: 1.8;
+
+    color: rgba(255, 255, 255, 0.9);
+}
+
+
+/* =====================================================
+   CTA BUTTON
+===================================================== */
+
+.faq-cta-button {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    min-width: 140px;
+
+    padding: 11px 28px;
+
+    border: 1px solid #d8b878;
+
+    background: transparent;
+
+    color: #ffffff;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 12px;
+
+    text-decoration: none;
+
+    transition: all 0.3s ease;
+}
+
+
+.faq-cta-button:hover {
+    background: #b4873b;
+
+    border-color: #b4873b;
+
+    transform: translateY(-2px);
+}
+
+
+/* =====================================================
+   DARK MODE
+===================================================== */
+
+body.dark-mode .faq-content-section {
+    background: #171513;
+}
+
+
+body.dark-mode .faq-help-card,
+body.dark-mode .faq-categories,
+body.dark-mode .faq-item {
+    background: #211e1b;
+
+    border-color: #3c352d;
+}
+
+
+body.dark-mode .faq-help-card h2,
+body.dark-mode .faq-question {
+    color: #f3eee5;
+}
+
+
+body.dark-mode .faq-help-card p,
+body.dark-mode .faq-answer p,
+body.dark-mode .faq-category {
+    color: #bdb5a8;
+}
+
+
+body.dark-mode .faq-category {
+    border-bottom-color: #3c352d;
+}
+
+
+body.dark-mode .faq-category:hover,
+body.dark-mode .faq-category.active {
+    background: #302a23;
+
+    color: #e2bd70;
+}
+
+
+/* =====================================================
+   RESPONSIVE DESIGN
+===================================================== */
+
+@media (max-width: 900px) {
+
+    .faq-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .faq-sidebar {
+        display: grid;
+
+        grid-template-columns: 1fr 1fr;
+
+        align-items: start;
+    }
+
+    .faq-sidebar-image {
+        grid-column: span 2;
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .faq-hero {
+        min-height: 300px;
+    }
+
+    .faq-hero-content {
+        padding: 50px 7%;
+    }
+
+    .faq-content-section {
+        padding: 35px 5%;
+    }
+
+    .faq-sidebar {
+        display: flex;
+    }
+
+    .faq-question {
+        font-size: 16px;
+
+        padding: 15px;
+    }
+
+    .faq-cta-section {
+        min-height: 300px;
+    }
+
+    .faq-cta-content h2 {
+        font-size: 38px;
+    }
+
+}

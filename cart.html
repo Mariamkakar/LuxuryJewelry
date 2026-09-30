@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Shopping Cart | Luxury Jewelry</title>
+
+    <link rel="stylesheet" href="css/cart.css">
+</head>
+
+<body>
+
+    <!-- =========================================
+         THEME TOGGLE
+    ========================================== -->
+
+    <button
+        class="cart-theme-toggle"
+        id="themeToggle"
+        type="button"
+        aria-label="Switch to Dark Mode"
+        title="Switch to Dark Mode"
+    >
+        ☾
+    </button>
+
+
+    <!-- =========================================
+         CART HERO
+    ========================================== -->
+
+    <section class="cart-hero">
+
+        <div class="cart-hero-content">
+
+            <div class="cart-breadcrumb">
+
+                <a href="index.html">
+                    Home
+                </a>
+
+                <span>›</span>
+
+                <span>
+                    Cart
+                </span>
+
+            </div>
+
+
+            <h1>
+                Your Shopping Cart
+            </h1>
+
+
+            <p>
+                Beautiful pieces, closer to you.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================
+         CART
+    ========================================== -->
+
+    <main class="cart-page">
+
+        <div class="cart-container">
+
+
+            <!-- =====================================
+                 CART ITEMS
+            ====================================== -->
+
+            <section class="cart-items-section">
+
+                <div class="cart-section-header">
+
+                    <h2>
+                        Your Items
+                    </h2>
+
+                    <span id="cartItemCount">
+                        0 items
+                    </span>
+
+                </div>
+
+
+                <div
+                    class="cart-items"
+                    id="cartItems"
+                ></div>
+
+
+                <!-- =================================
+                     EMPTY CART
+                ================================== -->
+
+                <div
+                    class="empty-cart"
+                    id="emptyCart"
+                    hidden
+                >
+
+                    <div class="empty-cart-icon">
+                        🛍️
+                    </div>
+
+
+                    <h2>
+                        Your cart is empty
+                    </h2>
+
+
+                    <p>
+                        Discover something beautiful from our jewelry collection.
+                    </p>
+
+
+                    <a
+                        href="shop.html"
+                        class="continue-shopping-button"
+                    >
+                        Continue Shopping
+                    </a>
+
+                </div>
+
+
+                <!-- Continue Shopping -->
+
+                <a
+                    href="shop.html"
+                    class="back-shopping"
+                >
+                    ← Continue Shopping
+                </a>
+
+            </section>
+
+
+            <!-- =====================================
+                 ORDER SUMMARY
+            ====================================== -->
+
+            <aside class="cart-summary">
+
+                <h2>
+                    Order Summary
+                </h2>
+
+
+                <!-- Subtotal -->
+
+                <div class="summary-row">
+
+                    <span>
+                        Subtotal
+                    </span>
+
+                    <strong id="cartSubtotal">
+                        $0.00
+                    </strong>
+
+                </div>
+
+
+                <!-- Shipping -->
+
+                <div class="summary-row">
+
+                    <span>
+                        Shipping
+                    </span>
+
+                    <strong id="cartShipping">
+                        Free
+                    </strong>
+
+                </div>
+
+
+                <!-- Divider -->
+
+                <div class="summary-divider"></div>
+
+
+                <!-- Total -->
+
+                <div class="summary-total">
+
+                    <span>
+                        Total
+                    </span>
+
+                    <strong id="cartTotal">
+                        $0.00
+                    </strong>
+
+                </div>
+
+
+                <!-- Checkout -->
+
+                <button
+                    type="button"
+                    class="checkout-button"
+                    id="checkoutButton"
+                    disabled
+                >
+
+                    <span>
+                        🔒 Proceed to Checkout
+                    </span>
+
+                    <span>
+                        →
+                    </span>
+
+                </button>
+
+
+                <!-- Secure Payment -->
+
+                <div class="secure-payment">
+
+                    <div class="secure-icon">
+                        🔒
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Secure Payment
+                        </strong>
+
+                        <p>
+                            Your information is safe and encrypted.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </aside>
+
+        </div>
+
+    </main>
+
+
+    <!-- =========================================
+         CART JAVASCRIPT
+    ========================================== -->
+
+    <script src="js/cart.js"></script>
+
+
+    <!-- =========================================
+         DARK / LIGHT MODE
+    ========================================== -->
+
+    <script>
+
+        const themeToggle =
+            document.getElementById("themeToggle");
+
+
+        /* =========================================
+           APPLY SAVED THEME
+        ========================================= */
+
+        function applyCartTheme() {
+
+            const savedTheme =
+                localStorage.getItem(
+                    "luxuryJewelryDarkMode"
+                );
+
+
+            const isDark =
+                savedTheme === "true";
+
+
+            document.body.classList.toggle(
+                "dark-mode",
+                isDark
+            );
+
+
+            if (themeToggle) {
+
+                themeToggle.textContent =
+                    isDark ? "☀" : "☾";
+
+
+                themeToggle.setAttribute(
+                    "aria-label",
+                    isDark
+                        ? "Switch to Light Mode"
+                        : "Switch to Dark Mode"
+                );
+
+
+                themeToggle.setAttribute(
+                    "title",
+                    isDark
+                        ? "Switch to Light Mode"
+                        : "Switch to Dark Mode"
+                );
+
+            }
+
+        }
+
+
+        /* =========================================
+           TOGGLE DARK / LIGHT MODE
+        ========================================= */
+
+        if (themeToggle) {
+
+            themeToggle.addEventListener(
+                "click",
+                function () {
+
+                    const isDark =
+                        document.body.classList.toggle(
+                            "dark-mode"
+                        );
+
+
+                    localStorage.setItem(
+                        "luxuryJewelryDarkMode",
+                        isDark
+                    );
+
+
+                    themeToggle.textContent =
+                        isDark ? "☀" : "☾";
+
+
+                    themeToggle.setAttribute(
+                        "aria-label",
+                        isDark
+                            ? "Switch to Light Mode"
+                            : "Switch to Dark Mode"
+                    );
+
+
+                    themeToggle.setAttribute(
+                        "title",
+                        isDark
+                            ? "Switch to Light Mode"
+                            : "Switch to Dark Mode"
+                    );
+
+                }
+            );
+
+        }
+
+
+        /* =========================================
+           INITIALIZE THEME
+        ========================================== */
+
+        applyCartTheme();
+
+    </script>
+
+    <!-- =========================================
+
+
+</body>
+</html>

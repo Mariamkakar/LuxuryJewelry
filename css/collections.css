@@ -1,0 +1,612 @@
+/* =====================================================
+   LUXURY JEWELRY
+   COLLECTIONS PAGE
+===================================================== */
+
+
+/* =====================================================
+   HERO
+===================================================== */
+
+.collections-hero {
+    min-height: 640px;
+
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+
+    background-image:
+        url("../images/collections-hero.jpg");
+
+    background-size: cover;
+
+    background-position: center;
+
+    overflow: hidden;
+}
+
+
+.collections-hero-overlay {
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            rgba(25, 20, 15, 0.45),
+            rgba(25, 20, 15, 0.70)
+        );
+}
+
+
+.collections-hero-content {
+    position: relative;
+
+    z-index: 2;
+
+    max-width: 750px;
+
+    padding: 40px 20px;
+
+    color: #ffffff;
+}
+
+
+.hero-label {
+    display: block;
+
+    margin-bottom: 15px;
+
+    color: var(--gold-light);
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 12px;
+
+    font-weight: 500;
+
+    letter-spacing: 4px;
+}
+
+
+.collections-hero-content h1 {
+    margin: 0 0 20px;
+
+    font-family: "Cormorant Garamond", serif;
+
+    font-size: clamp(52px, 7vw, 85px);
+
+    font-weight: 600;
+
+    line-height: 1;
+}
+
+
+.collections-hero-content p {
+    max-width: 650px;
+
+    margin: 0 auto;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 15px;
+
+    line-height: 1.8;
+
+    color: rgba(255, 255, 255, 0.90);
+}
+
+
+/* =====================================================
+   COLLECTIONS SECTION
+===================================================== */
+
+.collections-section {
+    width: min(1200px, 92%);
+
+    margin: 0 auto;
+
+    padding: 100px 0;
+}
+
+
+/* =====================================================
+   SECTION HEADING
+===================================================== */
+
+.section-heading {
+    max-width: 750px;
+
+    margin: 0 auto 60px;
+
+    text-align: center;
+}
+
+
+.section-heading > span {
+    display: block;
+
+    margin-bottom: 12px;
+
+    color: var(--gold);
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    letter-spacing: 3px;
+}
+
+
+.section-heading h2 {
+    margin: 0 0 15px;
+
+    color: var(--text);
+
+    font-family: "Cormorant Garamond", serif;
+
+    font-size: clamp(38px, 5vw, 58px);
+
+    font-weight: 600;
+
+    line-height: 1.1;
+}
+
+
+.section-heading p {
+    margin: 0;
+
+    color: var(--text-light);
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 14px;
+
+    line-height: 1.8;
+}
+
+
+/* =====================================================
+   COLLECTION GRID
+===================================================== */
+
+.collections-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 30px;
+}
+
+
+/* =====================================================
+   COLLECTION CARD
+===================================================== */
+
+.collection-card {
+    overflow: hidden;
+
+    background: var(--white);
+
+    border: 1px solid var(--border);
+
+    transition:
+        transform 0.35s ease,
+        box-shadow 0.35s ease;
+}
+
+
+.collection-card:hover {
+    transform: translateY(-8px);
+
+    box-shadow:
+        0 18px 40px rgba(0, 0, 0, 0.12);
+}
+
+
+/* =====================================================
+   IMAGE
+===================================================== */
+
+.collection-image {
+    position: relative;
+
+    height: 350px;
+
+    overflow: hidden;
+}
+
+
+.collection-image img {
+    width: 100%;
+
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+
+    object-position: center;
+
+    transition:
+        transform 0.6s ease;
+}
+
+
+.collection-card:hover
+.collection-image img {
+    transform: scale(1.07);
+}
+
+
+/* =====================================================
+   IMAGE OVERLAY
+===================================================== */
+
+.image-overlay {
+    position: absolute;
+
+    inset: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: flex-end;
+
+    padding: 25px;
+
+    background:
+        linear-gradient(
+            transparent 35%,
+            rgba(0, 0, 0, 0.75)
+        );
+
+    color: #ffffff;
+}
+
+
+.image-overlay span {
+    margin-bottom: 5px;
+
+    color: var(--gold-light);
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 10px;
+
+    letter-spacing: 3px;
+}
+
+
+.image-overlay h3 {
+    margin: 0;
+
+    font-family: "Cormorant Garamond", serif;
+
+    font-size: 30px;
+
+    font-weight: 600;
+}
+
+
+/* =====================================================
+   CARD INFORMATION
+===================================================== */
+
+.collection-info {
+    padding: 28px;
+}
+
+
+.collection-info h3 {
+    margin: 0 0 12px;
+
+    color: var(--text);
+
+    font-family: "Cormorant Garamond", serif;
+
+    font-size: 27px;
+
+    font-weight: 600;
+}
+
+
+.collection-info p {
+    min-height: 75px;
+
+    margin: 0 0 22px;
+
+    color: var(--text-light);
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 13px;
+
+    line-height: 1.8;
+}
+
+
+/* =====================================================
+   EXPLORE BUTTON
+===================================================== */
+
+.explore-btn {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding-bottom: 8px;
+
+    border-bottom: 1px solid var(--gold);
+
+    color: var(--gold-dark);
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 13px;
+
+    font-weight: 500;
+
+    text-decoration: none;
+
+    transition:
+        gap 0.3s ease,
+        color 0.3s ease;
+}
+
+
+.explore-btn span {
+    font-size: 18px;
+}
+
+
+.explore-btn:hover {
+    gap: 15px;
+
+    color: var(--gold);
+}
+
+
+/* =====================================================
+   CTA
+===================================================== */
+
+.collections-cta {
+    min-height: 500px;
+
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+
+    background-image:
+        url("../images/collections-cta.jpg");
+
+    background-size: cover;
+
+    background-position: center;
+
+    overflow: hidden;
+}
+
+
+.cta-overlay {
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            rgba(30, 22, 16, 0.72),
+            rgba(30, 22, 16, 0.84)
+        );
+}
+
+
+.cta-content {
+    position: relative;
+
+    z-index: 2;
+
+    max-width: 700px;
+
+    padding: 50px 20px;
+
+    color: #ffffff;
+}
+
+
+.cta-content > span {
+    display: block;
+
+    margin-bottom: 15px;
+
+    color: var(--gold-light);
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 11px;
+
+    letter-spacing: 3px;
+}
+
+
+.cta-content h2 {
+    margin: 0 0 18px;
+
+    font-family: "Cormorant Garamond", serif;
+
+    font-size: clamp(40px, 5vw, 60px);
+
+    font-weight: 600;
+
+    line-height: 1.1;
+}
+
+
+.cta-content p {
+    max-width: 600px;
+
+    margin: 0 auto 28px;
+
+    color: rgba(255, 255, 255, 0.88);
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 14px;
+
+    line-height: 1.8;
+}
+
+
+/* =====================================================
+   CTA BUTTON
+===================================================== */
+
+.cta-button {
+    display: inline-block;
+
+    padding: 13px 32px;
+
+    background: var(--gold);
+
+    color: #ffffff;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 13px;
+
+    text-decoration: none;
+
+    transition:
+        background 0.3s ease,
+        transform 0.3s ease;
+}
+
+
+.cta-button:hover {
+    background: var(--gold-dark);
+
+    transform: translateY(-2px);
+}
+
+
+/* =====================================================
+   DARK MODE
+===================================================== */
+
+body.dark-mode .collection-card {
+    background: var(--cream);
+
+    border-color: var(--border);
+}
+
+
+body.dark-mode .collection-card:hover {
+    box-shadow:
+        0 18px 40px rgba(0, 0, 0, 0.40);
+}
+
+
+body.dark-mode .explore-btn {
+    color: var(--gold-light);
+}
+
+
+/* =====================================================
+   TABLET
+===================================================== */
+
+@media (max-width: 1000px) {
+
+    .collections-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 700px) {
+
+    .collections-hero {
+        min-height: 420px;
+    }
+
+
+    .collections-section {
+        padding: 70px 0;
+    }
+
+
+    .collections-grid {
+        grid-template-columns: 1fr;
+
+        gap: 25px;
+    }
+
+
+    .collection-image {
+        height: 370px;
+    }
+
+
+    .collection-info p {
+        min-height: auto;
+    }
+
+
+    .collections-cta {
+        min-height: 350px;
+    }
+
+}
+
+
+/* =====================================================
+   SMALL MOBILE
+===================================================== */
+
+@media (max-width: 480px) {
+
+    .collections-hero-content h1 {
+        font-size: 48px;
+    }
+
+
+    .collection-image {
+        height: 330px;
+    }
+
+
+    .collection-info {
+        padding: 22px;
+    }
+
+
+    .collection-info h3 {
+        font-size: 25px;
+    }
+
+}

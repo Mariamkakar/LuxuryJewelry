@@ -1,0 +1,638 @@
+/* =====================================================
+   LUXURY JEWELRY
+   ABOUT PAGE CSS
+===================================================== */
+
+
+/* =========================
+   ROOT
+========================= */
+
+:root {
+    --about-gold: #b98532;
+    --about-gold-light: #d8b06a;
+    --about-cream: #faf8f3;
+    --about-beige: #f3eee5;
+    --about-dark: #1c1814;
+    --about-text: #29241f;
+    --about-muted: #756e65;
+    --about-border: #e4d8c6;
+}
+
+
+/* =========================
+   GENERAL
+========================= */
+
+.about-hero,
+.about-story,
+.about-values,
+.about-mission,
+.about-quote,
+.about-cta {
+    width: 100%;
+}
+
+.about-container {
+    width: min(1180px, 90%);
+    margin: 0 auto;
+}
+
+.section {
+    padding: 100px 0;
+}
+
+.about-page h1,
+.about-page h2,
+.about-page h3 {
+    font-family: "Cormorant Garamond", serif;
+}
+
+
+/* =========================
+   ABOUT HERO
+========================= */
+
+.about-hero {
+    min-height: 450px;
+
+    display: flex;
+    align-items: center;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(18, 13, 8, 0.78),
+            rgba(18, 13, 8, 0.35),
+            rgba(18, 13, 8, 0.15)
+        ),
+        url("../images/image2.jpg");
+
+    background-size: cover;
+    background-position: center;
+}
+
+.about-hero-content {
+    width: min(1180px, 90%);
+    margin: 0 auto;
+    color: #ffffff;
+}
+
+.about-subtitle,
+.section-subtitle {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+.about-subtitle {
+    color: var(--about-gold-light);
+    margin-bottom: 18px;
+}
+
+.about-hero h1 {
+    font-family: "Cormorant Garamond", serif;
+    font-size: clamp(50px, 7vw, 82px);
+    font-weight: 500;
+    line-height: 1;
+    margin-bottom: 22px;
+}
+
+.about-hero p:last-child {
+    max-width: 550px;
+    color: #eee8df;
+    font-size: 15px;
+    line-height: 1.8;
+}
+
+
+/* =========================
+   OUR STORY
+========================= */
+
+.about-story {
+    background: var(--about-cream);
+}
+
+.about-story .about-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 80px;
+}
+
+.about-story-image {
+    position: relative;
+    width: 100%;
+}
+
+
+/* =========================
+   IMAGE FRAME
+========================= */
+
+.image-frame {
+    position: relative;
+
+    width: 100%;
+    padding: 12px;
+    border: 2px solid var(--about-gold);
+
+    box-sizing: border-box;
+}
+
+
+/* photo*/
+
+.image-frame img {
+    position: relative;
+    z-index: 1;
+
+    display: block;
+
+    width: 100%;
+    height: 470px;
+
+    object-fit: cover;
+    object-position: center;
+
+    margin: 0;
+
+    box-sizing: border-box;
+}
+
+
+/* =========================
+   STORY CONTENT
+========================= */
+
+.about-story-content {
+    padding-right: 20px;
+}
+
+.about-story-content .section-subtitle,
+.about-mission .section-subtitle,
+.about-cta .section-subtitle {
+    color: var(--about-gold);
+    margin-bottom: 15px;
+}
+
+.about-story-content h2,
+.about-mission h2,
+.about-cta h2 {
+    font-family: "Cormorant Garamond", serif;
+    font-size: clamp(40px, 5vw, 58px);
+    font-weight: 500;
+    line-height: 1.1;
+    color: var(--about-text);
+    margin-bottom: 25px;
+}
+
+.about-story-content p,
+.about-mission p,
+.about-cta p {
+    color: var(--about-muted);
+    font-size: 14px;
+    line-height: 1.9;
+    margin-bottom: 18px;
+}
+
+
+/* =========================
+   BUTTON
+========================= */
+
+.about-story-content .btn,
+.about-cta .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin-top: 15px;
+}
+
+/* =========================
+   VALUES
+========================= */
+
+.about-values {
+    background: var(--about-beige);
+}
+
+.about-values .section-heading {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 60px;
+}
+
+.about-values .section-subtitle {
+    color: var(--about-gold);
+    margin-bottom: 15px;
+}
+
+.about-values .section-heading h2 {
+    font-family: "Cormorant Garamond", serif;
+    font-size: clamp(40px, 5vw, 58px);
+    font-weight: 500;
+    line-height: 1.1;
+    color: var(--about-text);
+    margin-bottom: 18px;
+}
+
+.about-values .section-heading p:last-child {
+    color: var(--about-muted);
+    font-size: 14px;
+}
+
+
+/* Values Grid */
+
+.values-grid {
+    width: min(1180px, 90%);
+    margin: 0 auto;
+
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+}
+
+.value-card {
+    text-align: center;
+    padding: 20px 30px 10px;
+
+    border-right: 1px solid var(--about-border);
+}
+
+.value-card:last-child {
+    border-right: none;
+}
+
+.value-icon {
+    width: 62px;
+    height: 62px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: 0 auto 22px;
+
+    border: 1px solid var(--about-gold);
+    border-radius: 50%;
+
+    color: var(--about-gold);
+    font-size: 28px;
+
+    transition: 0.3s ease;
+}
+
+.value-card:hover .value-icon {
+    background: var(--about-gold);
+    color: #ffffff;
+    transform: translateY(-5px);
+}
+
+.value-card h3 {
+    font-family: "Cormorant Garamond", serif;
+    font-size: 25px;
+    font-weight: 600;
+    color: var(--about-text);
+    margin-bottom: 15px;
+}
+
+.value-card p {
+    color: var(--about-muted);
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+
+/* =========================
+   OUR MISSION
+========================= */
+
+.about-mission {
+    background: var(--about-cream);
+}
+
+.about-mission .about-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 80px;
+}
+
+.mission-image {
+    order: 1;
+}
+
+.mission-content {
+    order: 2;
+}
+
+.mission-image .image-frame img {
+    height: 400px;
+}
+
+.mission-content h2 {
+    margin-bottom: 25px;
+}
+
+
+/* =========================
+   QUOTE
+========================= */
+
+.about-quote {
+    min-height: 390px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    background:
+        linear-gradient(
+            rgba(18, 13, 8, 0.72),
+            rgba(18, 13, 8, 0.72)
+        ),
+        url("../images/image3.jpg");
+
+    background-size: cover;
+    background-position: center;
+}
+
+.quote-content {
+    width: min(800px, 90%);
+    margin: auto;
+    color: #ffffff;
+}
+
+.quote-icon {
+    display: block;
+    color: var(--about-gold-light);
+    font-family: Georgia, serif;
+    font-size: 75px;
+    line-height: 0.7;
+    margin-bottom: 25px;
+}
+
+.quote-content h2 {
+    font-family: "Cormorant Garamond", serif;
+    font-size: clamp(35px, 5vw, 55px);
+    font-weight: 500;
+    font-style: italic;
+    line-height: 1.2;
+    margin-bottom: 25px;
+}
+
+.quote-content p {
+    color: #e3d7c8;
+    font-size: 10px;
+    letter-spacing: 3px;
+}
+
+
+/* =========================
+   CALL TO ACTION
+========================= */
+
+.about-cta {
+    background: var(--about-cream);
+}
+
+.about-cta .about-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 70px;
+}
+
+.cta-image {
+    position: relative;
+}
+
+
+/* CTA */
+
+.cta-image::before {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    border: 2px solid var(--about-gold);
+
+    z-index: 0;
+
+    pointer-events: none;
+}
+
+.cta-image img {
+    position: relative;
+    z-index: 1;
+
+    display: block;
+
+    width: 100%;
+    height: 270px;
+
+    object-fit: cover;
+
+    padding: 12px;
+
+    box-sizing: border-box;
+}
+
+.cta-content {
+    padding-left: 10px;
+}
+
+.cta-content h2 {
+    margin-bottom: 20px;
+}
+
+
+/* =========================
+   DARK MODE
+========================= */
+
+body.dark-mode {
+
+    --about-cream: #171411;
+    --about-beige: #211d19;
+    --about-text: #f5eee5;
+    --about-muted: #b9afa2;
+    --about-border: #44392e;
+
+    background: #171411;
+}
+
+body.dark-mode .about-story,
+body.dark-mode .about-mission,
+body.dark-mode .about-cta {
+    background: #171411;
+}
+
+body.dark-mode .about-values {
+    background: #211d19;
+}
+
+body.dark-mode .about-story-content h2,
+body.dark-mode .about-mission h2,
+body.dark-mode .about-cta h2,
+body.dark-mode .about-values .section-heading h2,
+body.dark-mode .value-card h3 {
+    color: #f5eee5;
+}
+
+body.dark-mode .about-story-content p,
+body.dark-mode .about-mission p,
+body.dark-mode .about-cta p,
+body.dark-mode .about-values .section-heading p:last-child,
+body.dark-mode .value-card p {
+    color: #b9afa2;
+}
+
+
+/* =========================
+   RESPONSIVE DESIGN
+========================= */
+
+@media (max-width: 1000px) {
+
+    .about-story .about-container,
+    .about-mission .about-container,
+    .about-cta .about-container {
+        gap: 45px;
+    }
+
+    .values-grid {
+        grid-template-columns: repeat(2, 1fr);
+        row-gap: 40px;
+    }
+
+    .value-card:nth-child(2) {
+        border-right: none;
+    }
+
+    .value-card:nth-child(3),
+    .value-card:nth-child(4) {
+        border-top: 1px solid var(--about-border);
+        padding-top: 40px;
+    }
+
+}
+
+
+@media (max-width: 768px) {
+
+    .section {
+        padding: 70px 0;
+    }
+
+    .about-hero {
+        min-height: 360px;
+    }
+
+    .about-hero h1 {
+        font-size: 52px;
+    }
+
+    .about-story .about-container,
+    .about-mission .about-container,
+    .about-cta .about-container {
+        grid-template-columns: 1fr;
+    }
+
+    .about-story-content,
+    .cta-content {
+        padding-right: 0;
+        padding-left: 0;
+    }
+
+    .mission-image {
+        order: 1;
+    }
+
+    .mission-content {
+        order: 2;
+    }
+
+    .image-frame img {
+        height: 380px;
+    }
+
+    .mission-image .image-frame img {
+        height: 330px;
+    }
+
+    .values-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+}
+
+
+@media (max-width: 500px) {
+
+    .about-hero {
+        min-height: 330px;
+    }
+
+    .about-hero-content {
+        width: 85%;
+    }
+
+    .about-hero h1 {
+        font-size: 45px;
+    }
+
+    .about-hero p:last-child {
+        font-size: 13px;
+    }
+
+    .section {
+        padding: 60px 0;
+    }
+
+    .values-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .value-card {
+        border-right: none;
+        border-bottom: 1px solid var(--about-border);
+        padding: 25px 20px 35px;
+    }
+
+    .value-card:last-child {
+        border-bottom: none;
+    }
+
+    .value-card:nth-child(3),
+    .value-card:nth-child(4) {
+        border-top: none;
+        padding-top: 25px;
+    }
+
+    .image-frame img {
+        height: 300px;
+    }
+
+    .mission-image .image-frame img {
+        height: 280px;
+    }
+
+    .cta-image img {
+        height: 220px;
+    }
+
+    .quote-content h2 {
+        font-size: 32px;
+    }
+
+}

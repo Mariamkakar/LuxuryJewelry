@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>My Profile | Luxury Jewelry</title>
+
+    <!-- Google Fonts -->
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- Profile CSS -->
+    <link
+        rel="stylesheet"
+        href="css/profile.css"
+    >
+
+</head>
+
+
+<body>
+
+    <!-- =====================================================
+         TOP BAR
+    ====================================================== -->
+
+    <header class="profile-topbar">
+
+        <a
+            href="index.html"
+            class="back-home"
+        >
+
+            <span class="back-icon">
+                ←
+            </span>
+
+            <span>
+                Back to Home
+            </span>
+
+        </a>
+
+
+        <a
+            href="index.html"
+            class="profile-logo"
+        >
+
+            <img
+                src="images/logo.jpeg"
+                alt="Luxury Jewelry Logo"
+            >
+
+        </a>
+
+
+        <button
+            type="button"
+            class="profile-theme-toggle"
+            id="profileThemeToggle"
+            aria-label="Toggle Dark Mode"
+        >
+            ☾
+        </button>
+
+    </header>
+
+
+    <!-- =====================================================
+         PROFILE PAGE
+    ====================================================== -->
+
+    <main class="profile-page">
+
+
+        <!-- =================================================
+             HERO
+        ================================================== -->
+
+        <section class="profile-hero">
+
+            <p class="profile-eyebrow">
+                LUXURY JEWELRY
+            </p>
+
+            <h1>
+                MY PROFILE
+            </h1>
+
+            <p class="profile-subtitle">
+                Manage your personal information and account settings
+            </p>
+
+            <div class="hero-divider">
+
+                <span></span>
+
+                <b>
+                    ✦
+                </b>
+
+                <span></span>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             MAIN PROFILE CONTAINER
+        ================================================== -->
+
+        <section class="profile-container">
+
+
+            <!-- =============================================
+                 PROFILE PHOTO
+            ============================================== -->
+
+            <div class="profile-card photo-card">
+
+                <div class="profile-photo-wrapper">
+
+                    <div class="profile-photo">
+
+                        <img
+                            id="profileImage"
+                            src=""
+                            alt="Profile Photo"
+                        >
+
+                        <div
+                            class="profile-placeholder"
+                            id="profilePlaceholder"
+                        >
+                            👤
+                        </div>
+
+                    </div>
+
+
+                    <label
+                        for="photoInput"
+                        class="camera-button"
+                        title="Change Photo"
+                    >
+                        📷
+                    </label>
+
+                    <input
+                        type="file"
+                        id="photoInput"
+                        accept="image/*"
+                        hidden
+                    >
+
+                </div>
+
+
+                <div class="photo-info">
+
+                    <h2>
+                        Profile Photo
+                    </h2>
+
+                    <p>
+                        Upload a new photo or keep your current one.
+                    </p>
+
+                    <label
+                        for="photoInput"
+                        class="change-photo-button"
+                    >
+                        <span>
+                            📷
+                        </span>
+
+                        Change Photo
+                    </label>
+
+                </div>
+
+            </div>
+
+
+            <!-- =============================================
+                 PERSONAL INFORMATION
+            ============================================== -->
+
+            <div class="profile-card information-card">
+
+                <div class="section-heading">
+
+                    <h2>
+                        Personal Information
+                    </h2>
+
+                    <span></span>
+
+                </div>
+
+
+                <form id="profileForm">
+
+
+                    <div class="form-grid">
+
+
+                        <!-- FULL NAME -->
+
+                        <div class="form-group">
+
+                            <label for="fullName">
+                                Full Name
+                            </label>
+
+                            <div class="input-wrapper">
+
+                                <span class="input-icon">
+                                    ♙
+                                </span>
+
+                                <input
+                                    type="text"
+                                    id="fullName"
+                                    name="fullName"
+                                    placeholder="Your full name"
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- EMAIL -->
+
+                        <div class="form-group">
+
+                            <label for="email">
+                                Email Address
+                            </label>
+
+                            <div class="input-wrapper">
+
+                                <span class="input-icon">
+                                    ✉
+                                </span>
+
+                                <input
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    placeholder="Your email address"
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- PHONE -->
+
+                        <div class="form-group">
+
+                            <label for="phone">
+                                Phone Number
+                            </label>
+
+                            <div class="input-wrapper">
+
+                                <span class="input-icon">
+                                    ☎
+                                </span>
+
+                                <input
+                                    type="tel"
+                                    id="phone"
+                                    name="phone"
+                                    placeholder="Your phone number"
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- COUNTRY -->
+
+                        <div class="form-group">
+
+                            <label for="country">
+                                Country
+                            </label>
+
+                            <div class="input-wrapper">
+
+                                <span class="input-icon">
+                                    ◉
+                                </span>
+
+                                <select
+                                    id="country"
+                                    name="country"
+                                >
+
+                                    <option value="">
+                                        Select Country
+                                    </option>
+
+                                    <option value="Afghanistan">
+                                        Afghanistan
+                                    </option>
+
+                                    <option value="Pakistan">
+                                        Pakistan
+                                    </option>
+
+                                    <option value="Iran">
+                                        Iran
+                                    </option>
+
+                                    <option value="United Arab Emirates">
+                                        United Arab Emirates
+                                    </option>
+
+                                    <option value="United States">
+                                        United States
+                                    </option>
+
+                                    <option value="United Kingdom">
+                                        United Kingdom
+                                    </option>
+
+                                    <option value="Canada">
+                                        Canada
+                                    </option>
+
+                                    <option value="Other">
+                                        Other
+                                    </option>
+
+                                </select>
+
+                                <span class="select-arrow">
+                                   ⌄
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- SAVE -->
+
+                    <div class="save-wrapper">
+
+                        <button
+                            type="submit"
+                            class="save-button"
+                        >
+                            Save Changes
+                        </button>
+
+                    </div>
+
+                </form>
+
+
+                <!-- =========================================
+                     QUICK ACCESS
+                ========================================== -->
+
+                <div class="quick-access">
+
+                    <div class="section-heading">
+
+                        <h2>
+                            Quick Access
+                        </h2>
+
+                        <span></span>
+
+                    </div>
+
+
+                    <!-- MY ORDERS ONLY -->
+
+                    <a
+                        href="orders.html"
+                        class="quick-card"
+                    >
+
+                        <div class="quick-icon">
+                            🛍
+                        </div>
+
+                        <div class="quick-content">
+
+                            <h3>
+                                My Orders
+                            </h3>
+
+                            <p>
+                                View your order history and track your packages
+                            </p>
+
+                        </div>
+
+                        <span class="quick-arrow">
+                            ›
+                        </span>
+
+                    </a>
+
+                </div>
+
+
+                <!-- =========================================
+                     ACCOUNT SECURITY
+                ========================================== -->
+
+                <div class="security-section">
+
+                    <div class="security-heading">
+
+                        <div class="security-icon">
+                            🛡
+                        </div>
+
+                        <div>
+
+                            <h2>
+                                Account Security
+                            </h2>
+
+                            <p>
+                                Keep your account safe and secure
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="security-button"
+                        id="changePasswordButton"
+                    >
+
+                        <span class="security-button-icon">
+                            🔒
+                        </span>
+
+                        <span>
+                            Change Password
+                        </span>
+
+                        <span class="security-arrow">
+                            ›
+                        </span>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =====================================================
+         CHANGE PASSWORD MODAL
+    ====================================================== -->
+
+    <div
+        class="password-modal"
+        id="passwordModal"
+    >
+
+        <div
+            class="modal-backdrop"
+            id="modalBackdrop"
+        ></div>
+
+
+        <div class="password-modal-box">
+
+            <button
+                type="button"
+                class="modal-close"
+                id="modalClose"
+                aria-label="Close"
+            >
+                ×
+            </button>
+
+            <p class="modal-eyebrow">
+                ACCOUNT SECURITY
+            </p>
+
+            <h2>
+                Change Password
+            </h2>
+
+            <p class="modal-description">
+                Create a new password for your account.
+            </p>
+
+
+            <form id="passwordForm">
+
+                <div class="modal-field">
+
+                    <label for="currentPassword">
+                        Current Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="currentPassword"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="modal-field">
+
+                    <label for="newPassword">
+                        New Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="newPassword"
+                        minlength="6"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="modal-field">
+
+                    <label for="confirmPassword">
+                        Confirm New Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="confirmPassword"
+                        minlength="6"
+                        required
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="modal-save"
+                >
+                    Update Password
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         SUCCESS MESSAGE
+    ====================================================== -->
+
+    <div
+        class="profile-toast"
+        id="profileToast"
+    >
+        Changes saved successfully.
+    </div>
+
+
+    <!-- Profile JavaScript -->
+    <script src="js/profile.js"></script>
+
+</body>
+
+</html>

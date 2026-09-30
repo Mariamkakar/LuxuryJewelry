@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Product Details | Luxury Jewelry</title>
+
+
+    <!-- =====================================================
+         GOOGLE FONTS
+    ====================================================== -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- =====================================================
+         MAIN CSS
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+
+    <!-- =====================================================
+         PRODUCT DETAILS CSS
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="css/product-details.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         ANNOUNCEMENT BAR
+    ====================================================== -->
+
+    <div class="announcement-bar">
+        Free Shipping on Orders Over $100
+    </div>
+
+
+    <!-- =====================================================
+         NAVBAR
+    ====================================================== -->
+
+    <header class="navbar">
+
+        <div class="nav-container">
+
+
+            <!-- LOGO -->
+
+            <a
+                href="index.html"
+                class="logo"
+            >
+
+                <img
+                    src="images/logo.jpeg"
+                    alt="Luxury Jewelry Logo"
+                >
+
+            </a>
+
+
+            <!-- =================================================
+                 NAVIGATION
+            ================================================== -->
+
+            <nav class="nav-links">
+
+                <a href="index.html">
+                    Home
+                </a>
+
+                <a href="shop.html">
+                    Shop
+                </a>
+
+                <a href="collections.html">
+                    Collections
+                </a>
+
+                <a href="about.html">
+                    About
+                </a>
+
+                <a href="contact.html">
+                    Contact
+                </a>
+
+                <a href="faq.html">
+                    FAQ
+                </a>
+
+                <a href="shipping-return.html">
+                    Shipping & Returns
+                </a>
+
+                <a
+                    href="login.html"
+                    class="auth-link"
+                >
+                    Login
+                </a>
+
+                <a
+                    href="signup.html"
+                    class="signup-link"
+                >
+                    Sign Up
+                </a>
+
+            </nav>
+
+
+            <!-- =================================================
+                 NAV ACTIONS
+            ================================================== -->
+
+            <div class="nav-actions">
+
+
+                <!-- SEARCH -->
+
+                <button
+                    class="nav-icon"
+                    id="searchBtn"
+                    type="button"
+                    aria-label="Search"
+                >
+                    🔍
+                </button>
+
+
+                <!-- ACCOUNT -->
+
+                <a
+                    href="login.html"
+                    class="nav-icon"
+                    aria-label="Account"
+                >
+                    ♡
+                </a>
+
+
+                <!-- CART -->
+
+                <a
+                    href="cart.html"
+                    class="nav-icon cart-icon"
+                    aria-label="Shopping Cart"
+                >
+
+                    🛍️
+
+                    <span class="cart-count">
+                        0
+                    </span>
+
+                </a>
+
+
+                <!-- DARK MODE -->
+
+                <button
+                    class="theme-toggle"
+                    id="themeToggle"
+                    type="button"
+                    aria-label="Toggle Dark Mode"
+                    title="Toggle Dark Mode"
+                >
+                    ☾
+                </button>
+
+
+                <!-- MOBILE MENU -->
+
+                <button
+                    class="menu-toggle"
+                    id="menuToggle"
+                    type="button"
+                    aria-label="Open Menu"
+                >
+                    ☰
+                </button>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         SEARCH BOX
+    ====================================================== -->
+
+    <div
+        class="search-box"
+        id="searchBox"
+    >
+
+        <div class="search-container">
+
+            <input
+                type="text"
+                id="productSearch"
+                placeholder="Search jewelry..."
+                autocomplete="off"
+            >
+
+            <button
+                id="closeSearch"
+                type="button"
+                aria-label="Close Search"
+            >
+                ✕
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         PRODUCT DETAILS
+    ====================================================== -->
+
+    <main>
+
+        <section class="product-details-section">
+
+
+            <!-- =================================================
+                 BACK TO SHOP
+            ================================================== -->
+
+            <div class="product-back-wrapper">
+
+                <a
+                    href="shop.html"
+                    class="product-back-button"
+                >
+                    ← Back to Shop
+                </a>
+
+            </div>
+
+
+            <div class="product-details-container">
+
+
+                <!-- =================================================
+                     PRODUCT IMAGE
+                ================================================== -->
+
+                <div class="product-gallery">
+
+                    <div class="product-main-image">
+
+                        <img
+                            id="productImage"
+                            src="images/Image 2026-09-02 at 12.27.56.jpeg"
+                            alt="Diamond Ring"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     PRODUCT INFORMATION
+                ================================================== -->
+
+                <div class="product-details-content">
+
+
+                    <!-- CATEGORY -->
+
+                    <p
+                        class="product-category"
+                        id="productCategory"
+                    >
+                        RINGS
+                    </p>
+
+
+                    <!-- PRODUCT NAME -->
+
+                    <h1 id="productName">
+                        DIAMOND RING
+                    </h1>
+
+
+                    <!-- PRICE -->
+
+                    <div
+                        class="product-price"
+                        id="productPrice"
+                    >
+                        $299.99
+                    </div>
+
+
+                    <!-- RATING -->
+
+                    <div class="product-rating">
+
+                        <span class="stars">
+                            ★★★★★
+                        </span>
+
+                        <span
+                            class="review-count"
+                            id="productReviews"
+                        >
+                            (24 reviews)
+                        </span>
+
+                    </div>
+
+
+                    <!-- DIVIDER -->
+
+                    <div class="product-divider"></div>
+
+
+                    <!-- DESCRIPTION -->
+
+                    <div class="product-description">
+
+                        <h3>
+                            Description
+                        </h3>
+
+                        <p id="productDescription">
+                            A timeless diamond ring crafted
+                            with elegance and sophistication.
+                            Designed to add a luxurious touch
+                            to every special moment.
+                        </p>
+
+                    </div>
+
+
+                    <!-- STOCK -->
+
+                    <div class="product-stock">
+
+                        <span class="stock-dot"></span>
+
+                        <span id="productStock">
+                            In Stock
+                        </span>
+
+                    </div>
+
+
+                    <!-- QUANTITY -->
+
+                    <div class="quantity-wrapper">
+
+                        <span class="quantity-title">
+                            Quantity
+                        </span>
+
+                        <div class="quantity-control">
+
+                            <button
+                                type="button"
+                                id="decreaseQuantity"
+                                aria-label="Decrease Quantity"
+                            >
+                                −
+                            </button>
+
+                            <span id="quantity">
+                                1
+                            </span>
+
+                            <button
+                                type="button"
+                                id="increaseQuantity"
+                                aria-label="Increase Quantity"
+                            >
+                                +
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         PRODUCT BUTTONS
+                    ================================================== -->
+
+                    <div class="product-buttons">
+
+
+                        <!-- ADD TO CART -->
+
+                        <button
+                            type="button"
+                            id="addToCart"
+                            class="add-to-cart"
+                        >
+                            ADD TO CART
+                        </button>
+
+
+                        <!-- WISHLIST -->
+
+                        <button
+                            type="button"
+                            id="addToWishlist"
+                            class="add-to-wishlist"
+                        >
+                            ♡ ADD TO WISHLIST
+                        </button>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         PRODUCT META
+                    ================================================== -->
+
+                    <div class="product-meta">
+
+
+                        <div class="meta-row">
+
+                            <span>
+                                SKU
+                            </span>
+
+                            <strong id="productSku">
+                                LJ-RING-001
+                            </strong>
+
+                        </div>
+
+
+                        <div class="meta-row">
+
+                            <span>
+                                Category
+                            </span>
+
+                            <strong id="productMetaCategory">
+                                Rings
+                            </strong>
+
+                        </div>
+
+
+                        <div class="meta-row">
+
+                            <span>
+                                Tag
+                            </span>
+
+                            <strong id="productTag">
+                                Diamond
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             ADDITIONAL PRODUCT INFORMATION
+        ====================================================== -->
+
+        <section class="product-information">
+
+            <div class="product-information-container">
+
+
+                <div class="information-card">
+
+                    <div class="information-icon">
+                        ✧
+                    </div>
+
+                    <h3>
+                        Premium Quality
+                    </h3>
+
+                    <p>
+                        Carefully selected materials and
+                        beautiful craftsmanship.
+                    </p>
+
+                </div>
+
+
+                <div class="information-card">
+
+                    <div class="information-icon">
+                        🚚
+                    </div>
+
+                    <h3>
+                        Free Shipping
+                    </h3>
+
+                    <p>
+                        Enjoy free shipping on orders
+                        over $100.
+                    </p>
+
+                </div>
+
+
+                <div class="information-card">
+
+                    <div class="information-icon">
+                        ↻
+                    </div>
+
+                    <h3>
+                        30 Days Returns
+                    </h3>
+
+                    <p>
+                        Easy returns within 30 days of
+                        receiving your order.
+                    </p>
+
+                </div>
+
+
+                <div class="information-card">
+
+                    <div class="information-icon">
+                        🔒
+                    </div>
+
+                    <h3>
+                        Secure Payment
+                    </h3>
+
+                    <p>
+                        Your payment information is
+                        completely secure.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+
+            <!-- BRAND -->
+
+            <div class="footer-brand">
+
+                <a
+                    href="index.html"
+                    class="logo"
+                >
+
+                    <img
+                        src="images/logo.jpeg"
+                        alt="Luxury Jewelry Logo"
+                    >
+
+                </a>
+
+                <p>
+                    Timeless jewelry for timeless moments.
+                </p>
+
+            </div>
+
+
+            <!-- QUICK LINKS -->
+
+            <div class="footer-column">
+
+                <h3>
+                    Quick Links
+                </h3>
+
+                <a href="index.html">
+                    Home
+                </a>
+
+                <a href="shop.html">
+                    Shop
+                </a>
+
+                <a href="collections.html">
+                    Collections
+                </a>
+
+                <a href="about.html">
+                    About Us
+                </a>
+
+            </div>
+
+
+            <!-- CUSTOMER CARE -->
+
+            <div class="footer-column">
+
+                <h3>
+                    Customer Care
+                </h3>
+
+                <a href="contact.html">
+                    Contact Us
+                </a>
+
+                <a href="shipping-return.html">
+                    Shipping & Returns
+                </a>
+
+                <a href="faq.html">
+                    FAQ
+                </a>
+
+            </div>
+
+
+            <!-- SOCIAL -->
+
+            <div class="footer-column">
+
+                <h3>
+                    Follow Us
+                </h3>
+
+                <div class="social-links">
+
+                    <a
+                        href="#"
+                        aria-label="Instagram"
+                    >
+                        Instagram
+                    </a>
+
+                    <a
+                        href="#"
+                        aria-label="Facebook"
+                    >
+                        Facebook
+                    </a>
+
+                    <a
+                        href="#"
+                        aria-label="Pinterest"
+                    >
+                        Pinterest
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- FOOTER BOTTOM -->
+
+        <div class="footer-bottom">
+
+            <p>
+                ©️ 2026 Luxury Jewelry.
+                All Rights Reserved.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <!-- =====================================================
+         PRODUCT DETAILS JAVASCRIPT
+    ====================================================== -->
+    <script src="js/auth.js"></script>
+    <script src="js/landing.js"></script>
+    <script src="js/product-details.js"></script>
+
+</body>
+
+</html>

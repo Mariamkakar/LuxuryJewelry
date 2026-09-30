@@ -1,0 +1,422 @@
+<header class="navbar">
+
+    <div class="nav-container">
+
+        <!-- =====================================================
+             LOGO
+        ====================================================== -->
+
+        <a href="index.html" class="navbar-logo">
+
+            <img
+                src="images/logo.jpeg"
+                alt="Luxury Jewelry Logo"
+            >
+
+        </a>
+
+
+        <!-- =====================================================
+             NAVIGATION
+        ====================================================== -->
+
+        <nav
+            class="nav-links"
+            id="navLinks"
+        >
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="collections.html">
+                Collection
+            </a>
+
+            <a href="shop.html">
+                Shop
+            </a>
+
+            <a href="about.html">
+                About
+            </a>
+
+            <a href="faq.html">
+                FAQ
+            </a>
+
+            <a href="shipping-returns.html">
+                Shipping & Returns
+            </a>
+
+            <a href="contact.html">
+                Contact
+            </a>
+
+            
+
+
+            <!-- =================================================
+                 LOGIN
+            ================================================== -->
+
+            <a
+                href="login.html"
+                id="loginNavLink"
+            >
+                Login
+            </a>
+
+
+            <!-- =================================================
+                 SIGN UP
+            ================================================== -->
+
+            <a
+                href="signup.html"
+                class="signup-link"
+                id="signupNavLink"
+            >
+                Sign Up
+            </a>
+
+        </nav>
+
+
+        <!-- =====================================================
+             NAV ACTIONS
+        ====================================================== -->
+
+        <div class="nav-actions">
+
+
+            <!-- =================================================
+                 SEARCH
+            ================================================== -->
+
+            <button
+                class="nav-icon"
+                id="searchBtn"
+                type="button"
+                aria-label="Search"
+            >
+                🔍
+            </button>
+
+
+            <!-- =================================================
+                 ACCOUNT
+            ================================================== -->
+
+            <div
+                class="account-menu"
+                id="accountMenu"
+            >
+
+               <button
+    class="nav-icon account-button"
+    id="accountButton"
+    type="button"
+    aria-label="Account"
+    aria-expanded="false"
+>
+    <span
+        class="account-icon"
+        id="accountIcon"
+    >
+        👤
+    </span>
+
+    <img
+        class="account-avatar"
+        id="accountAvatar"
+        src=""
+        alt="Profile"
+    >
+</button>
+
+
+                <!-- ACCOUNT DROPDOWN -->
+
+                <div
+                    class="account-dropdown"
+                    id="accountDropdown"
+                >
+
+                    <a href="profile.html">
+                        My Profile
+                    </a>
+
+
+                    <button
+                        type="button"
+                        id="logoutButton"
+                    >
+                        Logout
+                    </button>
+
+
+                    <a href="signup.html">
+                        Sign Up
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 FAVORITES
+            ================================================== -->
+
+            <a
+                href="favorites.html"
+                class="nav-icon wishlist-icon"
+                aria-label="Favorites"
+            >
+
+                <span class="wishlist-heart">
+                    ♥
+                </span>
+
+                <span class="wishlist-count">
+                    0
+                </span>
+
+            </a>
+
+
+            <!-- =================================================
+                 CART
+            ================================================== -->
+
+            <a
+                href="cart.html"
+                class="nav-icon cart-icon"
+                aria-label="Shopping Cart"
+            >
+
+                🛍️
+
+                <span class="cart-count">
+                    0
+                </span>
+
+            </a>
+
+
+            <!-- =================================================
+                 DARK MODE
+            ================================================== -->
+
+            <button
+                class="theme-toggle"
+                id="themeToggle"
+                type="button"
+                aria-label="Toggle Dark Mode"
+            >
+                ☾
+            </button>
+
+
+            <!-- =================================================
+                 MOBILE MENU
+            ================================================== -->
+
+            <button
+                class="menu-toggle"
+                id="menuToggle"
+                type="button"
+                aria-label="Open Menu"
+            >
+                ☰
+            </button>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- =========================================================
+     SEARCH OVERLAY
+========================================================== -->
+
+<div
+    class="search-overlay"
+    id="searchOverlay"
+>
+
+
+    <!-- =====================================================
+         BACKDROP
+    ====================================================== -->
+
+    <div
+        class="search-overlay-backdrop"
+        id="searchBackdrop"
+    ></div>
+
+
+    <!-- =====================================================
+         SEARCH PANEL
+    ====================================================== -->
+
+    <div class="search-panel">
+
+
+        <!-- =================================================
+             SEARCH HEADER
+        ================================================== -->
+
+        <div class="search-panel-header">
+
+            <div>
+
+                <p class="search-eyebrow">
+                    LUXURY JEWELRY
+                </p>
+
+
+                <h2>
+                    Find Your Perfect Piece
+                </h2>
+
+            </div>
+
+
+            <!-- CLOSE SEARCH -->
+
+            <button
+                class="search-close"
+                id="closeSearch"
+                type="button"
+                aria-label="Close Search"
+            >
+                ✕
+            </button>
+
+        </div>
+
+
+        <!-- =================================================
+             SEARCH INPUT
+        ================================================== -->
+
+        <div class="search-input-wrapper">
+
+            <span class="search-input-icon">
+                🔍
+            </span>
+
+
+            <input
+                type="text"
+                id="navbarSearchInput"
+                placeholder="Search rings, necklaces, earrings..."
+                autocomplete="off"
+                aria-label="Search jewelry"
+            >
+
+
+            <!-- CLEAR SEARCH -->
+
+            <button
+                type="button"
+                class="search-clear"
+                id="clearSearch"
+                aria-label="Clear search"
+            >
+                ✕
+            </button>
+
+        </div>
+
+
+        <!-- =================================================
+             SEARCH CONTENT
+        ================================================== -->
+
+        <div
+            class="search-content"
+            id="searchContent"
+        >
+
+
+            <!-- POPULAR SEARCH TITLE -->
+
+            <p class="search-label">
+                POPULAR SEARCHES
+            </p>
+
+
+            <!-- =================================================
+                 POPULAR SEARCHES
+            ================================================== -->
+
+            <div class="popular-searches">
+
+                <button
+                    type="button"
+                    data-search="Rings"
+                >
+                    Rings
+                </button>
+
+
+                <button
+                    type="button"
+                    data-search="Necklaces"
+                >
+                    Necklaces
+                </button>
+
+
+                <button
+                    type="button"
+                    data-search="Earrings"
+                >
+                    Earrings
+                </button>
+
+
+                <button
+                    type="button"
+                    data-search="Bracelets"
+                >
+                    Bracelets
+                </button>
+
+
+                <button
+                    type="button"
+                    data-search="Jewelry Sets"
+                >
+                    Jewelry Sets
+                </button>
+
+            </div>
+
+
+            <!-- =================================================
+                 SEARCH MESSAGE
+            ================================================== -->
+
+            <div class="search-message">
+
+                <span>
+                    ✧
+                </span>
+
+                <p>
+                    Start typing to search our jewelry collection.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
