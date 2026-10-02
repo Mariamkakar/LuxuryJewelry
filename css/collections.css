@@ -345,13 +345,21 @@
 
     align-items: center;
 
-    gap: 10px;
+    justify-content: center;
 
-    padding-bottom: 8px;
+    gap: 8px;
 
-    border-bottom: 1px solid var(--gold);
+    min-width: 210px;
 
-    color: var(--gold-dark);
+    padding: 14px 28px;
+
+    background: var(--gold);
+
+    color: #ffffff;
+
+    border: none;
+
+    border-radius: 2px;
 
     font-family: "Poppins", sans-serif;
 
@@ -359,23 +367,45 @@
 
     font-weight: 500;
 
+    line-height: 1.2;
+
     text-decoration: none;
 
+    cursor: pointer;
+
     transition:
-        gap 0.3s ease,
-        color 0.3s ease;
+        background 0.3s ease,
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
 }
 
 
 .explore-btn span {
-    font-size: 18px;
+    font-size: 17px;
+
+    line-height: 1;
+
+    transition:
+        transform 0.3s ease;
 }
 
 
 .explore-btn:hover {
-    gap: 15px;
+    gap: 10px;
 
-    color: var(--gold);
+    background: var(--gold-dark);
+
+    color: #ffffff;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 20px rgba(157, 112, 32, 0.22);
+}
+
+
+.explore-btn:hover span {
+    transform: translateX(3px);
 }
 
 
@@ -526,7 +556,16 @@ body.dark-mode .collection-card:hover {
 
 
 body.dark-mode .explore-btn {
-    color: var(--gold-light);
+    background: var(--gold);
+
+    color: #ffffff;
+}
+
+
+body.dark-mode .explore-btn:hover {
+    background: var(--gold-dark);
+
+    color: #ffffff;
 }
 
 
@@ -607,6 +646,15 @@ body.dark-mode .explore-btn {
 
     .collection-info h3 {
         font-size: 25px;
+    }
+
+
+    .explore-btn {
+        min-width: 190px;
+
+        padding: 13px 24px;
+
+        font-size: 12px;
     }
 
 }
