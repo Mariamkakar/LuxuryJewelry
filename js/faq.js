@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =================================================
-       FAQ ACCORDION
+       This part opens and closes FAQ questions.
     ================================================= */
 
     const faqQuestions = document.querySelectorAll(".faq-question");
@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =================================================
-       FAQ CATEGORY FILTER
+       This part filters FAQ questions by category.
     ================================================= */
 
     const categoryButtons = document.querySelectorAll(".faq-category");
@@ -99,7 +99,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =================================================
-       NEWSLETTER FORM
+       This part handles newsletter email submission.
     ================================================= */
 
     const newsletterForm = document.querySelector(".newsletter-form");
@@ -127,7 +127,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =================================================
-       CURRENT YEAR
+       This part handles newsletter email submission.
     ================================================= */
 
     const footerYear = document.querySelector(".footer-bottom p");
@@ -135,7 +135,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (footerYear) {
 
         footerYear.innerHTML =
-            `© ${new Date().getFullYear()} Luxury Jewelry. All Rights Reserved.`;
+            `© ${new Date().getFullYear()} BIbi Mariam Abdul Shukoor.`;
 
     }
 

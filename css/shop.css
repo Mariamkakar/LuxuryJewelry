@@ -9,7 +9,7 @@
 ===================================================== */
 
 .shop-hero {
-    min-height: 580px;
+    min-height: 750px;
 
     position: relative;
 
@@ -20,7 +20,7 @@
     text-align: center;
 
     background-image:
-        url("../images/shop-hero.jpg");
+        url("../images/6221874008391619348_121.jpg");
 
     background-size: cover;
     background-position: center;

@@ -3,84 +3,50 @@
 
 <head>
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Payment | Luxury Jewelry</title>
 
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    >
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/navbar.css">
     <link rel="stylesheet" href="css/payment.css">
+
 </head>
 
 <body>
 
-    <!-- =========================================
-         PAYMENT HEADER
-    ========================================== -->
+    <!-- =========================
+         MAIN NAVBAR
+    ========================== -->
 
-    <header class="payment-header">
-
-        <div class="payment-header-container">
-
-            <a
-                href="index.html"
-                class="payment-logo"
-            >
-                <img
-                    src="images/logo.jpeg"
-                    alt="Luxury Jewelry Logo"
-                >
-
-                <span>
-                    Luxury Jewelry
-                </span>
-            </a>
+    <!-- Navbar is loaded from components/navbar.html by navbar.js -->
+    <div id="navbar"></div>
 
 
-            <div class="payment-header-actions">
-
-                <div class="secure-checkout">
-
-                    <span class="secure-lock">
-                        🔒
-                    </span>
-
-                    <span>
-                        Secure Checkout
-                    </span>
-
-                </div>
-
-
-                <!-- Dark / Light Mode -->
-
-                <button
-                    type="button"
-                    class="theme-toggle"
-                    id="themeToggle"
-                    aria-label="Toggle Dark Mode"
-                >
-                    ☾
-                </button>
-
-            </div>
-
-        </div>
-
-    </header>
-
-
-    <!-- =========================================
+    <!-- =========================
          PAYMENT HERO
-    ========================================== -->
+    ========================== -->
 
     <section class="payment-hero">
 
-        <div class="payment-hero-content">
+        <div class="hero-content">
 
-            <div class="payment-breadcrumb">
+            <div class="breadcrumb">
 
                 <a href="cart.html">
                     Cart
@@ -99,7 +65,7 @@
             </h1>
 
             <p>
-                Securely complete your order and make it yours.
+                Securely complete your order and make your purchase.
             </p>
 
         </div>
@@ -107,70 +73,416 @@
     </section>
 
 
-    <!-- =========================================
-         PAYMENT PAGE
-    ========================================== -->
+    <!-- =========================
+         PAYMENT PROGRESS
+    ========================== -->
 
-    <main class="payment-page">
+    <section class="payment-progress-section">
 
-        <div class="payment-container">
+        <div class="payment-progress">
+
+            <div class="progress-step completed">
+
+                <span class="progress-number">
+                    ✓
+                </span>
+
+                <span class="progress-label">
+                    Cart
+                </span>
+
+            </div>
 
 
-            <!-- =====================================
-                 PAYMENT FORM
-            ====================================== -->
+            <div class="progress-line active"></div>
 
-            <section class="payment-form-section">
 
-                <div class="section-heading">
+            <div class="progress-step active">
 
-                    <span class="section-number">
-                        01
-                    </span>
+                <span class="progress-number">
+                    2
+                </span>
 
-                    <div>
+                <span class="progress-label">
+                    Payment
+                </span>
 
-                        <h2>
-                            Payment Details
-                        </h2>
+            </div>
 
-                        <p>
-                            Enter your card information securely.
-                        </p>
+
+            <div class="progress-line"></div>
+
+
+            <div class="progress-step">
+
+                <span class="progress-number">
+                    3
+                </span>
+
+                <span class="progress-label">
+                    Confirmation
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         MAIN PAYMENT CONTENT
+    ========================== -->
+
+    <main class="payment-container">
+
+
+        <!-- =========================
+             PAYMENT FORM
+        ========================== -->
+
+        <section class="payment-form-wrapper">
+
+            <form id="paymentForm" novalidate>
+
+
+                <!-- =========================
+                     BILLING INFORMATION
+                ========================== -->
+
+                <div class="form-section">
+
+                    <div class="section-heading">
+
+                        <span class="section-number">
+                            01
+                        </span>
+
+                        <div>
+
+                            <h2>
+                                Billing Information
+                            </h2>
+
+                            <p>
+                                Enter your delivery and billing details.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-row">
+
+
+                        <!-- FULL NAME -->
+
+                        <div class="form-group">
+
+                            <label for="cardName">
+                                Full Name
+                            </label>
+
+                            <input
+                                type="text"
+                                id="cardName"
+                                name="cardName"
+                                placeholder="Enter your full name"
+                                autocomplete="name"
+                            >
+
+                            <small
+                                class="form-error"
+                                id="cardNameError">
+                            </small>
+
+                        </div>
+
+
+                        <!-- PHONE -->
+
+                        <div class="form-group">
+
+                            <label for="phoneNumber">
+                                Phone Number
+                            </label>
+
+                            <input
+                                type="tel"
+                                id="phoneNumber"
+                                name="phoneNumber"
+                                placeholder="+93 700 000 000"
+                                autocomplete="tel"
+                            >
+
+                            <small
+                                class="form-error"
+                                id="phoneNumberError">
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ADDRESS -->
+
+                    <div class="form-group">
+
+                        <label for="billingAddress">
+                            Delivery / Billing Address
+                        </label>
+
+                        <input
+                            type="text"
+                            id="billingAddress"
+                            name="billingAddress"
+                            placeholder="Enter your complete delivery address"
+                            autocomplete="street-address"
+                        >
+
+                        <small
+                            class="form-error"
+                            id="addressError">
+                        </small>
+
+                    </div>
+
+
+                    <div class="form-row">
+
+
+                        <!-- CITY -->
+
+                        <div class="form-group">
+
+                            <label for="city">
+                                City
+                            </label>
+
+                            <input
+                                type="text"
+                                id="city"
+                                name="city"
+                                placeholder="Enter your city"
+                                autocomplete="address-level2"
+                            >
+
+                            <small
+                                class="form-error"
+                                id="cityError">
+                            </small>
+
+                        </div>
+
+
+                        <!-- COUNTRY -->
+
+                        <div class="form-group">
+
+                            <label for="country">
+                                Country
+                            </label>
+
+                            <input
+                                type="text"
+                                id="country"
+                                name="country"
+                                placeholder="Enter your country"
+                                autocomplete="country-name"
+                            >
+
+                            <small
+                                class="form-error"
+                                id="countryError">
+                            </small>
+
+                        </div>
 
                     </div>
 
                 </div>
 
 
-                <form
-                    id="paymentForm"
-                    class="payment-form"
-                    novalidate
+                <!-- =========================
+                     PAYMENT METHOD
+                ========================== -->
+
+                <div class="form-section">
+
+                    <div class="section-heading">
+
+                        <span class="section-number">
+                            02
+                        </span>
+
+                        <div>
+
+                            <h2>
+                                Payment Method
+                            </h2>
+
+                            <p>
+                                Choose how you would like to pay.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="payment-methods">
+
+
+                        <!-- CARD PAYMENT -->
+
+                        <label
+                            class="payment-method-card selected"
+                            id="cardMethodOption"
+                        >
+
+                            <input
+                                type="radio"
+                                name="paymentMethod"
+                                value="card"
+                                id="cardPayment"
+                                checked
+                            >
+
+                            <span class="custom-radio"></span>
+
+                            <span class="payment-method-content">
+
+                                <strong>
+                                    Card Payment
+                                </strong>
+
+                                <small>
+                                    Pay securely using your debit or credit card.
+                                </small>
+
+                            </span>
+
+
+                        </label>
+
+
+                        <!-- CASH ON DELIVERY -->
+
+                        <label
+                            class="payment-method-card"
+                            id="codMethodOption"
+                        >
+
+                            <input
+                                type="radio"
+                                name="paymentMethod"
+                                value="cod"
+                                id="cashOnDelivery"
+                            >
+
+                            <span class="custom-radio"></span>
+
+                            <span class="payment-method-content">
+
+                                <strong>
+                                    Cash on Delivery
+                                </strong>
+
+                                <small>
+                                    Pay in cash when your order is delivered.
+                                </small>
+
+                            </span>
+
+                           
+
+                        </label>
+
+                    </div>
+
+
+                    <!-- CASH ON DELIVERY INFORMATION -->
+
+                    <div
+                        class="cod-information"
+                        id="codInformation"
+                    >
+
+                        <div class="cod-icon">
+                            🚚
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                Cash on Delivery
+                            </h3>
+
+                            <p>
+                                Your order will be confirmed first.
+                                Please pay the total amount in cash
+                                when your order arrives.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =========================
+                     CARD PAYMENT DETAILS
+                ========================== -->
+
+                <div
+                    class="form-section"
+                    id="cardPaymentSection"
                 >
 
+                    <div class="section-heading">
 
-                    <!-- CARD NAME -->
+                        <span class="section-number">
+                            03
+                        </span>
+
+                        <div>
+
+                            <h2>
+                                Payment Details
+                            </h2>
+
+                            <p>
+                                Enter your card information securely.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- CARDHOLDER NAME -->
 
                     <div class="form-group">
 
-                        <label for="cardName">
+                        <label for="cardHolderName">
                             Cardholder Name
                         </label>
 
                         <input
                             type="text"
-                            id="cardName"
-                            name="cardName"
-                            placeholder="Enter cardholder name"
+                            id="cardHolderName"
+                            name="cardHolderName"
+                            placeholder="Name on card"
                             autocomplete="cc-name"
-                            required
                         >
 
                         <small
                             class="form-error"
-                            id="cardNameError"
-                        ></small>
+                            id="cardHolderNameError">
+                        </small>
 
                     </div>
 
@@ -183,11 +495,7 @@
                             Card Number
                         </label>
 
-                        <div class="input-with-icon">
-
-                            <span>
-                                💳
-                            </span>
+                        <div class="card-input-wrapper">
 
                             <input
                                 type="text"
@@ -196,16 +504,17 @@
                                 placeholder="1234 5678 9012 3456"
                                 inputmode="numeric"
                                 autocomplete="cc-number"
-                                maxlength="19"
-                                required
+                                maxlength="23"
                             >
+
+                            
 
                         </div>
 
                         <small
                             class="form-error"
-                            id="cardNumberError"
-                        ></small>
+                            id="cardNumberError">
+                        </small>
 
                     </div>
 
@@ -213,6 +522,9 @@
                     <!-- EXPIRY + CVV -->
 
                     <div class="form-row">
+
+
+                        <!-- EXPIRY -->
 
                         <div class="form-group">
 
@@ -228,16 +540,17 @@
                                 inputmode="numeric"
                                 autocomplete="cc-exp"
                                 maxlength="5"
-                                required
                             >
 
                             <small
                                 class="form-error"
-                                id="expiryError"
-                            ></small>
+                                id="expiryError">
+                            </small>
 
                         </div>
 
+
+                        <!-- CVV -->
 
                         <div class="form-group">
 
@@ -249,114 +562,27 @@
                                 type="password"
                                 id="cvv"
                                 name="cvv"
-                                placeholder="•••"
+                                placeholder="123"
                                 inputmode="numeric"
                                 autocomplete="cc-csc"
                                 maxlength="4"
-                                required
                             >
 
                             <small
                                 class="form-error"
-                                id="cvvError"
-                            ></small>
+                                id="cvvError">
+                            </small>
 
                         </div>
 
                     </div>
 
 
-                    <!-- BILLING ADDRESS -->
+                    <!-- SECURITY MESSAGE -->
 
-                    <div class="section-heading billing-heading">
+                    <div class="security-box">
 
-                        <span class="section-number">
-                            02
-                        </span>
-
-                        <div>
-
-                            <h2>
-                                Billing Information
-                            </h2>
-
-                            <p>
-                                Where should we send your order?
-                            </p>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="form-group">
-
-                        <label for="billingAddress">
-                            Address
-                        </label>
-
-                        <input
-                            type="text"
-                            id="billingAddress"
-                            name="billingAddress"
-                            placeholder="Enter your address"
-                            autocomplete="street-address"
-                            required
-                        >
-
-                        <small
-                            class="form-error"
-                            id="addressError"
-                        ></small>
-
-                    </div>
-
-
-                    <div class="form-row">
-
-                        <div class="form-group">
-
-                            <label for="city">
-                                City
-                            </label>
-
-                            <input
-                                type="text"
-                                id="city"
-                                name="city"
-                                placeholder="City"
-                                autocomplete="address-level2"
-                                required
-                            >
-
-                        </div>
-
-
-                        <div class="form-group">
-
-                            <label for="country">
-                                Country
-                            </label>
-
-                            <input
-                                type="text"
-                                id="country"
-                                name="country"
-                                placeholder="Country"
-                                autocomplete="country-name"
-                                required
-                            >
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- PAYMENT SECURITY -->
-
-                    <div class="payment-security">
-
-                        <span>
+                        <span class="security-icon">
                             🔒
                         </span>
 
@@ -367,30 +593,41 @@
                             </strong>
 
                             <p>
-                                Your payment information is protected.
-                                Card details are not stored on this website.
+                                Your payment details should be processed
+                                through a trusted payment provider.
+                                Never store full card numbers or CVV codes
+                                in your website or localStorage.
                             </p>
 
                         </div>
 
                     </div>
 
+                </div>
 
-                    <!-- PAY BUTTON -->
+
+                <!-- =========================
+                     PAYMENT BUTTON
+                ========================== -->
+
+                <div class="payment-action">
 
                     <button
                         type="submit"
-                        class="pay-button"
                         id="payButton"
+                        class="pay-button"
                     >
 
-                        <span>
-                            🔒 Pay
+                        <span id="payButtonText">
+                            Pay Now
                         </span>
 
-                        <strong id="payButtonAmount">
+                        <span
+                            id="payButtonAmount"
+                            class="pay-button-amount"
+                        >
                             $0.00
-                        </strong>
+                        </span>
 
                     </button>
 
@@ -402,200 +639,278 @@
                         ← Back to Cart
                     </a>
 
-                </form>
+                </div>
 
-            </section>
+            </form>
 
-
-            <!-- =====================================
-                 ORDER SUMMARY
-            ====================================== -->
-
-            <aside class="payment-summary">
-
-                <div class="summary-card">
-
-                    <div class="summary-title">
-
-                        <h2>
-                            Order Summary
-                        </h2>
-
-                        <span id="summaryItemCount">
-                            0 items
-                        </span>
-
-                    </div>
+        </section>
 
 
-                    <!-- PRODUCTS -->
+        <!-- =========================
+             ORDER SUMMARY
+        ========================== -->
 
-                    <div
-                        class="payment-products"
-                        id="paymentProducts"
-                    ></div>
-
-
-                    <!-- SUMMARY -->
-
-                    <div class="summary-lines">
-
-                        <div class="summary-line">
-
-                            <span>
-                                Subtotal
-                            </span>
-
-                            <strong id="paymentSubtotal">
-                                $0.00
-                            </strong>
-
-                        </div>
+        <aside class="order-summary">
 
 
-                        <div class="summary-line">
+            <!-- SUMMARY HEADER -->
 
-                            <span>
-                                Shipping
-                            </span>
+            <div class="summary-header">
 
-                            <strong id="paymentShipping">
-                                Free
-                            </strong>
+                <div>
 
-                        </div>
+                    <span class="summary-label">
+                        YOUR ORDER
+                    </span>
 
-                    </div>
+                    <h2>
+                        Order Summary
+                    </h2>
+
+                </div>
+
+                <span
+                    class="summary-count"
+                    id="summaryItemCount"
+                >
+                    0 items
+                </span>
+
+            </div>
 
 
-                    <div class="summary-divider"></div>
+            <!-- PRODUCTS -->
+
+            <div
+                class="payment-products"
+                id="paymentProducts"
+            >
+                <!-- Products are inserted by payment.js -->
+            </div>
 
 
-                    <div class="summary-total">
+            <!-- TOTALS -->
 
-                        <span>
-                            Total
-                        </span>
+            <div class="summary-totals">
 
-                        <strong id="paymentTotal">
-                            $0.00
+
+                <div class="summary-row">
+
+                    <span>
+                        Subtotal
+                    </span>
+
+                    <strong id="paymentSubtotal">
+                        $0.00
+                    </strong>
+
+                </div>
+
+
+                <div class="summary-row">
+
+                    <span>
+                        Shipping
+                    </span>
+
+                    <strong
+                        id="paymentShipping"
+                        class="free-shipping"
+                    >
+                        Free
+                    </strong>
+
+                </div>
+
+
+                <div class="summary-divider"></div>
+
+
+                <div class="summary-row total-row">
+
+                    <span>
+                        Total
+                    </span>
+
+                    <strong id="paymentTotal">
+                        $0.00
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- TRUST INFORMATION -->
+
+            <div class="summary-trust">
+
+
+                <div class="trust-item">
+
+                    <span>
+                        🔒
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            Secure Checkout
                         </strong>
 
-                    </div>
-
-
-                    <!-- TRUST -->
-
-                    <div class="payment-trust">
-
-                        <div class="trust-item">
-
-                            <span>
-                                🔒
-                            </span>
-
-                            <div>
-
-                                <strong>
-                                    Secure Checkout
-                                </strong>
-
-                                <p>
-                                    Protected payment process
-                                </p>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="trust-item">
-
-                            <span>
-                                ✦
-                            </span>
-
-                            <div>
-
-                                <strong>
-                                    Premium Jewelry
-                                </strong>
-
-                                <p>
-                                    Carefully selected pieces
-                                </p>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="trust-item">
-
-                            <span>
-                                ✓
-                            </span>
-
-                            <div>
-
-                                <strong>
-                                    Easy Returns
-                                </strong>
-
-                                <p>
-                                    Shop with confidence
-                                </p>
-
-                            </div>
-
-                        </div>
+                        <small>
+                            Your information is protected.
+                        </small>
 
                     </div>
 
                 </div>
 
-            </aside>
 
-        </div>
+                <div class="trust-item">
+
+                    <span>
+                        🚚
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            Reliable Delivery
+                        </strong>
+
+                        <small>
+                            Carefully delivered to your address.
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="trust-item">
+
+                    <span>
+                        ✦
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            Luxury Service
+                        </strong>
+
+                        <small>
+                            Quality service from order to delivery.
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- SUMMARY FOOTER -->
+
+            <div class="summary-footer">
+
+                <span>
+                    Luxury Jewelry
+                </span>
+
+                <span>
+                    Thank you for your order.
+                </span>
+
+            </div>
+
+        </aside>
 
     </main>
 
 
-    <!-- =========================================
+    <!-- =========================
          SUCCESS MODAL
-    ========================================== -->
+    ========================== -->
 
     <div
         class="payment-modal"
         id="paymentModal"
-        hidden
+        aria-hidden="true"
     >
 
-        <div class="payment-modal-backdrop"></div>
+        <div class="modal-overlay"></div>
 
-        <div class="payment-modal-card">
+
+        <div
+            class="success-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="successTitle"
+        >
+
+
+            <!-- CLOSE BUTTON -->
+
+            <button
+                type="button"
+                class="modal-close"
+                id="modalClose"
+                aria-label="Close"
+            >
+                ×
+            </button>
+
+
+            <!-- SUCCESS ICON -->
 
             <div class="success-icon">
                 ✓
             </div>
 
-            <h2>
-                Payment Successful
+
+            <span class="success-label">
+                ORDER CONFIRMED
+            </span>
+
+
+            <h2 id="successTitle">
+                Thank You!
             </h2>
 
-            <p>
-                Your order has been placed successfully.
+
+            <p id="successMessage">
+                Your order has been successfully placed.
             </p>
 
-            <span id="orderNumber">
-                Order #LJ000000
-            </span>
+
+            <!-- ORDER NUMBER -->
+
+            <div class="order-number-box">
+
+                <span>
+                    Order Number
+                </span>
+
+                <strong id="orderNumber">
+                    LJ000000
+                </strong>
+
+            </div>
+
+
+            <p class="modal-note">
+                Please keep your order number for your records.
+            </p>
+
 
             <button
                 type="button"
                 id="continueButton"
+                class="continue-button"
             >
-                Continue
+                Continue Shopping
             </button>
 
         </div>
@@ -603,6 +918,14 @@
     </div>
 
 
+    <!-- =========================
+         JAVASCRIPT
+    ========================== -->
+
+    <!-- Loads the shared Navbar -->
+    <script src="js/navbar.js"></script>
+
+    <!-- Payment Page JavaScript -->
     <script src="js/payment.js"></script>
 
 </body>

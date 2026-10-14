@@ -1,2005 +1,831 @@
 /* =====================================================
    LUXURY JEWELRY
    SHOP PAGE JAVASCRIPT
+   Product filters, sorting, cart, favorites and login
 ===================================================== */
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", function () {
 
-    /* ===========================================================
-       ELEMENTS
-       Get the HTML element where all products will be displayed
-    ========================================================= */
+    /* =================================================
+       1. DOM ELEMENTS
+    ================================================= */
 
-    const productsGrid =
-        document.getElementById("productsGrid");
-
-    const filterButtons =
-        document.querySelectorAll(".filter-btn");
-
-    const sortProducts =
-        document.getElementById("sortProducts");
+    const productsGrid = document.getElementById("productsGrid");
+    const filterButtons = document.querySelectorAll(".filter-btn");
+    const sortProducts = document.getElementById("sortProducts");
+    const productCards = document.querySelectorAll(".product-card");
 
 
-    /* =================================================================================
-       CART
-       This function gets the logged-in users information from localStorage, converts 
-       the JSON data into a JavaScript object, and returns null if the data is invalid.
+    /* =================================================
+       2. CURRENT USER
+    ================================================= */
 
-    =============================================================================*/
-
-    function getShopLoggedInUser() {
-
-        const userData =
-            localStorage.getItem(
+    function getCurrentUser() {
+        try {
+            const userData = localStorage.getItem(
                 "luxuryJewelryLoggedInUser"
             );
 
-        if (!userData) {
-            return null;
-        }
-
-        try {
-
-            return JSON.parse(userData);
+            return userData ? JSON.parse(userData) : null;
 
         } catch (error) {
-
-            console.error(
-                "Invalid logged-in user data."
-            );
-
+            console.error("Unable to read logged-in user:", error);
             return null;
-
         }
-
     }
 
-
-    /* =====================================================
-       Get a unique key for the currently logged-in user
-    ===================================================== */
-
-    function getShopUserKey() {
-
-        const user =
-            getShopLoggedInUser();
+    function getCurrentUserKey() {
+        const user = getCurrentUser();
 
         if (!user) {
             return null;
         }
 
-        const uniqueId =
-            user.id ||
-            user.userId ||
-            user.email;
+        const identifier = user.id || user.userId || user.email;
 
-        if (!uniqueId) {
+        if (!identifier) {
             return null;
         }
 
-        return String(uniqueId)
+        return String(identifier)
             .trim()
             .toLowerCase()
-            .replace(/\s+/g, "_");
+            .replace(/[^a-z0-9_-]/g, "_");
+    }
 
+    function isUserLoggedIn() {
+        return Boolean(getCurrentUser());
     }
 
 
-    /* ==============================================================
-       Create a unique localStorage key for the current user's cart
-    ========================================================== */
+    /* =================================================
+       3. STORAGE KEYS
+    ================================================= */
 
-    function getShopCartStorageKey() {
+    function getCartStorageKey() {
+        const userKey = getCurrentUserKey();
 
-        const userKey =
-            getShopUserKey();
+        return userKey
+            ? `luxuryJewelryCart_${userKey}`
+            : null;
+    }
 
-        if (!userKey) {
-            return null;
-        }
+    function getFavoritesStorageKey() {
+        const userKey = getCurrentUserKey();
 
-        return `luxuryJewelryCart_${userKey}`;
-
+        return userKey
+            ? `luxuryJewelryFavorites_${userKey}`
+            : null;
     }
 
 
-    /* =====================================================
-       GET USER CART
-       Get the current user's cart from localStorage
-    ===================================================== */
+    /* =================================================
+       4. READ AND SAVE LOCAL STORAGE
+    ================================================= */
 
-    function getShopUserCart() {
-
-        const storageKey =
-            getShopCartStorageKey();
-
-        if (!storageKey) {
+    function readStorageArray(key) {
+        if (!key) {
             return [];
         }
 
         try {
+            const savedData = localStorage.getItem(key);
 
-            const savedCart =
-                localStorage.getItem(
-                    storageKey
-                );
-
-            if (!savedCart) {
+            if (!savedData) {
                 return [];
             }
 
-            const parsedCart =
-                JSON.parse(savedCart);
+            const parsedData = JSON.parse(savedData);
 
-            return Array.isArray(parsedCart)
-                ? parsedCart
-                : [];
+            return Array.isArray(parsedData) ? parsedData : [];
 
         } catch (error) {
-
-            console.error(
-                "Invalid user cart data."
-            );
-
+            console.error(`Unable to read ${key}:`, error);
             return [];
+        }
+    }
 
+    function saveStorageArray(key, data) {
+        if (!key) {
+            return false;
         }
 
-    }
+        try {
+            localStorage.setItem(key, JSON.stringify(data));
+            return true;
 
-
-    /* =====================================================
-       Save the current user's cart to localStorage
-    ===================================================== */
-
-    function saveShopUserCart(cartData) {
-
-        const storageKey =
-            getShopCartStorageKey();
-
-        if (!storageKey) {
-            return;
+        } catch (error) {
+            console.error(`Unable to save ${key}:`, error);
+            return false;
         }
-
-        localStorage.setItem(
-            storageKey,
-            JSON.stringify(cartData)
-        );
-
     }
 
 
-    /* =====================================================
-       Get the current user's cart
-    ===================================================== */
+    /* =================================================
+       5. PRODUCT SLUG
+    ================================================= */
 
-    let cart =
-        getShopUserCart();
-
-
-    /* =====================================================
-       FAVORITES
-       Get the user's favorite products from localStorage
-    ===================================================== */
-
-    let favorites = [];
-
-    try {
-
-        favorites =
-            JSON.parse(
-                localStorage.getItem(
-                    "luxuryJewelryFavorites"
-                )
-            ) || [];
-
-    } catch (error) {
-
-        favorites = [];
-
-    }
-
-
-    /* =====================================================
-       PRODUCT CARDS
-       Get all product cards from the page
-    ===================================================== */
-
-    let productCards =
-        Array.from(
-            document.querySelectorAll(
-                ".product-card"
-            )
-        );
-
-
-    /* =====================================================================
-       URL PARAMETERS
-       This part gets the collection and search information from the URL.
-    ================================================================= */
-
-    const urlParams =
-        new URLSearchParams(
-            window.location.search
-        );
-
-
-    const collection =
-        (
-            urlParams.get("collection") || ""
-        )
-        .trim()
-        .toLowerCase();
-
-
-    const searchQuery =
-        (
-            urlParams.get("search") || ""
-        )
-        .trim()
-        .toLowerCase();
-
-
-    /* =====================================================
-       It cleans and prepares the text for searching.
-    ===================================================== */
-
-    function normalizeSearchText(text) {
-
-        return String(text || "")
-            .toLowerCase()
+    function createProductSlug(name) {
+        return String(name || "")
             .trim()
-            .replace(
-                /[^\w\s-]/g,
-                " "
-            )
-            .replace(
-                /\s+/g,
-                " "
-            );
+            .toLowerCase()
+            .replace(/&/g, "and")
+            .replace(/[^a-z0-9]+/g, "-")
+            .replace(/^-+|-+$/g, "");
+    }
 
+    function normalizeProductSlug(name, card) {
+        const explicitSlug =
+            card.dataset.slug ||
+            card.dataset.productSlug;
+
+        if (explicitSlug) {
+            return explicitSlug.trim().toLowerCase();
+        }
+
+        const slug = createProductSlug(name);
+
+        const goldenAliases = {
+            "golden-ring": "gold-ring",
+            "golden-earring": "gold-earrings",
+            "golden-earrings": "gold-earrings",
+            "golden-necklace": "gold-necklace",
+            "golden-bracelet": "gold-bracelet",
+            "golden-pendant": "gold-pendant",
+            "golden-set": "gold-set",
+            "golden-jewelry-set": "gold-set",
+            "golden-jewellery-set": "gold-set"
+        };
+
+        return goldenAliases[slug] || slug;
+    }
+
+    function getProductSlug(card, product) {
+        return normalizeProductSlug(product.name, card);
     }
 
 
-    /* ========================================================================================
-       This function gets the product name, price, image, and category from the product card.
-    ================================================================================== */
+    /* =================================================
+       6. GET PRODUCT DATA
+    ================================================= */
 
     function getProductData(card) {
-
-        if (!card) {
-            return null;
-        }
-
-
         const imageElement =
+            card.querySelector(".product-image img") ||
             card.querySelector("img");
 
+        const nameElement = card.querySelector(
+            ".product-name, .product-title, h2, h3, h4"
+        );
+
+        const priceElement = card.querySelector(
+            ".product-price, .price"
+        );
 
         const name =
             card.dataset.name ||
-            card.querySelector(
-                ".product-name, h3, h2"
-            )?.textContent.trim() ||
-            "Jewelry";
+            nameElement?.textContent.trim() ||
+            "";
 
+        const rawPrice =
+            card.dataset.price ||
+            priceElement?.textContent ||
+            "0";
 
-        const price =
-            Number(
-                card.dataset.price
-            ) ||
-            Number(
-                (
-                    card.querySelector(
-                        ".product-price"
-                    )?.textContent || ""
-                )
-                .replace(
-                    /[^0-9.]/g,
-                    ""
-                )
-            ) ||
-            0;
-
+        const price = Number(
+            String(rawPrice).replace(/[^0-9.]/g, "")
+        );
 
         const image =
             card.dataset.image ||
             imageElement?.getAttribute("src") ||
             "";
 
-
         const category =
             card.dataset.category ||
             card.dataset.type ||
             card.dataset.collection ||
-            getProductCategory(name);
-
-
-        return {
-
-            name: name,
-
-            price: price,
-
-            image: image,
-
-            category: category
-
-        };
-
-    }
-
-
-    /* =====================================================
-       This function identifies the product category based on the product name.
-
-    ===================================================== */
-
-    function getProductCategory(name) {
-
-        const text =
-            normalizeSearchText(name);
-
-
-        if (text.includes("ring")) {
-            return "Rings";
-        }
-
-
-        if (text.includes("necklace")) {
-            return "Necklaces";
-        }
-
-
-        if (text.includes("earring")) {
-            return "Earrings";
-        }
-
-
-        if (text.includes("bracelet")) {
-            return "Bracelets";
-        }
-
-
-        if (
-            text.includes("jewelry set") ||
-            text.includes("jewellery set") ||
-            text.includes(" set")
-        ) {
-            return "Jewelry Sets";
-        }
-
-
-        return "Jewelry";
-
-    }
-
-
-    /* ===============================================================================================================
-       This section checks that Favorites is an array and then checks each favorite to convert it to the new format.
-    ===================================================== ===================================================*/
-
-    function migrateOldFavorites() {
-
-        if (!Array.isArray(favorites)) {
-            favorites = [];
-        }
-
-
-        let changed = false;
-
-
-        favorites =
-            favorites
-                .map((favorite) => {
-
-                    /* ==========================================================================================================
-                       This part checks the existing favorite object and returns its product information in the correct format.
-                    =====================================================================================================*/
-
-                    if (
-                        favorite &&
-                        typeof favorite === "object"
-                    ) {
-
-                        return {
-
-                            name:
-                                favorite.name ||
-                                "Jewelry",
-
-                            price:
-                                Number(
-                                    favorite.price
-                                ) || 0,
-
-                            image:
-                                favorite.image ||
-                                "",
-
-                            category:
-                                favorite.category ||
-                                getProductCategory(
-                                    favorite.name
-                                )
-
-                        };
-
-                    }
-
-
-                    /* ===============================================================================================================
-                       This part finds the matching product card and converts the old favorite name into the new product format.
-                    ========================================================================================================== */
-
-                    if (
-                        typeof favorite === "string"
-                    ) {
-
-                        const favoriteName =
-                            favorite;
-
-
-                        const matchingCard =
-                            productCards.find(
-                                (card) => {
-
-                                    return (
-                                        normalizeSearchText(
-                                            card.dataset.name
-                                        ) ===
-                                        normalizeSearchText(
-                                            favoriteName
-                                        )
-                                    );
-
-                                }
-                            );
-
-
-                        if (matchingCard) {
-
-                            changed = true;
-
-                            return getProductData(
-                                matchingCard
-                            );
-
-                        }
-
-
-                        changed = true;
-
-                        return {
-
-                            name:
-                                favoriteName,
-
-                            price:
-                                0,
-
-                            image:
-                                "",
-
-                            category:
-                                getProductCategory(
-                                    favoriteName
-                                )
-
-                        };
-
-                    }
-
-
-                    return null;
-
-                })
-                .filter(Boolean);
-
-
-        if (changed) {
-
-            localStorage.setItem(
-                "luxuryJewelryFavorites",
-                JSON.stringify(
-                    favorites
-                )
-            );
-
-        }
-
-    }
-
-
-    /* =====================================================
-       UPDATE CART COUNT
-    ===================================================== */
-
-    function updateCartCount() {
-
-        const cartCounts =
-            document.querySelectorAll(
-                ".cart-count"
-            );
-
-
-        let totalItems = 0;
-
-
-        cart.forEach((item) => {
-
-            totalItems +=
-                Number(item.quantity) || 1;
-
-        });
-
-
-        cartCounts.forEach((counter) => {
-
-            counter.textContent =
-                totalItems;
-
-        });
-
-    }
-
-
-    /* ==========================================================
-       Save the cart, update the cart count, and notify the page
-    ===================================================== */
-
-    function saveCart() {
-
-        saveShopUserCart(cart);
-
-
-        updateCartCount();
-
-
-        window.dispatchEvent(
-            new Event("cartUpdated")
-        );
-
-    }
-
-
-    /* ==========================================================
-       Check if the user is logged in before adding the product
-    ========================================================== */
-
-    function addToCart(button) {
-
-
-        const user =
-            getShopLoggedInUser();
-
-
-        if (!user) {
-
-            showNotification(
-                "Please login before adding products to your cart."
-            );
-
-
-            setTimeout(() => {
-
-                window.location.href =
-                    "login.html";
-
-            }, 1000);
-
-
-            return;
-
-        }
-
-
-        /* ================================================
-        Get the product name, price, image, and category
-        ============================================ */
-
-        const name =
-            button.dataset.name ||
-            "Jewelry";
-
-
-        const price =
-            Number(
-                button.dataset.price
-            ) || 0;
-
-
-        const image =
-            button.dataset.image ||
             "";
 
-
-        const category =
-            button.dataset.category ||
-            button.dataset.type ||
-            button.dataset.collection ||
-            getProductCategory(name);
-
-
-        /* ==================================================
-           Check if the product already exists in the cart
-        ============================================= */
-
-        const existingProduct =
-            cart.find(
-                (item) => {
-
-                    return (
-                        normalizeSearchText(
-                            item.name
-                        ) ===
-                        normalizeSearchText(
-                            name
-                        )
-                    );
-
-                }
-            );
-
-
-        /* ---------------------------------------------
-           INCREASE QUANTITY
-        --------------------------------------------- */
-
-        if (existingProduct) {
-
-            existingProduct.quantity =
-                (
-                    Number(
-                        existingProduct.quantity
-                    ) || 1
-                ) + 1;
-
-        }
-
-
-        /* ---------------------------------------------
-           ADD NEW PRODUCT
-        --------------------------------------------- */
-
-        else {
-
-            cart.push({
-
-                name:
-                    name,
-
-                price:
-                    price,
-
-                image:
-                    image,
-
-                category:
-                    category,
-
-                quantity:
-                    1
-
-            });
-
-        }
-
-
-        /* ---------------------------------------------
-           SAVE this CART
-        --------------------------------------------- */
-
-        saveCart();
-
-
-        /* ---------------------------------------------
-           disply NOTIFICATION
-        --------------------------------------------- */
-
-        showNotification(
-            `${name} added to cart.`
-        );
-
-
-        /* ---------------------------------------------
-           BUTTON FEEDBACK
-        --------------------------------------------- */
-
-        const originalText =
-            button.textContent;
-
-
-        button.textContent =
-            "ADDED ✓";
-
-
-        button.classList.add(
-            "added"
-        );
-
-
-        setTimeout(() => {
-
-            button.textContent =
-                originalText;
-
-            button.classList.remove(
-                "added"
-            );
-
-        }, 1500);
-
-    }
-
-
-    /* =====================================================================================================================
-       NOTIFICATION
-       This section adds the product to the cart or increases the quantity of an existing product, and then saves the cart.
-    ================================================================================================================ */
-
-    function showNotification(message) {
-
-        const oldNotification =
-            document.querySelector(
-                ".shop-notification"
-            );
-
-
-        if (oldNotification) {
-            oldNotification.remove();
-        }
-
-
-        const notification =
-            document.createElement("div");
-
-
-        notification.className =
-            "shop-notification";
-
-
-        notification.textContent =
-            message;
-
-
-        document.body.appendChild(
-            notification
-        );
-
-
-        setTimeout(() => {
-
-            notification.classList.add(
-                "show"
-            );
-
-        }, 10);
-
-
-        setTimeout(() => {
-
-            notification.classList.remove(
-                "show"
-            );
-
-
-            setTimeout(() => {
-
-                if (notification) {
-                    notification.remove();
-                }
-
-            }, 300);
-
-        }, 2200);
-
-    }
-
-
-    /* =====================================================
-       GET FAVORITE NAME
-    ===================================================== */
-
-    function getFavoriteName(favorite) {
-
-        if (
-            favorite &&
-            typeof favorite === "object"
-        ) {
-
-            return favorite.name || "";
-
-        }
-
-
-        if (
-            typeof favorite === "string"
-        ) {
-
-            return favorite;
-
-        }
-
-
-        return "";
-
-    }
-
-
-    /* ===================================================================================================
-       UPDATE FAVORITE BUTTONS
-       This function updates the favorite buttons based on whether the product is in the Favorites list.
-    ========================================================================================= */
-
-    function updateFavoriteButtons() {
-
-        const favoriteButtons =
-            document.querySelectorAll(
-                ".wishlist-btn"
-            );
-
-
-        favoriteButtons.forEach((button) => {
-
-            const productName =
-                button.dataset.product;
-
-
-            if (!productName) {
-                return;
-            }
-
-
-            const isFavorite =
-                favorites.some(
-                    (favorite) => {
-
-                        return (
-                            normalizeSearchText(
-                                getFavoriteName(
-                                    favorite
-                                )
-                            ) ===
-                            normalizeSearchText(
-                                productName
-                            )
-                        );
-
-                    }
-                );
-
-
-            if (isFavorite) {
-
-                button.classList.add(
-                    "active"
-                );
-
-
-                button.textContent =
-                    "♥️";
-
-
-                button.setAttribute(
-                    "aria-label",
-                    `Remove ${productName} from Favorites`
-                );
-
-            } else {
-
-                button.classList.remove(
-                    "active"
-                );
-
-
-                button.textContent =
-                    "♡";
-
-
-                button.setAttribute(
-                    "aria-label",
-                    `Add ${productName} to Favorites`
-                );
-
-            }
-
-        });
-
-    }
-
-
-    /* ======================================================================
-       This function updates the number of favorite products in the navbar.
-    ================================================================= */
-
-    function updateFavoriteCount() {
-
-        const favoriteCounts =
-            document.querySelectorAll(
-                ".wishlist-count"
-            );
-
-
-        favoriteCounts.forEach((counter) => {
-
-            counter.textContent =
-                favorites.length;
-
-        });
-
-    }
-
-
-    /* ====================================================================================================
-       This function saves the Favorites list in localStorage and updates the Favorite buttons and count.
-    ============================================================================================ */
-
-    function saveFavorites() {
-
-        localStorage.setItem(
-            "luxuryJewelryFavorites",
-            JSON.stringify(
-                favorites
-            )
-        );
-
-
-        updateFavoriteCount();
-
-        updateFavoriteButtons();
-
-
-        window.dispatchEvent(
-            new Event(
-                "favoritesUpdated"
-            )
-        );
-
-    }
-
-
-    /* =============================================================
-       Add the product to Favorites or remove it if already added
-    ===================================================== */
-
-    function toggleFavorite(button) {
-
-        const productName =
-            button.dataset.product;
-
-
-        if (!productName) {
-            return;
-        }
-
-
-        /*Get the product information*/
-
-        /* =======================
-           FIND PRODUCT CARD
-        ==================== */
-
-        const productCard =
-            productCards.find(
-                (card) => {
-
-                    return (
-                        normalizeSearchText(
-                            card.dataset.name
-                        ) ===
-                        normalizeSearchText(
-                            productName
-                        )
-                    );
-
-                }
-            );
-
-
-        /* ==========================================================
-           GET FULL PRODUCT DATA
-        ==================================================== */
-
-        let productData =
-            getProductData(
-                productCard
-            );
-
-
-        /* ==========================================================
-           Use button data if product information is not available
-        ==================================================== */
-
-        if (!productData) {
-
-            productData = {
-
-                name:
-                    productName,
-
-                price:
-                    Number(
-                        button.dataset.price
-                    ) || 0,
-
-                image:
-                    button.dataset.image ||
-                    "",
-
-                category:
-                    button.dataset.category ||
-                    getProductCategory(
-                        productName
-                    )
-
-            };
-
-        }
-
-
-        /* ==================================================
-           Check if the product already exists in Favorites
-        ==============================================*/
-
-        const favoriteIndex =
-            favorites.findIndex(
-                (favorite) => {
-
-                    return (
-                        normalizeSearchText(
-                            getFavoriteName(
-                                favorite
-                            )
-                        ) ===
-                        normalizeSearchText(
-                            productName
-                        )
-                    );
-
-                }
-            );
-
-
-        /*=====================================================
-           Add the product to Favorites if it does not exist
-        ============================================= */
-
-        if (favoriteIndex === -1) {
-
-            favorites.push({
-
-                name:
-                    productData.name,
-
-                price:
-                    Number(
-                        productData.price
-                    ) || 0,
-
-                image:
-                    productData.image || "",
-
-                category:
-                    productData.category ||
-                    getProductCategory(
-                        productData.name
-                    )
-
-            });
-
-           /*Show a notification after adding the product*/
-
-            showNotification(
-                `${productName} added to Favorites.`
-            );
-
-        }
-
-        else {
-
-            favorites.splice(
-                favoriteIndex,
-                1
-            );
-
-
-            showNotification(
-                `${productName} removed from Favorites.`
-            );
-
-        }
-
-
-        saveFavorites();
-
-    }
-
-
-    /* =====================================================
-       GET ACTIVE COLLECTION
-    ===================================================== */
-
-    function getActiveCollection() {
-
-        const activeFilter =
-            document.querySelector(
-                ".filter-btn.active"
-            );
-
-
-        if (
-            activeFilter &&
-            activeFilter.dataset.filter
-        ) {
-
-            return (
-                activeFilter.dataset.filter
-            )
-            .trim()
-            .toLowerCase();
-
-        }
-
-
-        return "all";
-
-    }
-
-
-    /* =====================================================
-       SEARCH VARIATIONS
-    ===================================================== */
-
-    function getSearchVariations(query) {
-
-        const normalized =
-            normalizeSearchText(
-                query
-            );
-
-
-        const variations = [
-            normalized
-        ];
-
-
-        if (
-            normalized.endsWith("s") &&
-            !normalized.endsWith("ss")
-        ) {
-
-            variations.push(
-                normalized.slice(0, -1)
-            );
-
-        } else {
-
-            variations.push(
-                normalized + "s"
-            );
-
-        }
-
-
-        const aliases = {
-
-            "ring": [
-                "rings"
-            ],
-
-            "rings": [
-                "ring"
-            ],
-
-            "necklace": [
-                "necklaces"
-            ],
-
-            "necklaces": [
-                "necklace"
-            ],
-
-            "earring": [
-                "earrings"
-            ],
-
-            "earrings": [
-                "earring"
-            ],
-
-            "bracelet": [
-                "bracelets"
-            ],
-
-            "bracelets": [
-                "bracelet"
-            ],
-
-            "jewelry set": [
-                "jewelry sets",
-                "jewellery set",
-                "jewellery sets",
-                "set",
-                "sets"
-            ],
-
-            "jewelry sets": [
-                "jewelry set",
-                "jewellery set",
-                "jewellery sets",
-                "set",
-                "sets"
-            ]
-
+        const product = {
+            name: name,
+            price: Number.isFinite(price) ? price : 0,
+            image: image,
+            category: category,
+            collection: card.dataset.collection || category,
+            sku: card.dataset.sku || "",
+            quantity: 1
         };
 
+        product.slug = getProductSlug(card, product);
+        product.id = product.slug;
+        product.productSlug = product.slug;
 
-        if (aliases[normalized]) {
-
-            variations.push(
-                ...aliases[normalized]
-            );
-
-        }
-
-
-        return [
-            ...new Set(
-                variations
-            )
-        ];
-
+        return product;
     }
 
 
-    /* =====================================================
-       THIS SECTION IS MATCH SEARCH
-    ===================================================== */
+    /* =================================================
+       7. NOTIFICATION MESSAGE
+    ================================================= */
 
-    function matchesSearch(
-        card,
-        query
-    ) {
+    function showShopMessage(message, type = "success") {
+        let messageBox = document.getElementById("shopMessage");
 
-        if (!query) {
+        if (!messageBox) {
+            messageBox = document.createElement("div");
+            messageBox.id = "shopMessage";
+
+            Object.assign(messageBox.style, {
+                position: "fixed",
+                top: "90px",
+                right: "20px",
+                zIndex: "99999",
+                maxWidth: "calc(100% - 40px)",
+                padding: "14px 20px",
+                borderRadius: "10px",
+                color: "#ffffff",
+                fontSize: "14px",
+                fontWeight: "500",
+                boxShadow: "0 8px 25px rgba(0, 0, 0, 0.15)",
+                opacity: "1",
+                transition: "opacity 0.25s ease"
+            });
+
+            document.body.appendChild(messageBox);
+        }
+
+        messageBox.textContent = message;
+
+        messageBox.style.background =
+            type === "error" ? "#a66d13" : "#c99525";
+
+        messageBox.style.opacity = "1";
+
+        if (messageBox.hideTimer) {
+            clearTimeout(messageBox.hideTimer);
+        }
+
+        messageBox.hideTimer = setTimeout(function () {
+            messageBox.style.opacity = "0";
+        }, 2800);
+    }
+
+
+    /* =================================================
+       8. LOGIN CHECK
+    ================================================= */
+
+    function requireLogin() {
+        if (isUserLoggedIn() && getCurrentUserKey()) {
             return true;
         }
 
-
-        const productName =
-            normalizeSearchText(
-                card.dataset.name
-            );
-
-
-        const productType =
-            normalizeSearchText(
-                card.dataset.type
-            );
-
-
-        const productCollection =
-            normalizeSearchText(
-                card.dataset.collection
-            );
-
-
-        const productCategory =
-            normalizeSearchText(
-                card.dataset.category
-            );
-
-
-        const productText =
-            normalizeSearchText(
-                card.textContent
-            );
-
-
-        const searchableText = [
-
-            productName,
-
-            productType,
-
-            productCollection,
-
-            productCategory,
-
-            productText
-
-        ].join(" ");
-
-
-        const variations =
-            getSearchVariations(
-                query
-            );
-
-
-        return variations.some(
-            (variation) =>
-                searchableText.includes(
-                    variation
-                )
+        showShopMessage(
+            "Please login first to use your cart and favorites.",
+            "error"
         );
 
+        setTimeout(function () {
+            if (!isUserLoggedIn()) {
+                window.location.href = "login.html";
+            }
+        }, 1200);
+
+        return false;
     }
 
 
-    /* =====================================================
-       FILTER + SEARCH
-    ===================================================== */
+    /* =================================================
+       9. PRODUCT BUTTON STATES
+       Before login: visually disabled.
+       After login: buttons become active.
+    ================================================= */
 
-    function applyFilters() {
+    function updateProductButtons() {
+        const loggedIn =
+            isUserLoggedIn() && Boolean(getCurrentUserKey());
 
-        const activeCollection =
-            getActiveCollection();
+        productCards.forEach(function (card) {
+            const buttons = card.querySelectorAll(
+                ".add-cart-btn, .wishlist-btn"
+            );
 
+            buttons.forEach(function (button) {
 
-        let visibleProducts = 0;
+                // Keep click events available so guests see
+                // the login message when they click a button.
+                button.disabled = false;
 
-
-        productCards.forEach((card) => {
-
-            const cardCollection =
-                normalizeSearchText(
-                    card.dataset.collection
+                button.setAttribute(
+                    "aria-disabled",
+                    String(!loggedIn)
                 );
 
+                if (!loggedIn) {
+                    button.style.opacity = "0.55";
+                    button.style.cursor = "not-allowed";
+                    button.title = "Please login to use this feature";
+                } else {
+                    button.style.opacity = "";
+                    button.style.cursor = "";
+                    button.removeAttribute("title");
+                }
+            });
+        });
+    }
 
-            let collectionMatches =
-                activeCollection === "all";
-
-
-            if (!collectionMatches) {
-
-                collectionMatches =
-                    cardCollection ===
-                    activeCollection;
-
-            }
-
-
-            const searchMatches =
-                matchesSearch(
-                    card,
-                    searchQuery
-                );
+    // Set the initial button states.
+    updateProductButtons();
 
 
-            const shouldShow =
-                collectionMatches &&
-                searchMatches;
+    /* =================================================
+       10. UPDATE NAVBAR
+    ================================================= */
+
+    function updateNavbar(eventName) {
+        window.dispatchEvent(new CustomEvent(eventName));
+    }
 
 
-            if (shouldShow) {
+    /* =================================================
+       11. ADD PRODUCT TO CART
+    ================================================= */
 
-                card.classList.remove(
-                    "hidden"
-                );
+    function addToCart(product, quantity = 1) {
+        if (!requireLogin()) {
+            return;
+        }
 
-                visibleProducts++;
+        const cartKey = getCartStorageKey();
 
-            } else {
+        if (!cartKey) {
+            showShopMessage(
+                "Please login again to continue.",
+                "error"
+            );
+            return;
+        }
 
-                card.classList.add(
-                    "hidden"
-                );
+        const cart = readStorageArray(cartKey);
 
-            }
+        const existingItem = cart.find(function (item) {
+            const itemSlug =
+                item.slug ||
+                item.productSlug ||
+                item.id;
 
+            return itemSlug === product.slug;
         });
 
+        if (existingItem) {
+            existingItem.quantity =
+                (parseInt(existingItem.quantity, 10) || 0) +
+                quantity;
 
-        let customMessage = null;
-
-
-        if (searchQuery) {
-
-            customMessage =
-                `No products found for "${searchQuery}".`;
-
-        } else if (
-            activeCollection !== "all"
-        ) {
-
-            customMessage =
-                "There are no products in this collection yet.";
-
+        } else {
+            cart.push({
+                id: product.slug,
+                slug: product.slug,
+                productSlug: product.slug,
+                name: product.name,
+                price: product.price,
+                image: product.image,
+                category: product.category,
+                collection: product.collection,
+                sku: product.sku,
+                quantity: quantity
+            });
         }
 
+        if (!saveStorageArray(cartKey, cart)) {
+            showShopMessage(
+                "Unable to save your cart. Please try again.",
+                "error"
+            );
+            return;
+        }
 
-        updateEmptyMessage(
-            visibleProducts,
-            customMessage
+        updateNavbar("cartUpdated");
+
+        showShopMessage(
+            `${product.name} added to your cart.`
         );
-
     }
 
 
-    /* =====================================================
-       EMPTY MESSAGE
-       Show a message when no products are found
-    ===================================================== */
+    /* =================================================
+       12. ADD PRODUCT TO FAVORITES
+    ================================================= */
 
-    function updateEmptyMessage(
-        count,
-        customMessage = null
-    ) {
-
-        const oldMessage =
-            document.querySelector(
-                ".no-products"
-            );
-
-
-        if (oldMessage) {
-            oldMessage.remove();
+    function addToFavorites(product) {
+        if (!requireLogin()) {
+            return;
         }
 
+        const favoritesKey = getFavoritesStorageKey();
 
-        if (
-            count === 0 &&
-            productsGrid
-        ) {
+        if (!favoritesKey) {
+            showShopMessage(
+                "Please login again to continue.",
+                "error"
+            );
+            return;
+        }
 
-            const message =
-                document.createElement(
-                    "div"
-                );
+        const favorites = readStorageArray(favoritesKey);
+
+        const alreadyExists = favorites.some(function (item) {
+            if (typeof item === "string") {
+                return item === product.slug;
+            }
+
+            const itemSlug =
+                item.slug ||
+                item.productSlug ||
+                item.id;
+
+            return itemSlug === product.slug;
+        });
+
+        if (alreadyExists) {
+            showShopMessage(
+                "This product is already in your favorites.",
+                "error"
+            );
+            return;
+        }
+
+        favorites.push({
+            id: product.slug,
+            slug: product.slug,
+            productSlug: product.slug,
+            name: product.name,
+            price: product.price,
+            image: product.image,
+            category: product.category,
+            collection: product.collection,
+            sku: product.sku
+        });
+
+        if (!saveStorageArray(favoritesKey, favorites)) {
+            showShopMessage(
+                "Unable to save favorites. Please try again.",
+                "error"
+            );
+            return;
+        }
+
+        updateNavbar("favoritesUpdated");
+
+        showShopMessage(
+            `${product.name} added to your favorites.`
+        );
+    }
 
 
-            message.className =
-                "no-products";
+    /* =================================================
+       13. OPEN PRODUCT DETAILS
+    ================================================= */
+
+    function openProductDetails(product) {
+        if (!product || !product.slug) {
+            showShopMessage(
+                "Unable to open this product.",
+                "error"
+            );
+            return;
+        }
+
+        window.location.href =
+            "product-details.html?product=" +
+            encodeURIComponent(product.slug);
+    }
 
 
-            message.innerHTML = `
+    /* =================================================
+       14. PRODUCT CARD BUTTONS AND LINKS
+    ================================================= */
 
-                <h3>
-                    No Products Found
-                </h3>
+    productCards.forEach(function (card) {
+        const product = getProductData(card);
 
-                <p>
-                    ${
-                        customMessage ||
-                        "There are no products in this collection yet."
+        const addCartButton =
+            card.querySelector(".add-cart-btn");
+
+        const wishlistButton =
+            card.querySelector(".wishlist-btn");
+
+
+        /* ---------------------------------------------
+           ADD TO CART
+        --------------------------------------------- */
+
+        if (addCartButton) {
+            addCartButton.addEventListener(
+                "click",
+                function (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+
+                    if (!requireLogin()) {
+                        return;
                     }
-                </p>
 
-            `;
-
-
-            productsGrid.appendChild(
-                message
+                    addToCart(product, 1);
+                }
             );
-
         }
 
-    }
 
+        /* ---------------------------------------------
+           ADD TO FAVORITES
+        --------------------------------------------- */
 
-    /* =====================================================
-       SORT PRODUCTS
-       Sort products by price or product name
-    ===================================================== */
+        if (wishlistButton) {
+            wishlistButton.addEventListener(
+                "click",
+                function (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
 
-    function sortProductCards(sortType) {
-
-        const cards =
-            Array.from(
-                document.querySelectorAll(
-                    ".product-card"
-                )
-            );
-
-
-        cards.sort((a, b) => {
-
-            const priceA =
-                Number(
-                    a.dataset.price
-                ) || 0;
-
-
-            const priceB =
-                Number(
-                    b.dataset.price
-                ) || 0;
-
-
-            const nameA =
-                normalizeSearchText(
-                    a.dataset.name
-                );
-
-
-            const nameB =
-                normalizeSearchText(
-                    b.dataset.name
-                );
-
-
-            if (
-                sortType === "low-high"
-            ) {
-
-                return priceA - priceB;
-
-            }
-
-
-            if (
-                sortType === "high-low"
-            ) {
-
-                return priceB - priceA;
-
-            }
-
-
-            if (
-                sortType === "name"
-            ) {
-
-                return nameA.localeCompare(
-                    nameB
-                );
-
-            }
-
-
-            return 0;
-
-        });
-
-
-        cards.forEach((card) => {
-
-            productsGrid.appendChild(
-                card
-            );
-
-        });
-
-
-        productCards =
-            Array.from(
-                document.querySelectorAll(
-                    ".product-card"
-                )
-            );
-
-
-        applyFilters();
-
-    }
-
-
-    /* =====================================================
-       FILTER BUTTON EVENTS
-    ===================================================== */
-
-    filterButtons.forEach((button) => {
-
-        button.addEventListener(
-            "click",
-            () => {
-
-                filterButtons.forEach(
-                    (btn) => {
-
-                        btn.classList.remove(
-                            "active"
-                        );
-
+                    if (!requireLogin()) {
+                        return;
                     }
-                );
+
+                    addToFavorites(product);
+                }
+            );
+        }
 
 
-                button.classList.add(
-                    "active"
-                );
+        /* ---------------------------------------------
+           OPEN PRODUCT DETAILS FROM LINKS
+        --------------------------------------------- */
 
-
-                applyFilters();
-
-            }
+        const productLinks = card.querySelectorAll(
+            "a.product-link, .product-image a, .product-name a"
         );
 
+        productLinks.forEach(function (link) {
+            link.addEventListener("click", function (event) {
+                event.preventDefault();
+                openProductDetails(product);
+            });
+        });
+
+
+        /* ---------------------------------------------
+           CLICK PRODUCT CARD
+        --------------------------------------------- */
+
+        card.addEventListener("click", function (event) {
+            if (
+                event.target.closest(
+                    "button, a, input, select"
+                )
+            ) {
+                return;
+            }
+
+            openProductDetails(product);
+        });
     });
 
 
-    /* =====================================================
-       SORT EVENT
-    ===================================================== */
+    /* =================================================
+       15. FILTER PRODUCTS
+    ================================================= */
+
+    function filterProducts(category) {
+        const selectedCategory =
+            String(category).trim().toLowerCase();
+
+        productCards.forEach(function (card) {
+            const product = getProductData(card);
+
+            const cardCategory =
+                String(product.category).trim().toLowerCase();
+
+            const cardCollection =
+                String(product.collection).trim().toLowerCase();
+
+            const matches =
+                selectedCategory === "all" ||
+                selectedCategory === "all products" ||
+                cardCategory === selectedCategory ||
+                cardCollection === selectedCategory;
+
+            card.style.display = matches ? "" : "none";
+        });
+    }
+
+    filterButtons.forEach(function (button) {
+        button.addEventListener("click", function () {
+            filterButtons.forEach(function (item) {
+                item.classList.remove("active");
+            });
+
+            button.classList.add("active");
+
+            const category =
+                button.dataset.filter ||
+                button.dataset.category ||
+                button.textContent.trim();
+
+            filterProducts(category);
+        });
+    });
+
+
+    /* =================================================
+       16. SORT PRODUCTS
+    ================================================= */
+
+    function sortProductCards(sortValue) {
+        if (!productsGrid) {
+            return;
+        }
+
+        const cards = Array.from(
+            productsGrid.querySelectorAll(".product-card")
+        );
+
+        cards.sort(function (cardA, cardB) {
+            const productA = getProductData(cardA);
+            const productB = getProductData(cardB);
+
+            switch (sortValue) {
+                case "low-high":
+                    return productA.price - productB.price;
+
+                case "high-low":
+                    return productB.price - productA.price;
+
+                case "name":
+                    return productA.name.localeCompare(
+                        productB.name
+                    );
+
+                default:
+                    return 0;
+            }
+        });
+
+        cards.forEach(function (card) {
+            productsGrid.appendChild(card);
+        });
+    }
 
     if (sortProducts) {
-
-        sortProducts.addEventListener(
-            "change",
-            () => {
-
-                sortProductCards(
-                    sortProducts.value
-                );
-
-            }
-        );
-
+        sortProducts.addEventListener("change", function () {
+            sortProductCards(sortProducts.value);
+        });
     }
 
 
-    /* =====================================================
-       ADD TO CART EVENTS
-    ===================================================== */
+    /* =================================================
+       17. SEARCH FROM URL
+       Example: shop.html?search=diamond
+    ================================================= */
 
-    document
-        .querySelectorAll(
-            ".add-cart-btn"
-        )
-        .forEach((button) => {
+    const urlParameters = new URLSearchParams(
+        window.location.search
+    );
 
-            button.addEventListener(
-                "click",
-                (event) => {
+    const searchTerm = urlParameters.get("search");
 
-                    event.preventDefault();
+    const collectionParameter =
+        urlParameters.get("collection");
 
-                    event.stopPropagation();
+    function searchProducts(term) {
+        const normalizedTerm =
+            String(term || "").trim().toLowerCase();
 
-                    addToCart(
-                        button
-                    );
+        productCards.forEach(function (card) {
+            const product = getProductData(card);
 
-                }
-            );
+            const searchableText = [
+                product.name,
+                product.category,
+                product.collection,
+                product.sku
+            ].join(" ").toLowerCase();
 
+            const matches =
+                !normalizedTerm ||
+                searchableText.includes(normalizedTerm);
+
+            card.style.display = matches ? "" : "none";
         });
+    }
 
-
-    /* =====================================================
-       FAVORITE EVENTS
-    ===================================================== */
-
-    document
-        .querySelectorAll(
-            ".wishlist-btn"
-        )
-        .forEach((button) => {
-
-            button.addEventListener(
-                "click",
-                (event) => {
-
-                    event.preventDefault();
-
-                    event.stopPropagation();
-
-                    toggleFavorite(
-                        button
-                    );
-
-                }
-            );
-
-        });
-
-
-    /* =================================================================
-       PRODUCT CARD CLICK
-       Open the product details page when a product card is clicked
-    ======================================================== */
-
-    document
-        .querySelectorAll(
-            ".product-card"
-        )
-        .forEach((card) => {
-
-            card.addEventListener(
-                "click",
-                (event) => {
-
-                    if (
-                        event.target.closest(
-                            ".add-cart-btn"
-                        ) ||
-                        event.target.closest(
-                            ".wishlist-btn"
-                        )
-                    ) {
-
-                        return;
-
-                    }
-
-
-                    const productName =
-                        card.dataset.name;
-
-
-                    if (!productName) {
-                        return;
-                    }
-
-
-                    const productSlug =
-                        productName
-                            .toLowerCase()
-                            .trim()
-                            .replace(
-                                /\s+/g,
-                                "-"
-                            );
-
-
-                    window.location.href =
-                        `product-details.html?product=${productSlug}`;
-
-                }
-            );
-
-        });
-
-
-    /* ==================================================================
-       COLLECTION FROM URL
-       Get the collection from the URL and activate the matching filter
-    ============================================================*/
-
-    if (collection) {
-
-        const matchingButton =
-            document.querySelector(
-                `.filter-btn[data-filter="${collection}"]`
-            );
-
-
-        if (matchingButton) {
-
-            filterButtons.forEach(
-                (button) => {
-
-                    button.classList.remove(
-                        "active"
-                    );
-
-                }
-            );
-
-
-            matchingButton.classList.add(
-                "active"
-            );
-
-        }
-
+    if (searchTerm) {
+        searchProducts(searchTerm);
     }
 
 
-    /* ==============================================================
-       SEARCH FROM NAVBAR
-       Handle search from the navbar and activate the All filter
-    ======================================================== */
+    /* =================================================
+       18. COLLECTION FROM URL
+       Example: shop.html?collection=golden
+    ================================================= */
 
-    if (searchQuery && !collection) {
+    if (collectionParameter) {
+        filterProducts(collectionParameter);
 
-        filterButtons.forEach(
-            (button) => {
+        filterButtons.forEach(function (button) {
+            const buttonCategory =
+                button.dataset.filter ||
+                button.dataset.category ||
+                button.textContent.trim();
 
-                button.classList.remove(
-                    "active"
-                );
+            if (
+                buttonCategory.trim().toLowerCase() ===
+                collectionParameter.trim().toLowerCase()
+            ) {
+                filterButtons.forEach(function (item) {
+                    item.classList.remove("active");
+                });
 
+                button.classList.add("active");
             }
-        );
-
-
-        const allButton =
-            document.querySelector(
-                '.filter-btn[data-filter="all"]'
-            );
-
-
-        if (allButton) {
-
-            allButton.classList.add(
-                "active"
-            );
-
-        }
-
+        });
     }
 
 
-    /* =====================================================
-       MIGRATE OLD FAVORITES
-       Convert old favorite data to the new format
-    ===================================================== */
+    /* =================================================
+       19. HANDLE LOGIN AND STORAGE CHANGES
+    ================================================= */
 
-    migrateOldFavorites();
-
-
-    /* =====================================================
-       INITIALIZE
-       Initialize the cart, favorites, and product filters
-    ===================================================== */
-
-    updateCartCount();
-
-    updateFavoriteButtons();
-
-    updateFavoriteCount();
-
-    applyFilters();
-
-
-    /* =====================================================
-       STORAGE EVENTS
-    Update cart and favorites when localStorage changes
-    ===================================================== */
-
-    window.addEventListener(
-        "storage",
-        (event) => {
-
-            /* -----------------------------------------
-               FAVORITES
-               Update favorites when favorite data changes
-            ----------------------------------------- */
-
-            if (
-                event.key ===
-                "luxuryJewelryFavorites"
-            ) {
-
-                try {
-
-                    favorites =
-                        JSON.parse(
-                            event.newValue
-                        ) || [];
-
-                } catch (error) {
-
-                    favorites = [];
-
-                }
-
-
-                updateFavoriteButtons();
-
-                updateFavoriteCount();
-
-            }
-
-
-            /* =======================================================
-               USER-SPECIFIC CART
-               Update the current user's cart when storage changes
-               =========================================== */
-
-            const currentCartKey =
-                getShopCartStorageKey();
-
-
-            if (
-                currentCartKey &&
-                event.key === currentCartKey
-            ) {
-
-                try {
-
-                    cart =
-                        JSON.parse(
-                            event.newValue
-                        ) || [];
-
-                } catch (error) {
-
-                    cart = [];
-
-                }
-
-
-                updateCartCount();
-
-            }
-
-
-            /* -----------------------------------------
-               LOGIN / LOGOUT
-            ----------------------------------------- */
-
-            if (
-                event.key ===
-                "luxuryJewelryLoggedInUser"
-            ) {
-
-                cart =
-                    getShopUserCart();
-
-                updateCartCount();
-
-            }
-
+    window.addEventListener("storage", function (event) {
+        if (
+            event.key === "luxuryJewelryLoggedInUser" ||
+            event.key === getCartStorageKey() ||
+            event.key === getFavoritesStorageKey()
+        ) {
+            updateProductButtons();
+            updateNavbar("cartUpdated");
+            updateNavbar("favoritesUpdated");
         }
-    );
+    });
 
 
-    /* =====================================================
-       FAVORITES SAME PAGE
-    ===================================================== */
-
-    window.addEventListener(
-        "favoritesUpdated",
-        () => {
-
-            try {
-
-                favorites =
-                    JSON.parse(
-                        localStorage.getItem(
-                            "luxuryJewelryFavorites"
-                        )
-                    ) || [];
-
-            } catch (error) {
-
-                favorites = [];
-
-            }
-
-
-            updateFavoriteButtons();
-
-            updateFavoriteCount();
-
-        }
-    );
-
-
-    /* =====================================================
-       CART SAME PAGE
-    ===================================================== */
-
-    window.addEventListener(
-        "cartUpdated",
-        () => {
-
-            cart =
-                getShopUserCart();
-
-            updateCartCount();
-
-        }
-    );
-
-
-    /* =====================================================
-       PAGE VISIBILITY
-       Refresh cart after returning to Shop
-    ===================================================== */
+    /* =================================================
+       20. UPDATE WHEN PAGE BECOMES VISIBLE
+    ================================================= */
 
     document.addEventListener(
         "visibilitychange",
-        () => {
-
-            if (
-                document.visibilityState ===
-                "visible"
-            ) {
-
-                cart =
-                    getShopUserCart();
-
-                updateCartCount();
-
+        function () {
+            if (!document.hidden) {
+                updateProductButtons();
+                updateNavbar("cartUpdated");
+                updateNavbar("favoritesUpdated");
             }
-
         }
+    );
+
+    window.addEventListener("pageshow", function () {
+        updateProductButtons();
+    });
+
+    window.addEventListener("focus", function () {
+        updateProductButtons();
+    });
+
+    // Allow the login script to notify this page after login.
+    window.addEventListener("luxuryJewelryAuthChanged", function () {
+        updateProductButtons();
+    });
+
+
+    /* =================================================
+       21. INITIAL FILTER FROM URL
+    ================================================= */
+
+    if (!searchTerm && !collectionParameter) {
+        const activeFilter =
+            document.querySelector(".filter-btn.active");
+
+        if (activeFilter) {
+            const category =
+                activeFilter.dataset.filter ||
+                activeFilter.dataset.category ||
+                activeFilter.textContent.trim();
+
+            filterProducts(category);
+        }
+    }
+
+
+    /* =================================================
+       22. INITIALIZE COMPLETE
+    ================================================= */
+
+    updateProductButtons();
+
+    console.log(
+        "Luxury Jewelry shop initialized successfully."
     );
 
 });

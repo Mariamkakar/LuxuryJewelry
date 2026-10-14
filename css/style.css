@@ -275,7 +275,7 @@ button {
 
     background:
        
-        url("../images/imagehome6.jpg")
+        url("../images/6206103408171749658_121.jpg")
         center center / cover no-repeat;
 
     transition: background-color var(--transition);
@@ -1419,7 +1419,7 @@ body.dark-mode .hero {
             rgba(17, 16, 15, 0.10) 75%,
             rgba(17, 16, 15, 0.05) 100%
         ),
-        url("../images/imagehero.jpg")
+        url("../images/6206103408171749658_121.jpg")
         center center / cover no-repeat;
 }
 
@@ -1937,4 +1937,13 @@ body.dark-mode .footer-bottom p {
 ::-webkit-scrollbar-thumb:hover {
 
     background: var(--gold-dark);
+}
+
+/* Make only product-card Favorite and Add to Cart look locked. */
+.product-card .add-cart-btn.login-required,
+.product-card .wishlist-btn.login-required,
+.featured-product-card .add-cart-btn.login-required,
+.featured-product-card .wishlist-btn.login-required {
+    opacity: 0.5;
+    cursor: not-allowed;
 }

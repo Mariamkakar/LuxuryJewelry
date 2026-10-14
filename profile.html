@@ -1,80 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Profile | Luxury Jewelry</title>
-
     <!-- Google Fonts -->
-    <link
-        rel="preconnect"
-        href="https://fonts.googleapis.com"
-    >
-
-    <link
-        rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossorigin
-    >
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap"
         rel="stylesheet"
     >
-
-    <!-- Profile CSS -->
+    <!-- Font Awesome -->
     <link
         rel="stylesheet"
-        href="css/profile.css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     >
-
+    <!-- Profile CSS -->
+    <link rel="stylesheet" href="css/profile.css">
 </head>
-
-
 <body>
-
-    <!-- =====================================================
-         TOP BAR
-    ====================================================== -->
-
+    <!-- TOP BAR -->
     <header class="profile-topbar">
-
-        <a
-            href="index.html"
-            class="back-home"
-        >
-
-            <span class="back-icon">
-                ←
-            </span>
-
-            <span>
-                Back to Home
-            </span>
-
+        <a href="index.html" class="back-home">
+            <span class="back-icon">←</span>
+            <span>Back to Home</span>
         </a>
-
-
-        <a
-            href="index.html"
-            class="profile-logo"
-        >
-
-            <img
-                src="images/logo.jpeg"
-                alt="Luxury Jewelry Logo"
-            >
-
+        <a href="index.html" class="profile-logo">
+            <img src="images/logo.jpeg" alt="Luxury Jewelry Logo">
         </a>
-
-
         <button
             type="button"
             class="profile-theme-toggle"
@@ -83,534 +37,323 @@
         >
             ☾
         </button>
-
     </header>
-
-
-    <!-- =====================================================
-         PROFILE PAGE
-    ====================================================== -->
-
+    <!-- PROFILE PAGE -->
     <main class="profile-page">
-
-
-        <!-- =================================================
-             HERO
-        ================================================== -->
-
+        <!-- HERO -->
         <section class="profile-hero">
-
-            <p class="profile-eyebrow">
-                LUXURY JEWELRY
-            </p>
-
-            <h1>
-                MY PROFILE
-            </h1>
-
+            <p class="profile-eyebrow">LUXURY JEWELRY</p>
+            <h1>MY PROFILE</h1>
             <p class="profile-subtitle">
                 Manage your personal information and account settings
             </p>
-
             <div class="hero-divider">
-
                 <span></span>
-
-                <b>
-                    ✦
-                </b>
-
+                <b>✦</b>
                 <span></span>
-
             </div>
-
         </section>
-
-
-        <!-- =================================================
-             MAIN PROFILE CONTAINER
-        ================================================== -->
-
+        <!-- MAIN PROFILE CONTAINER -->
         <section class="profile-container">
-
-
-            <!-- =============================================
-                 PROFILE PHOTO
-            ============================================== -->
-
+            <!-- PROFILE PHOTO -->
             <div class="profile-card photo-card">
-
                 <div class="profile-photo-wrapper">
-
                     <div class="profile-photo">
-
                         <img
                             id="profileImage"
                             src=""
                             alt="Profile Photo"
+                            hidden
                         >
-
                         <div
                             class="profile-placeholder"
                             id="profilePlaceholder"
                         >
-                            👤
+                            U
                         </div>
-
                     </div>
-
-
+                    <!-- Change Profile Photo -->
                     <label
                         for="photoInput"
                         class="camera-button"
                         title="Change Photo"
+                        aria-label="Choose profile photo"
                     >
-                        📷
+                        <i class="fas fa-camera"></i>
                     </label>
-
                     <input
                         type="file"
                         id="photoInput"
                         accept="image/*"
                         hidden
                     >
-
                 </div>
-
-
                 <div class="photo-info">
-
-                    <h2>
-                        Profile Photo
-                    </h2>
-
-                    <p>
-                        Upload a new photo or keep your current one.
-                    </p>
-
-                    <label
-                        for="photoInput"
-                        class="change-photo-button"
-                    >
-                        <span>
-                            📷
-                        </span>
-
-                        Change Photo
-                    </label>
-
+                    <h2>Profile Photo</h2>
+                    <p>Manage your profile photo.</p>
+                    <!-- EDIT PROFILE AND DELETE PROFILE -->
+                    <div class="profile-account-actions">
+                        <button
+                            type="button"
+                            class="edit-profile-button"
+                            id="editProfileButton"
+                        >
+                            <i class="fas fa-pen"></i>
+                            Edit Profile
+                        </button>
+                        <button
+                            type="button"
+                            class="delete-profile-button"
+                            id="deleteProfileButton"
+                        >
+                            <i class="fas fa-trash-alt"></i>
+                            Delete Profile
+                        </button>
+                    </div>
                 </div>
-
             </div>
-
-
-            <!-- =============================================
-                 PERSONAL INFORMATION
-            ============================================== -->
-
+            <!-- PERSONAL INFORMATION -->
             <div class="profile-card information-card">
-
                 <div class="section-heading">
-
-                    <h2>
-                        Personal Information
-                    </h2>
-
+                    <h2>Personal Information</h2>
                     <span></span>
-
                 </div>
-
-
                 <form id="profileForm">
-
-
                     <div class="form-grid">
-
-
                         <!-- FULL NAME -->
-
                         <div class="form-group">
-
-                            <label for="fullName">
-                                Full Name
-                            </label>
-
+                            <label for="fullName">Full Name</label>
                             <div class="input-wrapper">
-
-                                <span class="input-icon">
-                                    ♙
-                                </span>
-
+                                <span class="input-icon">♙</span>
                                 <input
                                     type="text"
                                     id="fullName"
                                     name="fullName"
                                     placeholder="Your full name"
+                                    disabled
+                                    required
                                 >
-
                             </div>
-
                         </div>
-
-
                         <!-- EMAIL -->
-
                         <div class="form-group">
-
-                            <label for="email">
-                                Email Address
-                            </label>
-
+                            <label for="email">Email Address</label>
                             <div class="input-wrapper">
-
-                                <span class="input-icon">
-                                    ✉
-                                </span>
-
+                                <span class="input-icon">✉</span>
                                 <input
                                     type="email"
                                     id="email"
                                     name="email"
                                     placeholder="Your email address"
+                                    disabled
+                                    required
                                 >
-
                             </div>
-
                         </div>
-
-
                         <!-- PHONE -->
-
                         <div class="form-group">
-
-                            <label for="phone">
-                                Phone Number
-                            </label>
-
+                            <label for="phone">Phone Number</label>
                             <div class="input-wrapper">
-
-                                <span class="input-icon">
-                                    ☎
-                                </span>
-
+                                <span class="input-icon">☎</span>
                                 <input
                                     type="tel"
                                     id="phone"
                                     name="phone"
                                     placeholder="Your phone number"
+                                    autocomplete="tel"
                                 >
-
                             </div>
-
                         </div>
-
-
                         <!-- COUNTRY -->
-
                         <div class="form-group">
-
-                            <label for="country">
-                                Country
-                            </label>
-
+                            <label for="country">Country</label>
                             <div class="input-wrapper">
-
-                                <span class="input-icon">
-                                    ◉
-                                </span>
-
+                                <span class="input-icon">◉</span>
                                 <select
                                     id="country"
                                     name="country"
+                                    autocomplete="country-name"
                                 >
-
                                     <option value="">
                                         Select Country
                                     </option>
-
                                     <option value="Afghanistan">
                                         Afghanistan
                                     </option>
-
                                     <option value="Pakistan">
                                         Pakistan
                                     </option>
-
+                                    <option value="India">
+                                        India
+                                    </option>
                                     <option value="Iran">
                                         Iran
                                     </option>
-
                                     <option value="United Arab Emirates">
                                         United Arab Emirates
                                     </option>
-
+                                    <option value="Turkey">
+                                        Turkey
+                                    </option>
                                     <option value="United States">
                                         United States
                                     </option>
-
                                     <option value="United Kingdom">
                                         United Kingdom
                                     </option>
-
                                     <option value="Canada">
                                         Canada
                                     </option>
-
+                                    <option value="Germany">
+                                        Germany
+                                    </option>
+                                    <option value="Australia">
+                                        Australia
+                                    </option>
                                     <option value="Other">
                                         Other
                                     </option>
-
                                 </select>
-
-                                <span class="select-arrow">
-                                   ⌄
-                                </span>
-
+                                <span class="select-arrow">⌄</span>
                             </div>
-
                         </div>
-
                     </div>
-
-
-                    <!-- SAVE -->
-
+                    <!-- SAVE BUTTON -->
                     <div class="save-wrapper">
-
                         <button
                             type="submit"
                             class="save-button"
+                            id="saveProfileButton"
                         >
+                            <i class="fas fa-save"></i>
                             Save Changes
                         </button>
-
                     </div>
-
                 </form>
-
-
-                <!-- =========================================
-                     QUICK ACCESS
-                ========================================== -->
-
+                <!-- QUICK ACCESS -->
                 <div class="quick-access">
-
                     <div class="section-heading">
-
-                        <h2>
-                            Quick Access
-                        </h2>
-
+                        <h2>Quick Access</h2>
                         <span></span>
-
                     </div>
-
-
-                    <!-- MY ORDERS ONLY -->
-
-                    <a
-                        href="orders.html"
+                    <!-- MY ORDERS -->
+                    <button
+                        type="button"
                         class="quick-card"
+                        id="ordersToggleButton"
+                        aria-expanded="false"
+                        aria-controls="profileOrders"
                     >
-
                         <div class="quick-icon">
-                            🛍
+                            <i class="fas fa-shopping-bag"></i>
                         </div>
-
                         <div class="quick-content">
-
-                            <h3>
-                                My Orders
-                            </h3>
-
+                            <h3>My Orders</h3>
                             <p>
                                 View your order history and track your packages
                             </p>
-
                         </div>
-
-                        <span class="quick-arrow">
-                            ›
+                        <span
+                            class="quick-arrow"
+                            id="ordersToggleIcon"
+                        >
+                            <i class="fas fa-chevron-down"></i>
                         </span>
-
-                    </a>
-
-                </div>
-
-
-                <!-- =========================================
-                     ACCOUNT SECURITY
-                ========================================== -->
-
-                <div class="security-section">
-
-                    <div class="security-heading">
-
-                        <div class="security-icon">
-                            🛡
+                    </button>
+                    <!-- ORDER HISTORY -->
+                    <div
+                        class="profile-orders"
+                        id="profileOrders"
+                        hidden
+                    >
+                        <div
+                            class="profile-orders-content"
+                            id="profileOrdersContent"
+                        >
+                            <p class="orders-loading">
+                                Your orders will appear here.
+                            </p>
                         </div>
-
+                    </div>
+                </div>
+                <!-- ACCOUNT SECURITY -->
+                <div class="security-section">
+                    <div class="security-heading">
+                        <div class="security-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
                         <div>
-
-                            <h2>
-                                Account Security
-                            </h2>
-
+                            <h2>Account Security</h2>
                             <p>
                                 Keep your account safe and secure
                             </p>
-
                         </div>
-
                     </div>
-
-
-                    <button
-                        type="button"
-                        class="security-button"
-                        id="changePasswordButton"
+                    <!-- PASSWORD UPDATE -->
+                    <form
+                        id="passwordForm"
+                        class="password-form"
                     >
-
-                        <span class="security-button-icon">
-                            🔒
-                        </span>
-
-                        <span>
-                            Change Password
-                        </span>
-
-                        <span class="security-arrow">
-                            ›
-                        </span>
-
-                    </button>
-
+                        <div class="modal-field">
+                            <label for="currentPassword">
+                                Current Password
+                            </label>
+                            <input
+                                type="password"
+                                id="currentPassword"
+                                autocomplete="current-password"
+                                placeholder="Enter current password"
+                                required
+                            >
+                        </div>
+                        <div class="modal-field">
+                            <label for="newPassword">
+                                New Password
+                            </label>
+                            <input
+                                type="password"
+                                id="newPassword"
+                                autocomplete="new-password"
+                                minlength="6"
+                                placeholder="Enter new password"
+                                required
+                            >
+                        </div>
+                        <div class="modal-field">
+                            <label for="confirmPassword">
+                                Confirm Password
+                            </label>
+                            <input
+                                type="password"
+                                id="confirmPassword"
+                                autocomplete="new-password"
+                                minlength="6"
+                                placeholder="Confirm new password"
+                                required
+                            >
+                        </div>
+                        <button
+                            type="submit"
+                            class="modal-save"
+                            id="passwordUpdateButton"
+                        >
+                            Password Update
+                        </button>
+                    </form>
                 </div>
-
             </div>
-
         </section>
-
     </main>
-
-
-    <!-- =====================================================
-         CHANGE PASSWORD MODAL
-    ====================================================== -->
-
-    <div
-        class="password-modal"
-        id="passwordModal"
-    >
-
-        <div
-            class="modal-backdrop"
-            id="modalBackdrop"
-        ></div>
-
-
-        <div class="password-modal-box">
-
-            <button
-                type="button"
-                class="modal-close"
-                id="modalClose"
-                aria-label="Close"
-            >
-                ×
-            </button>
-
-            <p class="modal-eyebrow">
-                ACCOUNT SECURITY
-            </p>
-
-            <h2>
-                Change Password
-            </h2>
-
-            <p class="modal-description">
-                Create a new password for your account.
-            </p>
-
-
-            <form id="passwordForm">
-
-                <div class="modal-field">
-
-                    <label for="currentPassword">
-                        Current Password
-                    </label>
-
-                    <input
-                        type="password"
-                        id="currentPassword"
-                        required
-                    >
-
-                </div>
-
-
-                <div class="modal-field">
-
-                    <label for="newPassword">
-                        New Password
-                    </label>
-
-                    <input
-                        type="password"
-                        id="newPassword"
-                        minlength="6"
-                        required
-                    >
-
-                </div>
-
-
-                <div class="modal-field">
-
-                    <label for="confirmPassword">
-                        Confirm New Password
-                    </label>
-
-                    <input
-                        type="password"
-                        id="confirmPassword"
-                        minlength="6"
-                        required
-                    >
-
-                </div>
-
-
-                <button
-                    type="submit"
-                    class="modal-save"
-                >
-                    Update Password
-                </button>
-
-            </form>
-
-        </div>
-
-    </div>
-
-
-    <!-- =====================================================
-         SUCCESS MESSAGE
-    ====================================================== -->
-
+    <!-- NOTIFICATION -->
     <div
         class="profile-toast"
         id="profileToast"
+        role="status"
+        aria-live="polite"
     >
         Changes saved successfully.
     </div>
-
-
-    <!-- Profile JavaScript -->
+    <!-- PROFILE JAVASCRIPT -->
     <script src="js/profile.js"></script>
-
 </body>
-
 </html>

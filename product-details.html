@@ -34,16 +34,6 @@
 
 
     <!-- =====================================================
-         MAIN CSS
-    ====================================================== -->
-
-    <link
-        rel="stylesheet"
-        href="css/style.css"
-    >
-
-
-    <!-- =====================================================
          PRODUCT DETAILS CSS
     ====================================================== -->
 
@@ -51,173 +41,41 @@
         rel="stylesheet"
         href="css/product-details.css"
     >
-
+    <link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+/>
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/navbar.css">
 </head>
-
 
 <body>
 
-
-    <!-- =====================================================
+    <!-- =========================
          ANNOUNCEMENT BAR
-    ====================================================== -->
+    ========================== -->
 
     <div class="announcement-bar">
         Free Shipping on Orders Over $100
     </div>
 
 
-    <!-- =====================================================
+    <!-- =========================
          NAVBAR
-    ====================================================== -->
+         Loaded from components/navbar.html
+    ========================== -->
 
-    <header class="navbar">
-
-        <div class="nav-container">
-
-
-            <!-- LOGO -->
-
-            <a
-                href="index.html"
-                class="logo"
-            >
-
-                <img
-                    src="images/logo.jpeg"
-                    alt="Luxury Jewelry Logo"
-                >
-
-            </a>
+    <div id="navbar"></div>
 
 
-            <!-- =================================================
-                 NAVIGATION
-            ================================================== -->
+    <!-- =========================
+         MAIN CONTENT
+    ========================== -->
 
-            <nav class="nav-links">
+    <main>
 
-                <a href="index.html">
-                    Home
-                </a>
-
-                <a href="shop.html">
-                    Shop
-                </a>
-
-                <a href="collections.html">
-                    Collections
-                </a>
-
-                <a href="about.html">
-                    About
-                </a>
-
-                <a href="contact.html">
-                    Contact
-                </a>
-
-                <a href="faq.html">
-                    FAQ
-                </a>
-
-                <a href="shipping-return.html">
-                    Shipping & Returns
-                </a>
-
-                <a
-                    href="login.html"
-                    class="auth-link"
-                >
-                    Login
-                </a>
-
-                <a
-                    href="signup.html"
-                    class="signup-link"
-                >
-                    Sign Up
-                </a>
-
-            </nav>
-
-
-            <!-- =================================================
-                 NAV ACTIONS
-            ================================================== -->
-
-            <div class="nav-actions">
-
-
-                <!-- SEARCH -->
-
-                <button
-                    class="nav-icon"
-                    id="searchBtn"
-                    type="button"
-                    aria-label="Search"
-                >
-                    🔍
-                </button>
-
-
-                <!-- ACCOUNT -->
-
-                <a
-                    href="login.html"
-                    class="nav-icon"
-                    aria-label="Account"
-                >
-                    ♡
-                </a>
-
-
-                <!-- CART -->
-
-                <a
-                    href="cart.html"
-                    class="nav-icon cart-icon"
-                    aria-label="Shopping Cart"
-                >
-
-                    🛍️
-
-                    <span class="cart-count">
-                        0
-                    </span>
-
-                </a>
-
-
-                <!-- DARK MODE -->
-
-                <button
-                    class="theme-toggle"
-                    id="themeToggle"
-                    type="button"
-                    aria-label="Toggle Dark Mode"
-                    title="Toggle Dark Mode"
-                >
-                    ☾
-                </button>
-
-
-                <!-- MOBILE MENU -->
-
-                <button
-                    class="menu-toggle"
-                    id="menuToggle"
-                    type="button"
-                    aria-label="Open Menu"
-                >
-                    ☰
-                </button>
-
-            </div>
-
-        </div>
-
-    </header>
+</head>
 
 
     <!-- =====================================================
@@ -731,6 +589,7 @@
          PRODUCT DETAILS JAVASCRIPT
     ====================================================== -->
     <script src="js/auth.js"></script>
+    <script src="js/navbar.js"></script>
     <script src="js/landing.js"></script>
     <script src="js/product-details.js"></script>
 

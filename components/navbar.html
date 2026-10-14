@@ -2,76 +2,30 @@
 
     <div class="nav-container">
 
-        <!-- =====================================================
-             LOGO
-        ====================================================== -->
-
-        <a href="index.html" class="navbar-logo">
-
+        <!-- LOGO -->
+        <a href="index.html" class="navbar-logo" aria-label="Luxury Jewelry Home">
             <img
                 src="images/logo.jpeg"
                 alt="Luxury Jewelry Logo"
             >
-
         </a>
 
+        <!-- NAVIGATION -->
+        <nav class="nav-links" id="navLinks" aria-label="Main Navigation">
+            <a href="index.html">Home</a>
+            <a href="collections.html">Collection</a>
+            <a href="shop.html">Shop</a>
+            <a href="about.html">About</a>
+            <a href="faq.html">FAQ</a>
+            <a href="shipping-returns.html">Shipping &amp; Returns</a>
+            <a href="contact.html">Contact</a>
 
-        <!-- =====================================================
-             NAVIGATION
-        ====================================================== -->
-
-        <nav
-            class="nav-links"
-            id="navLinks"
-        >
-
-            <a href="index.html">
-                Home
-            </a>
-
-            <a href="collections.html">
-                Collection
-            </a>
-
-            <a href="shop.html">
-                Shop
-            </a>
-
-            <a href="about.html">
-                About
-            </a>
-
-            <a href="faq.html">
-                FAQ
-            </a>
-
-            <a href="shipping-returns.html">
-                Shipping & Returns
-            </a>
-
-            <a href="contact.html">
-                Contact
-            </a>
-
-            
-
-
-            <!-- =================================================
-                 LOGIN
-            ================================================== -->
-
-            <a
-                href="login.html"
-                id="loginNavLink"
-            >
+            <!-- LOGIN -->
+            <a href="login.html" id="loginNavLink">
                 Login
             </a>
 
-
-            <!-- =================================================
-                 SIGN UP
-            ================================================== -->
-
+            <!-- SIGN UP -->
             <a
                 href="signup.html"
                 class="signup-link"
@@ -79,136 +33,103 @@
             >
                 Sign Up
             </a>
-
         </nav>
 
-
-        <!-- =====================================================
-             NAV ACTIONS
-        ====================================================== -->
-
+        <!-- NAV ACTIONS -->
         <div class="nav-actions">
 
-
-            <!-- =================================================
-                 SEARCH
-            ================================================== -->
-
+            <!-- SEARCH -->
             <button
                 class="nav-icon"
                 id="searchBtn"
                 type="button"
                 aria-label="Search"
+                aria-controls="searchOverlay"
+                aria-expanded="false"
+                title="Search"
             >
-                🔍
+                <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
             </button>
 
+            <!-- ACCOUNT -->
+            <div class="account-menu" id="accountMenu">
 
-            <!-- =================================================
-                 ACCOUNT
-            ================================================== -->
+                <button
+                    class="nav-icon account-button"
+                    id="accountButton"
+                    type="button"
+                    aria-label="Account"
+                    aria-controls="accountDropdown"
+                    aria-expanded="false"
+                    title="Account"
+                >
+                    <span class="account-icon" id="accountIcon">
+                      <i class="fa-light fa-user"></i>
+                    </span>
 
-            <div
-                class="account-menu"
-                id="accountMenu"
-            >
-
-               <button
-    class="nav-icon account-button"
-    id="accountButton"
-    type="button"
-    aria-label="Account"
-    aria-expanded="false"
->
-    <span
-        class="account-icon"
-        id="accountIcon"
-    >
-        👤
-    </span>
-
-    <img
-        class="account-avatar"
-        id="accountAvatar"
-        src=""
-        alt="Profile"
-    >
-</button>
-
+                    <img
+                        class="account-avatar"
+                        id="accountAvatar"
+                        src=""
+                        alt="Profile"
+                        hidden
+                    >
+                </button>
 
                 <!-- ACCOUNT DROPDOWN -->
 
                 <div
                     class="account-dropdown"
                     id="accountDropdown"
+                    hidden
                 >
-
-                    <a href="profile.html">
+                    <a href="profile.html" id="profileNavLink">
                         My Profile
                     </a>
 
+                    <a href="login.html" id="accountLoginLink">
+                        Login
+                    </a>
+
+                    <a href="signup.html" id="accountSignupLink">
+                        Sign Up
+                    </a>
 
                     <button
                         type="button"
                         id="logoutButton"
+                        hidden
                     >
                         Logout
                     </button>
-
-
-                    <a href="signup.html">
-                        Sign Up
-                    </a>
 
                 </div>
 
             </div>
 
-
-            <!-- =================================================
-                 FAVORITES
-            ================================================== -->
-
+            <!-- FAVORITES -->
             <a
                 href="favorites.html"
                 class="nav-icon wishlist-icon"
                 aria-label="Favorites"
+                title="Favorites"
             >
-
-                <span class="wishlist-heart">
-                    ♥
-                </span>
-
-                <span class="wishlist-count">
-                    0
-                </span>
-
+                <i class="fa-regular fa-heart wishlist-heart" aria-hidden="true"></i>
+                <span class="wishlist-count">0</span>
             </a>
 
-
-            <!-- =================================================
-                 CART
-            ================================================== -->
-
+            <!-- SHOPPING CART -->
             <a
                 href="cart.html"
                 class="nav-icon cart-icon"
                 aria-label="Shopping Cart"
+                title="Shopping Cart"
             >
-
-                🛍️
-
-                <span class="cart-count">
-                    0
-                </span>
-
+                <i class="fa-solid fa-cart-shopping" aria-hidden="true"></i>
+                <span class="cart-count">0</span>
             </a>
 
-
-            <!-- =================================================
-                 DARK MODE
-            ================================================== -->
-
+            <!-- DARK MODE -->
             <button
                 class="theme-toggle"
                 id="themeToggle"
@@ -218,16 +139,14 @@
                 ☾
             </button>
 
-
-            <!-- =================================================
-                 MOBILE MENU
-            ================================================== -->
-
+            <!-- MOBILE MENU -->
             <button
                 class="menu-toggle"
                 id="menuToggle"
                 type="button"
                 aria-label="Open Menu"
+                aria-controls="navLinks"
+                aria-expanded="false"
             >
                 ☰
             </button>
@@ -239,49 +158,33 @@
 </header>
 
 
-<!-- =========================================================
-     SEARCH OVERLAY
-========================================================== -->
-
+<!-- SEARCH OVERLAY -->
 <div
     class="search-overlay"
     id="searchOverlay"
+    aria-hidden="true"
 >
 
-
-    <!-- =====================================================
-         BACKDROP
-    ====================================================== -->
-
+    <!-- BACKDROP -->
     <div
         class="search-overlay-backdrop"
         id="searchBackdrop"
     ></div>
 
+    <!-- SEARCH PANEL -->
+    <div
+        class="search-panel"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="searchPanelTitle"
+    >
 
-    <!-- =====================================================
-         SEARCH PANEL
-    ====================================================== -->
-
-    <div class="search-panel">
-
-
-        <!-- =================================================
-             SEARCH HEADER
-        ================================================== -->
-
+        <!-- SEARCH HEADER -->
         <div class="search-panel-header">
 
             <div>
-
-                <p class="search-eyebrow">
-                    LUXURY JEWELRY
-                </p>
-
-
-                <h2>
-                    Find Your Perfect Piece
-                </h2>
+                <p class="search-eyebrow">LUXURY JEWELRY</p>
+                <h2 id="searchPanelTitle">Find Your Perfect Piece</h2>
 
             </div>
 
@@ -299,17 +202,12 @@
 
         </div>
 
-
-        <!-- =================================================
-             SEARCH INPUT
-        ================================================== -->
-
+        <!-- SEARCH INPUT -->
         <div class="search-input-wrapper">
 
-            <span class="search-input-icon">
-                🔍
+            <span class="search-input-icon" aria-hidden="true">
+                <i class="fa-solid fa-magnifying-glass"></i>
             </span>
-
 
             <input
                 type="text"
@@ -318,10 +216,8 @@
                 autocomplete="off"
                 aria-label="Search jewelry"
             >
-
-
+            
             <!-- CLEAR SEARCH -->
-
             <button
                 type="button"
                 class="search-clear"
@@ -333,86 +229,23 @@
 
         </div>
 
+        <!-- SEARCH CONTENT -->
+        <div class="search-content" id="searchContent">
 
-        <!-- =================================================
-             SEARCH CONTENT
-        ================================================== -->
-
-        <div
-            class="search-content"
-            id="searchContent"
-        >
-
-
-            <!-- POPULAR SEARCH TITLE -->
-
-            <p class="search-label">
-                POPULAR SEARCHES
-            </p>
-
-
-            <!-- =================================================
-                 POPULAR SEARCHES
-            ================================================== -->
+            <p class="search-label">POPULAR SEARCHES</p>
 
             <div class="popular-searches">
-
-                <button
-                    type="button"
-                    data-search="Rings"
-                >
-                    Rings
-                </button>
-
-
-                <button
-                    type="button"
-                    data-search="Necklaces"
-                >
-                    Necklaces
-                </button>
-
-
-                <button
-                    type="button"
-                    data-search="Earrings"
-                >
-                    Earrings
-                </button>
-
-
-                <button
-                    type="button"
-                    data-search="Bracelets"
-                >
-                    Bracelets
-                </button>
-
-
-                <button
-                    type="button"
-                    data-search="Jewelry Sets"
-                >
-                    Jewelry Sets
-                </button>
-
+                <button type="button" data-search="Rings">Rings</button>
+                <button type="button" data-search="Necklaces">Necklaces</button>
+                <button type="button" data-search="Earrings">Earrings</button>
+                <button type="button" data-search="Bracelets">Bracelets</button>
+                <button type="button" data-search="Jewelry Sets">Jewelry Sets</button>
             </div>
 
-
-            <!-- =================================================
-                 SEARCH MESSAGE
-            ================================================== -->
-
+            <!-- SEARCH MESSAGE -->
             <div class="search-message">
-
-                <span>
-                    ✧
-                </span>
-
-                <p>
-                    Start typing to search our jewelry collection.
-                </p>
-
+                <span>✧</span>
+                <p>Start typing to search our jewelry collection.</p>
             </div>
 
         </div>

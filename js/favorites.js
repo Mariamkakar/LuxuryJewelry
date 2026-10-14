@@ -1,6 +1,7 @@
-/* =====================================================
-   FAVORITES PAGE
-===================================================== */
+/* ======================================================================
+   FAVORITES 
+   Loads and displays the user's favorite products when the page opens.
+================================================================ */
 
 document.addEventListener(
     "DOMContentLoaded",
@@ -12,9 +13,10 @@ document.addEventListener(
 );
 
 
-/* =====================================================
+/* ====================================================================
    LOAD FAVORITES
-===================================================== */
+   Retrieves favorite products from localStorage and displays them.
+===========================================================*/
 
 function loadFavorites() {
 
@@ -64,9 +66,10 @@ function loadFavorites() {
     favoritesGrid.innerHTML = "";
 
 
-    /* ------------------------------------
-       EMPTY
-    ------------------------------------ */
+    /* ======================================================================
+    EMPTY
+    Hides the products grid and shows a message when no favorites exist.
+    ============================================================= */
 
     if (!favorites.length) {
 
@@ -81,9 +84,10 @@ function loadFavorites() {
     }
 
 
-    /* ------------------------------------
+    /* ==================================================================
        PRODUCTS EXIST
-    ------------------------------------ */
+       Shows the products grid and displays all saved favorite products.
+    ========================================================== */
 
     favoritesGrid.style.display =
         "grid";
@@ -109,9 +113,10 @@ function loadFavorites() {
 }
 
 
-/* =====================================================
+/* =====================================================================================
    CREATE FAVORITE CARD
-===================================================== */
+   Creates a product card with its image, name, category, price, and action buttons.
+=========================================================================== */
 
 function createFavoriteCard(
     product,
@@ -202,9 +207,10 @@ function createFavoriteCard(
     `;
 
 
-    /* ------------------------------------
+    /* =======================================================
        REMOVE
-    ------------------------------------ */
+       Removes the selected product from the favorites list.
+    ============================================= */
 
     const removeButton =
         card.querySelector(
@@ -222,9 +228,10 @@ function createFavoriteCard(
     );
 
 
-    /* ------------------------------------
+    /* =============================================================
        ADD TO CART
-    ------------------------------------ */
+       Adds the selected favorite product to the shopping cart.
+    ================================================= */
 
     const cartButton =
         card.querySelector(
@@ -242,9 +249,10 @@ function createFavoriteCard(
     );
 
 
-    /* ------------------------------------
+    /* ====================================================================
        VIEW PRODUCT
-    ------------------------------------ */
+       Redirects the user to the shop page to find the selected product.
+    ========================================================== */
 
     const viewButton =
         card.querySelector(
@@ -266,9 +274,10 @@ function createFavoriteCard(
 }
 
 
-/* =====================================================
+/* =========================================================================================
    REMOVE FAVORITE
-===================================================== */
+   Deletes a product from favorites, saves the updated list, and refreshes the page.
+========================================================================= */
 
 function removeFavorite(index) {
 
@@ -314,9 +323,10 @@ function removeFavorite(index) {
 }
 
 
-/* =====================================================
+/* =======================================================================================
    ADD FAVORITE TO CART
-===================================================== */
+   Adds the selected product to the cart or increases its quantity if it already exists.
+============================================================================== */
 
 function addFavoriteToCart(product) {
 
@@ -400,8 +410,10 @@ function addFavoriteToCart(product) {
 }
 
 
-/* =====================================================
+/* ===============================================================
    PRODUCT CATEGORY
+   Determines the jewelry category based on the product name.
+
 ===================================================== */
 
 function getProductCategory(name) {
@@ -450,9 +462,10 @@ function getProductCategory(name) {
 }
 
 
-/* =====================================================
+/* =====================================================================
    VIEW PRODUCT
-===================================================== */
+   Encodes the product name and redirects the user to the shop search.
+============================================================= */
 
 function goToProduct(product) {
 
@@ -467,9 +480,10 @@ function goToProduct(product) {
 }
 
 
-/* =====================================================
+/* ======================================================================
    UPDATE WHEN FAVORITES CHANGE
-===================================================== */
+   Refreshes the favorites list when a favorites update event occurs.
+=============================================================== */
 
 window.addEventListener(
     "favoritesUpdated",
@@ -481,9 +495,10 @@ window.addEventListener(
 );
 
 
-/* =====================================================
+/* ========================================================================
    UPDATE FROM OTHER TABS
-===================================================== */
+   Refreshes the favorites list when it changes in another browser tab.
+============================================================== */
 
 window.addEventListener(
     "storage",

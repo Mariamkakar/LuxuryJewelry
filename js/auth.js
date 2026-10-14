@@ -7,29 +7,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* =====================================================
        CHECK LOGIN
+       Checks whether a user is logged in using localStorage.
     ===================================================== */
 
-    const checkLogin = () => {
+    function checkLogin() {
         return !!localStorage.getItem(
             "luxuryJewelryLoggedInUser"
         );
-    };
+    }
 
 
     /* =====================================================
        PROTECTED PAGES
-       These pages do not open before Login.
+       Stores the pages that require users to log in.
     ===================================================== */
 
     const protectedPages = [
-        "shop.html",
-        "collections.html",
-        "collection.html",
-        "product-details.html",
-        "about.html",
-        "faq.html",
-        "shipping-returns.html",
-        "contact.html",
+
         "cart.html",
         "wishlist.html",
         "favorites.html",
@@ -39,46 +33,43 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       PUBLIC PAGES
-       These pages are always accessible.
+       CURRENT PAGE
+       Gets the current page name from the URL.
     ===================================================== */
 
-    const publicPages = [
-        "",
-        "index.html",
-        "login.html",
-        "signup.html"
-    ];
+    const currentPage = window.location.pathname
+        .split("/")
+        .pop()
+        .toLowerCase();
 
 
     /* =====================================================
-       CHECK CURRENT PAGE
+       REDIRECT TO LOGIN
+       Saves a message and redirects the user to login.html.
     ===================================================== */
 
-    const currentPage =
-        window.location.pathname
-            .split("/")
-            .pop()
-            .toLowerCase();
+    function redirectToLogin(message) {
+        localStorage.setItem(
+            "luxuryJewelryLoginMessage",
+            message || "Please login to access this page."
+        );
+
+        window.location.href = "login.html";
+    }
 
 
     /* =====================================================
-       PROTECTED PAGE REDIRECT
-       Prevents direct access before Login.
+       PROTECT DIRECT PAGE ACCESS
+       Redirects logged-out users from protected pages.
     ===================================================== */
 
     if (
         !checkLogin() &&
         protectedPages.includes(currentPage)
     ) {
-
-        localStorage.setItem(
-            "luxuryJewelryLoginMessage",
+        redirectToLogin(
             "Please login to access this page."
-        );
-
-        window.location.replace(
-            "login.html"
+            
         );
 
         return;
@@ -86,205 +77,182 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =====================================================
-       PROTECTED LINKS
-       These links do not open before Login.
+       PROTECT LINKS
+       Prevents logged-out users from opening protected links.
     ===================================================== */
 
-    document
-        .querySelectorAll("a")
-        .forEach((link) => {
+    function protectLink(link) {
+        if (!link || link.dataset.authGuard === "true") {
+            return;
+        }
 
-            const href =
-                link.getAttribute("href");
+        const href = link.getAttribute("href");
 
-            if (!href) {
+        if (
+            !href ||
+            href.startsWith("#") ||
+            href.startsWith("javascript:")
+        ) {
+            return;
+        }
+
+        let linkPage = "";
+
+        try {
+            linkPage = new URL(
+                href,
+                window.location.href
+            ).pathname
+                .split("/")
+                .pop()
+                .toLowerCase();
+        } catch (error) {
+            return;
+        }
+
+        if (!protectedPages.includes(linkPage)) {
+            return;
+        }
+
+        link.dataset.authGuard = "true";
+
+        link.addEventListener("click", (event) => {
+            if (checkLogin()) {
                 return;
             }
 
-            const linkPage =
-                href
-                    .split("?")[0]
-                    .split("#")[0]
-                    .split("/")
-                    .pop()
-                    .toLowerCase();
+            event.preventDefault();
+            event.stopImmediatePropagation();
 
-
-            if (
-                protectedPages.includes(
-                    linkPage
-                )
-            ) {
-
-                link.addEventListener(
-                    "click",
-                    (event) => {
-
-                        if (!checkLogin()) {
-
-                            event.preventDefault();
-                            event.stopPropagation();
-
-                            showAuthMessage(
-                                "Please login to access this page."
-                            );
-
-                            return false;
-                        }
-
-                    },
-                    true
-                );
-            }
-
-        });
+            redirectToLogin(
+                "Please login to access this page."
+            );
+        }, true);
+    }
 
 
     /* =====================================================
-       PROTECTED NAVBAR ACTIONS
-       Search, Favorites, Cart and Account
-       do not work before Login.
+       FIND EXISTING LINKS
+       Finds all links on the page and checks their access.
     ===================================================== */
 
-    if (!checkLogin()) {
+    function protectExistingLinks() {
+        document.querySelectorAll("a").forEach((link) => {
+            protectLink(link);
+        });
+    }
+
+    protectExistingLinks();
 
 
-        /* =================================================
-           SEARCH
-        ================================================== */
+    /* =====================================================
+       HANDLE DYNAMICALLY LOADED NAVBAR
+       Detects new navbar links and protects them automatically.
+    ===================================================== */
 
-        const searchButton =
-            document.querySelector("#searchBtn");
+    const navbarContainer = document.getElementById("navbar");
 
-        if (searchButton) {
+    if (navbarContainer) {
+        const navbarObserver = new MutationObserver(() => {
+            protectExistingLinks();
+        });
 
-            searchButton.addEventListener(
-                "click",
-                (event) => {
+        navbarObserver.observe(navbarContainer, {
+            childList: true,
+            subtree: true
+        });
+    }
 
-                    event.preventDefault();
-                    event.stopPropagation();
 
-                    showAuthMessage(
-                        "Please login to use Search."
-                    );
+    /* =====================================================
+       PROTECT CART BUTTON
+       Requires users to log in before using the cart button.
+    ===================================================== */
 
-                    return false;
+    function protectAction(selector, message) {
+        document.querySelectorAll(selector).forEach((element) => {
+            if (element.dataset.authActionGuard === "true") {
+                return;
+            }
 
-                },
-                true
+            element.dataset.authActionGuard = "true";
+
+            element.addEventListener("click", (event) => {
+                if (checkLogin()) {
+                    return;
+                }
+
+                event.preventDefault();
+                event.stopImmediatePropagation();
+
+                redirectToLogin(message);
+            }, true);
+        });
+    }
+
+    protectAction(
+        ".cart-icon",
+        "Please login to use your Cart."
+    );
+
+
+    /* =====================================================
+       PROTECT FAVORITES BUTTON
+       Requires users to log in before opening Favorites.
+    ===================================================== */
+
+    protectAction(
+        ".wishlist-icon",
+        "Please login to use Favorites."
+    );
+
+
+    /* =====================================================
+       PROTECT PROFILE LINK
+       Protects profile links, including dynamically added links.
+    ===================================================== */
+
+    function protectProfileLink() {
+        document.querySelectorAll(
+            "#profileNavLink, a[href='profile.html'], a[href='./profile.html']"
+        ).forEach((link) => {
+            protectLink(link);
+        });
+    }
+
+    protectProfileLink();
+
+    if (navbarContainer) {
+        const profileObserver = new MutationObserver(() => {
+            protectProfileLink();
+            protectAction(
+                ".cart-icon",
+                "Please login to use your Cart."
             );
-
-        }
-
-
-        /* =================================================
-           FAVORITES
-        ================================================== */
-
-        const favoriteButton =
-            document.querySelector(".wishlist-icon");
-
-        if (favoriteButton) {
-
-            favoriteButton.addEventListener(
-                "click",
-                (event) => {
-
-                    event.preventDefault();
-                    event.stopPropagation();
-
-                    showAuthMessage(
-                        "Please login to use Favorites."
-                    );
-
-                    return false;
-
-                },
-                true
+            protectAction(
+                ".wishlist-icon",
+                "Please login to use Favorites."
             );
+        });
 
-        }
-
-
-        /* =================================================
-           CART
-        ================================================== */
-
-        const cartButton =
-            document.querySelector(".cart-icon");
-
-        if (cartButton) {
-
-            cartButton.addEventListener(
-                "click",
-                (event) => {
-
-                    event.preventDefault();
-                    event.stopPropagation();
-
-                    showAuthMessage(
-                        "Please login to use your Cart."
-                    );
-
-                    return false;
-
-                },
-                true
-            );
-
-        }
-
-
-        /* =================================================
-           ACCOUNT
-        ================================================== */
-
-        const accountButton =
-            document.querySelector("#accountButton");
-
-        if (accountButton) {
-
-            accountButton.addEventListener(
-                "click",
-                (event) => {
-
-                    event.preventDefault();
-                    event.stopPropagation();
-
-                    showAuthMessage(
-                        "Please login to access your account."
-                    );
-
-                    return false;
-
-                },
-                true
-            );
-
-        }
-
+        profileObserver.observe(navbarContainer, {
+            childList: true,
+            subtree: true
+        });
     }
 
 
     /* =====================================================
        LOGIN MESSAGE
+       Shows the saved message when the login page opens.
     ===================================================== */
 
-    const loginMessage =
-        localStorage.getItem(
-            "luxuryJewelryLoginMessage"
-        );
+    const loginMessage = localStorage.getItem(
+        "luxuryJewelryLoginMessage"
+    );
 
-
-    if (
-        loginMessage &&
-        currentPage === "login.html"
-    ) {
-
-        showAuthMessage(
-            loginMessage
-        );
+    if (loginMessage && currentPage === "login.html") {
+        showAuthMessage(loginMessage);
 
         localStorage.removeItem(
             "luxuryJewelryLoginMessage"
@@ -293,122 +261,86 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    /* =====================================================
+    /* =============================================================
        LOGOUT
+       Removes the saved login information and opens login.html.
     ===================================================== */
 
-    const logoutButtons =
-        document.querySelectorAll(
-            "#logoutBtn, #logoutButton, .logout-btn"
-        );
+    const logoutButtons = document.querySelectorAll(
+        "#logoutBtn, #logoutButton, .logout-btn"
+    );
 
+    logoutButtons.forEach((button) => {
+        if (button.dataset.logoutGuard === "true") {
+            return;
+        }
 
-    logoutButtons.forEach(
-        (button) => {
+        button.dataset.logoutGuard = "true";
 
-            button.addEventListener(
-                "click",
-                (event) => {
+        button.addEventListener("click", (event) => {
+            event.preventDefault();
 
-                    event.preventDefault();
-
-                    localStorage.removeItem(
-                        "luxuryJewelryLoggedInUser"
-                    );
-
-                    localStorage.removeItem(
-                        "luxuryJewelryTheme"
-                    );
-
-                    /*
-                       Do not remove user carts here.
-                       Each user's cart is stored separately.
-                    */
-
-                    window.location.href =
-                        "login.html";
-
-                }
+            localStorage.removeItem(
+                "luxuryJewelryLoggedInUser"
             );
 
-        }
-    );
+            window.location.href = "login.html";
+        });
+    });
 
 
     /* =====================================================
        AUTH STATUS
+       Adds a CSS class to the body based on login status.
     ===================================================== */
 
     if (checkLogin()) {
-
-        document.body.classList.add(
-            "user-logged-in"
-        );
-
-        document.body.classList.remove(
-            "user-logged-out"
-        );
-
+        document.body.classList.add("user-logged-in");
+        document.body.classList.remove("user-logged-out");
     } else {
-
-        document.body.classList.add(
-            "user-logged-out"
-        );
-
-        document.body.classList.remove(
-            "user-logged-in"
-        );
-
+        document.body.classList.add("user-logged-out");
+        document.body.classList.remove("user-logged-in");
     }
 
 
     /* =====================================================
-       ACCOUNT USER
+       ACCOUNT USER NAME
+       Shows the logged-in user's name or email.
     ===================================================== */
 
-    const accountElements =
-        document.querySelectorAll(
-            ".account-user"
-        );
+    const accountElements = document.querySelectorAll(
+        ".account-user"
+    );
 
 
     if (checkLogin()) {
-
-        const savedUser =
-            localStorage.getItem(
-                "luxuryJewelryLoggedInUser"
-            );
-
-
-        accountElements.forEach(
-            (element) => {
-
-                try {
-
-                    const user =
-                        JSON.parse(savedUser);
-
-                    element.textContent =
-                        user.fullName ||
-                        user.email ||
-                        "My Account";
-
-                } catch (error) {
-
-                    element.textContent =
-                        savedUser ||
-                        "My Account";
-
-                }
-
-            }
+        const savedUser = localStorage.getItem(
+            "luxuryJewelryLoggedInUser"
         );
 
+        let userName = "My Account";
+
+        try {
+            const user = JSON.parse(savedUser);
+
+            userName =
+                user.fullName ||
+                user.name ||
+                user.email ||
+                "My Account";
+        } catch (error) {
+            userName = savedUser || "My Account";
+        }
+
+        accountElements.forEach((element) => {
+            element.textContent = userName;
+        });
     }
 
 
     /* =====================================================
-       AUTHENTICATION COMPLETE
+       AUTHENTICATION STATUS LOG
+       Prints the current login status in the browser console.
     ===================================================== */
 
     console.log(
@@ -420,62 +352,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* =====================================================
        AUTH MESSAGE
+       Creates and shows a temporary notification message.
     ===================================================== */
 
     function showAuthMessage(message) {
-
-        let notification =
-            document.getElementById(
-                "luxuryAuthNotification"
-            );
+        let notification = document.getElementById(
+            "luxuryAuthNotification"
+        );
 
 
         if (!notification) {
-
-            notification =
-                document.createElement(
-                    "div"
-                );
-
-            notification.id =
-                "luxuryAuthNotification";
-
+            notification = document.createElement("div");
+            notification.id = "luxuryAuthNotification";
             notification.className =
                 "luxury-auth-notification";
 
-            document.body.appendChild(
-                notification
-            );
-
+            document.body.appendChild(notification);
         }
 
 
-        notification.textContent =
-            message;
+        notification.textContent = message;
+        notification.classList.add("show");
 
+        clearTimeout(notification.hideTimer);
 
-        notification.classList.add(
-            "show"
-        );
-
-
-        clearTimeout(
-            notification.hideTimer
-        );
-
-
-        notification.hideTimer =
-            setTimeout(
-                () => {
-
-                    notification.classList.remove(
-                        "show"
-                    );
-
-                },
-                2500
-            );
-
+        notification.hideTimer = setTimeout(() => {
+            notification.classList.remove("show");
+        }, 2500);
     }
 
 });

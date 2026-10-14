@@ -1,1705 +1,774 @@
-/* ========================================
-   LOAD NAVBAR
-======================================== */
+/* =====================================================
+   LUXURY JEWELRY - NAVBAR JAVASCRIPT
+   Handles navigation, authentication, search, theme,
+   account menu, cart count, and favorites count.
+===================================================== */
+
+
+/* =====================================================
+   1. LOAD NAVBAR
+   Loads navbar.html and applies the saved theme.
+===================================================== */
 
 document.addEventListener("DOMContentLoaded", function () {
+    const navbarContainer = document.getElementById("navbar");
 
-    const navbarContainer =
-        document.getElementById("navbar");
+    if (!navbarContainer) return;
 
-    if (!navbarContainer) {
-        return;
-    }
+    // Restore the user's saved theme.
+    const savedTheme = localStorage.getItem("luxuryJewelryTheme");
+    document.body.classList.toggle("dark-mode", savedTheme === "dark");
 
-
-    /* ------------------------------------
-       LOAD SAVED THEME
-    ------------------------------------ */
-
-    const savedTheme =
-        localStorage.getItem("luxuryJewelryTheme");
-
-    if (savedTheme === "dark") {
-        document.body.classList.add("dark-mode");
-    } else {
-        document.body.classList.remove("dark-mode");
-    }
-
-
-    /* ------------------------------------
-       LOAD NAVBAR HTML
-    ------------------------------------ */
-
+    // Load the shared navbar component.
     fetch("components/navbar.html")
+
+
         .then(function (response) {
 
             if (!response.ok) {
-                throw new Error(
-                    "Navbar file could not be loaded."
-                );
+                throw new Error("Navbar file could not be loaded.");
             }
 
             return response.text();
 
         })
+
         .then(function (data) {
 
             navbarContainer.innerHTML = data;
 
-            /*
-               IMPORTANT:
-               Navbar is loaded dynamically.
-               All Navbar functions must run
-               AFTER navbar.html is inserted.
-            */
 
             initializeNavbar();
 
         })
         .catch(function (error) {
-
-            console.error(
-                "Navbar Error:",
-                error
-            );
-
+            console.error("Navbar Error:", error);
         });
 
 });
 
 
-/* ========================================
-   NAVBAR FUNCTIONS
-======================================== */
+/* =====================================================
+   2. INITIALIZE NAVBAR
+   Starts all navbar features after the HTML is loaded.
+===================================================== */
 
 function initializeNavbar() {
-
+    // Highlight the link for the current page.
     const currentPage =
-        window.location.pathname.split("/").pop() ||
-        "index.html";
+        window.location.pathname.split("/").pop() || "index.html";
 
+    document.querySelectorAll(".nav-links a").forEach(function (link) {
+        const href = (link.getAttribute("href") || "")
+            .split("?")[0]
+            .split("#")[0]
+            .split("/")
+            .pop();
 
-    /* ------------------------------------
-       ACTIVE NAV LINK
-    ------------------------------------ */
-
-    const navLinks =
-        document.querySelectorAll(".nav-links a");
-
-    navLinks.forEach(function (link) {
-
-        const linkPage =
-            link.getAttribute("href");
-
-        if (linkPage === currentPage) {
-
+        if (href === currentPage) {
             link.classList.add("active");
 
         }
 
     });
-
-
-    /* ------------------------------------
-       AUTH PROTECTION
-       MUST RUN AFTER NAVBAR LOADS
-    ------------------------------------ */
+    
 
     initializeNavbarAuthProtection();
-
-
-    /* ------------------------------------
-       MOBILE MENU
-    ------------------------------------ */
-
-    const menuToggle =
-        document.getElementById("menuToggle");
-
-    const navLinksContainer =
-        document.getElementById("navLinks");
-
-    if (menuToggle && navLinksContainer) {
-
-        menuToggle.addEventListener(
-            "click",
-            function () {
-
-                navLinksContainer.classList.toggle(
-                    "active"
-                );
-
-                const isOpen =
-                    navLinksContainer.classList.contains(
-                        "active"
-                    );
-
-                menuToggle.setAttribute(
-                    "aria-label",
-                    isOpen
-                        ? "Close Menu"
-                        : "Open Menu"
-                );
-
-            }
-        );
-
-
-        navLinksContainer
-            .querySelectorAll("a")
-            .forEach(function (link) {
-
-                link.addEventListener(
-                    "click",
-                    function () {
-
-                        navLinksContainer.classList.remove(
-                            "active"
-                        );
-
-                        menuToggle.setAttribute(
-                            "aria-label",
-                            "Open Menu"
-                        );
-
-                    }
-                );
-
-            });
-
-    }
-
-
-    /* ------------------------------------
-       DARK / LIGHT MODE
-    ------------------------------------ */
-
-    const themeToggle =
-        document.getElementById("themeToggle");
-
-    if (themeToggle) {
-
-        const isDark =
-            document.body.classList.contains(
-                "dark-mode"
-            );
-
-        themeToggle.textContent =
-            isDark ? "☀" : "☾";
-
-
-        themeToggle.addEventListener(
-            "click",
-            function () {
-
-                document.body.classList.toggle(
-                    "dark-mode"
-                );
-
-                const darkMode =
-                    document.body.classList.contains(
-                        "dark-mode"
-                    );
-
-                localStorage.setItem(
-                    "luxuryJewelryTheme",
-                    darkMode
-                        ? "dark"
-                        : "light"
-                );
-
-                themeToggle.textContent =
-                    darkMode ? "☀" : "☾";
-
-            }
-        );
-
-    }
-
-
-    /* ------------------------------------
-       SEARCH
-    ------------------------------------ */
-
+    initializeMobileMenu();
+    initializeThemeToggle();
     setupSearch();
-
-
-    /* ------------------------------------
-       ACCOUNT
-    ------------------------------------ */
-
     initializeAccount();
 
-
-    /* ------------------------------------
-       CART COUNT
-    ------------------------------------ */
-
+    // Show the current user's cart and favorites counts.
     updateCartCount();
-
-
-    /* ------------------------------------
-       FAVORITES COUNT
-    ------------------------------------ */
-
     updateFavoriteCount();
-
 }
 
 
-/* ========================================
-   AUTH PROTECTION FOR NAVBAR
-======================================== */
+/* =====================================================
+   3. AUTHENTICATION HELPERS
+   Reads the logged-in user and creates consistent
+   user-specific storage keys.
+===================================================== */
+
+function getNavbarLoggedInUser() {
+    try {
+        const savedUser = localStorage.getItem(
+            "luxuryJewelryLoggedInUser"
+        );
+
+        if (!savedUser) return null;
+
+        const user = JSON.parse(savedUser);
+
+        return user && typeof user === "object" ? user : null;
+    } catch (error) {
+        console.error("Logged-in user error:", error);
+        return null;
+    }
+}
+
+function isNavbarLoggedIn() {
+    return !!getNavbarLoggedInUser();
+}
+
+function getNavbarCurrentUserKey() {
+    const user = getNavbarLoggedInUser();
+
+    if (!user) return null;
+
+    // Use the same user identifier across all project files.
+    const userId = user.id || user.userId || user.email;
+
+    if (!userId) return null;
+
+    return String(userId)
+        .trim()
+        .toLowerCase()
+        .replace(/[^a-z0-9_-]/g, "_");
+}
+
+function getNavbarProfileStorageKey() {
+    const userKey = getNavbarCurrentUserKey();
+
+    return userKey
+        ? "luxuryJewelryProfile_" + userKey
+        : null;
+}
+
+
+/* =====================================================
+   4. AUTHENTICATION NOTIFICATION
+   Displays a message when a guest opens a protected link.
+===================================================== */
+
+function showNavbarAuthMessage(message) {
+    let notification = document.getElementById(
+        "luxuryAuthNotification"
+    );
+
+    if (!notification) {
+        notification = document.createElement("div");
+        notification.id = "luxuryAuthNotification";
+        notification.className = "luxury-auth-notification";
+
+        document.body.appendChild(notification);
+    }
+
+    notification.textContent = message;
+    notification.classList.add("show");
+
+    // Clear the previous timer before starting another.
+    if (notification.hideTimer) {
+        clearTimeout(notification.hideTimer);
+    }
+
+    notification.hideTimer = setTimeout(function () {
+        notification.classList.remove("show");
+    }, 2500);
+}
+
+
+/* =====================================================
+   5. PROTECT PRIVATE PAGES
+   Requires login before opening account-related pages.
+===================================================== */
 
 function initializeNavbarAuthProtection() {
-
-    const loggedInUser =
-        getNavbarLoggedInUser();
-
-    const isLoggedIn =
-        !!loggedInUser;
-
-
-    /*
-       Login and Sign Up are ALWAYS allowed.
-    */
-
-
-    /* ------------------------------------
-       PROTECTED NAVIGATION LINKS
-    ------------------------------------ */
-
     const protectedPages = [
-        "index.html",
-        "shop.html",
-        "collections.html",
-        "collection.html",
-        "product-details.html",
-        "about.html",
-        "faq.html",
-        "shipping-returns.html",
-        "contact.html",
         "cart.html",
         "wishlist.html",
         "favorites.html",
+        "saved-jobs.html",
         "account.html",
         "profile.html"
     ];
 
+    document.querySelectorAll("a[href]").forEach(function (link) {
+        const href = link.getAttribute("href");
 
-    if (!isLoggedIn) {
-
-        /*
-           Protect navbar links.
-           Login and Sign Up are excluded.
-        */
-
-        document
-            .querySelectorAll(".nav-links a")
-            .forEach(function (link) {
-
-                const href =
-                    link.getAttribute("href");
-
-                if (!href) {
-                    return;
-                }
-
-
-                /*
-                   Login and Sign Up
-                   remain accessible.
-                */
-
-                if (
-                    link.id === "loginNavLink" ||
-                    link.id === "signupNavLink"
-                ) {
-                    return;
-                }
-
-
-                const linkPage =
-                    href
-                        .split("?")[0]
-                        .split("#")[0]
-                        .split("/")
-                        .pop()
-                        .toLowerCase();
-
-
-                if (
-                    protectedPages.includes(
-                        linkPage
-                    )
-                ) {
-
-                    link.addEventListener(
-                        "click",
-                        function (event) {
-
-                            event.preventDefault();
-                            event.stopPropagation();
-
-                            showNavbarAuthMessage(
-                                "Please login to access this page."
-                            );
-
-                            return false;
-
-                        },
-                        true
-                    );
-
-                }
-
-            });
-
-
-        /* --------------------------------
-           LOGO / HOME
-        -------------------------------- */
-
-        const navbarLogo =
-            document.querySelector(
-                ".navbar-logo"
-            );
-
-        if (navbarLogo) {
-
-            navbarLogo.addEventListener(
-                "click",
-                function (event) {
-
-                    event.preventDefault();
-                    event.stopPropagation();
-
-                    showNavbarAuthMessage(
-                        "Please login to access Home."
-                    );
-
-                    return false;
-
-                },
-                true
-            );
-
+        if (
+            !href ||
+            href.startsWith("#") ||
+            href.startsWith("javascript:")
+        ) {
+            return;
         }
 
+        const linkPage = href
+            .split("?")[0]
+            .split("#")[0]
+            .split("/")
+            .pop()
+            .toLowerCase();
 
-        /* --------------------------------
-           SEARCH
-        -------------------------------- */
+        if (!protectedPages.includes(linkPage)) return;
 
-        const searchButton =
-            document.getElementById("searchBtn");
+        // Prevent the same guard from being added twice.
+        if (link.dataset.authGuardAdded === "true") return;
 
-        if (searchButton) {
+        link.dataset.authGuardAdded = "true";
 
-            searchButton.addEventListener(
-                "click",
-                function (event) {
+        link.addEventListener("click", function (event) {
+            if (isNavbarLoggedIn()) return;
 
-                    event.preventDefault();
-                    event.stopPropagation();
+            event.preventDefault();
+            event.stopPropagation();
 
-                    showNavbarAuthMessage(
-                        "Please login to use Search."
-                    );
-
-                    return false;
-
-                },
-                true
+            showNavbarAuthMessage(
+                "Please login to access this feature."
             );
-
-        }
-
-
-        /* --------------------------------
-           FAVORITES
-        -------------------------------- */
-
-        const favoriteButton =
-            document.querySelector(
-                ".wishlist-icon"
-            );
-
-        if (favoriteButton) {
-
-            favoriteButton.addEventListener(
-                "click",
-                function (event) {
-
-                    event.preventDefault();
-                    event.stopPropagation();
-
-                    showNavbarAuthMessage(
-                        "Please login to use Favorites."
-                    );
-
-                    return false;
-
-                },
-                true
-            );
-
-        }
-
-
-        /* --------------------------------
-           CART
-        -------------------------------- */
-
-        const cartButton =
-            document.querySelector(
-                ".cart-icon"
-            );
-
-        if (cartButton) {
-
-            cartButton.addEventListener(
-                "click",
-                function (event) {
-
-                    event.preventDefault();
-                    event.stopPropagation();
-
-                    showNavbarAuthMessage(
-                        "Please login to use your Cart."
-                    );
-
-                    return false;
-
-                },
-                true
-            );
-
-        }
-
-
-        /* --------------------------------
-           ACCOUNT
-        -------------------------------- */
-
-        const accountButton =
-            document.getElementById(
-                "accountButton"
-            );
-
-        if (accountButton) {
-
-            accountButton.addEventListener(
-                "click",
-                function (event) {
-
-                    event.preventDefault();
-                    event.stopPropagation();
-
-                    showNavbarAuthMessage(
-                        "Please login to access your account."
-                    );
-
-                    return false;
-
-                },
-                true
-            );
-
-        }
-
-    }
-
+        });
+    });
 }
 
 
-/* ========================================
-   AUTH MESSAGE
-======================================== */
+/* =====================================================
+   6. MOBILE MENU
+   Opens and closes navigation links on small screens.
+===================================================== */
 
-function showNavbarAuthMessage(message) {
+function initializeMobileMenu() {
+    const menuToggle = document.getElementById("menuToggle");
+    const navLinksContainer = document.getElementById("navLinks");
 
-    let notification =
-        document.getElementById(
-            "luxuryAuthNotification"
+    if (!menuToggle || !navLinksContainer) return;
+
+    // Avoid adding the same click handler more than once.
+    if (menuToggle.dataset.menuHandlerAdded === "true") return;
+
+    menuToggle.dataset.menuHandlerAdded = "true";
+
+    menuToggle.addEventListener("click", function () {
+        const isOpen = navLinksContainer.classList.toggle("active");
+
+        menuToggle.setAttribute("aria-expanded", String(isOpen));
+        menuToggle.setAttribute(
+            "aria-label",
+            isOpen ? "Close Menu" : "Open Menu"
         );
+    });
 
-
-    if (!notification) {
-
-        notification =
-            document.createElement(
-                "div"
-            );
-
-        notification.id =
-            "luxuryAuthNotification";
-
-        notification.className =
-            "luxury-auth-notification";
-
-        document.body.appendChild(
-            notification
-        );
-
-    }
-
-
-    notification.textContent =
-        message;
-
-
-    notification.classList.add(
-        "show"
-    );
-
-
-    clearTimeout(
-        notification.hideTimer
-    );
-
-
-    notification.hideTimer =
-        setTimeout(
-            function () {
-
-                notification.classList.remove(
-                    "show"
-                );
-
-            },
-            2500
-        );
-
+    navLinksContainer.querySelectorAll("a").forEach(function (link) {
+        link.addEventListener("click", function () {
+            navLinksContainer.classList.remove("active");
+            menuToggle.setAttribute("aria-expanded", "false");
+            menuToggle.setAttribute("aria-label", "Open Menu");
+        });
+    });
 }
 
 
-/* ========================================
-   SEARCH FUNCTIONS
-======================================== */
+/* =====================================================
+   7. DARK / LIGHT MODE
+   Saves the selected theme for future visits.
+===================================================== */
+
+function initializeThemeToggle() {
+    const themeToggle = document.getElementById("themeToggle");
+
+    if (!themeToggle) return;
+
+    function updateThemeIcon() {
+        const isDark = document.body.classList.contains("dark-mode");
+
+        themeToggle.textContent = isDark ? "☀" : "☾";
+
+        themeToggle.setAttribute(
+            "aria-label",
+            isDark ? "Switch to Light Mode" : "Switch to Dark Mode"
+        );
+    }
+
+    updateThemeIcon();
+
+    // Prevent duplicate theme click handlers.
+    if (themeToggle.dataset.themeHandlerAdded === "true") return;
+
+    themeToggle.dataset.themeHandlerAdded = "true";
+
+    themeToggle.addEventListener("click", function () {
+        document.body.classList.toggle("dark-mode");
+
+        const isDark = document.body.classList.contains("dark-mode");
+
+        localStorage.setItem(
+            "luxuryJewelryTheme",
+            isDark ? "dark" : "light"
+        );
+
+        updateThemeIcon();
+    });
+}
+
+
+/* =====================================================
+   8. SEARCH
+   Opens the search panel and redirects to matching
+   shop results when the user submits a search.
+===================================================== */
 
 function setupSearch() {
+    const searchBtn = document.getElementById("searchBtn");
+    const searchOverlay = document.getElementById("searchOverlay");
+    const searchBackdrop = document.getElementById("searchBackdrop");
+    const closeSearch = document.getElementById("closeSearch");
+    const searchInput = document.getElementById("navbarSearchInput");
+    const clearSearch = document.getElementById("clearSearch");
 
-    const searchBtn =
-        document.getElementById("searchBtn");
+    if (!searchBtn || !searchOverlay || !searchInput) return;
 
-    const searchOverlay =
-        document.getElementById("searchOverlay");
+    // Avoid registering duplicate search handlers.
+    if (searchBtn.dataset.searchHandlerAdded === "true") return;
 
-    const searchBackdrop =
-        document.getElementById("searchBackdrop");
+    searchBtn.dataset.searchHandlerAdded = "true";
 
-    const closeSearch =
-        document.getElementById("closeSearch");
+    function openSearchPanel() {
+        searchOverlay.classList.add("active");
+        searchOverlay.setAttribute("aria-hidden", "false");
+        document.body.classList.add("search-open");
 
-    const searchInput =
-        document.getElementById(
-            "navbarSearchInput"
-        );
+        searchBtn.setAttribute("aria-expanded", "true");
 
-    const clearSearch =
-        document.getElementById("clearSearch");
-
-
-    if (
-        !searchBtn ||
-        !searchOverlay ||
-        !searchInput
-    ) {
-
-        console.warn(
-            "Navbar Search elements were not found."
-        );
-
-        return;
-
+        setTimeout(function () {
+            searchInput.focus();
+        }, 250);
     }
-
-
-    /* ------------------------------------
-       OPEN SEARCH
-    ------------------------------------ */
-
-    searchBtn.addEventListener(
-        "click",
-        function () {
-
-            /*
-               Do not open Search
-               if user is not logged in.
-            */
-
-            if (!getNavbarLoggedInUser()) {
-
-                showNavbarAuthMessage(
-                    "Please login to use Search."
-                );
-
-                return;
-
-            }
-
-
-            searchOverlay.classList.add(
-                "active"
-            );
-
-            document.body.classList.add(
-                "search-open"
-            );
-
-
-            setTimeout(
-                function () {
-
-                    searchInput.focus();
-
-                },
-                250
-            );
-
-        }
-    );
-
-
-    /* ------------------------------------
-       CLOSE SEARCH
-    ------------------------------------ */
 
     function closeSearchPanel() {
+        searchOverlay.classList.remove("active");
+        searchOverlay.setAttribute("aria-hidden", "true");
+        document.body.classList.remove("search-open");
 
-        searchOverlay.classList.remove(
-            "active"
-        );
-
-        document.body.classList.remove(
-            "search-open"
-        );
-
+        searchBtn.setAttribute("aria-expanded", "false");
         searchInput.value = "";
 
-
         if (clearSearch) {
-
-            clearSearch.classList.remove(
-                "visible"
-            );
-
+            clearSearch.classList.remove("visible");
         }
-
     }
 
+    function performSearch(query) {
+        const value = query.trim();
+
+        if (!value) {
+            searchInput.focus();
+            return;
+        }
+
+        window.location.href =
+            "shop.html?search=" + encodeURIComponent(value);
+    }
+
+    searchBtn.addEventListener("click", openSearchPanel);
 
     if (closeSearch) {
-
-        closeSearch.addEventListener(
-            "click",
-            function () {
-
-                closeSearchPanel();
-
-            }
-        );
+        closeSearch.addEventListener("click", closeSearchPanel);
 
     }
 
 
     if (searchBackdrop) {
-
-        searchBackdrop.addEventListener(
-            "click",
-            function () {
-
-                closeSearchPanel();
-
-            }
-        );
-
+        searchBackdrop.addEventListener("click", closeSearchPanel);
     }
 
 
-    /* ------------------------------------
-       ESC KEY
-    ------------------------------------ */
-
-    document.addEventListener(
-        "keydown",
-        function (event) {
-
-            if (
-                event.key === "Escape" &&
-                searchOverlay.classList.contains(
-                    "active"
-                )
-            ) {
-
-                closeSearchPanel();
-
-            }
-
+    document.addEventListener("keydown", function (event) {
+        if (
+            event.key === "Escape" &&
+            searchOverlay.classList.contains("active")
+        ) {
+            closeSearchPanel();
         }
-    );
+    });
 
+    searchInput.addEventListener("input", function () {
+        if (!clearSearch) return;
 
-    /* ------------------------------------
-       SEARCH INPUT
-    ------------------------------------ */
-
-    searchInput.addEventListener(
-        "input",
-        function () {
-
-            if (!clearSearch) {
-                return;
-            }
-
-
-            if (
-                searchInput.value.trim() !== ""
-            ) {
-
-                clearSearch.classList.add(
-                    "visible"
-                );
-
-            } else {
-
-                clearSearch.classList.remove(
-                    "visible"
-                );
-
-            }
-
-        }
-    );
-
-
-    /* ------------------------------------
-       CLEAR SEARCH
-    ------------------------------------ */
+        clearSearch.classList.toggle(
+            "visible",
+            searchInput.value.trim() !== ""
+        );
+    });
 
     if (clearSearch) {
-
-        clearSearch.addEventListener(
-            "click",
-            function () {
-
-                searchInput.value = "";
-
-                clearSearch.classList.remove(
-                    "visible"
-                );
-
-                searchInput.focus();
-
-            }
-        );
-
+        clearSearch.addEventListener("click", function () {
+            searchInput.value = "";
+            clearSearch.classList.remove("visible");
+            searchInput.focus();
+        });
     }
 
-
-    /* ------------------------------------
-       POPULAR SEARCHES
-    ------------------------------------ */
-
-    const popularButtons =
-        document.querySelectorAll(
-            ".popular-searches button"
-        );
-
-
-    popularButtons.forEach(
+    document.querySelectorAll(".popular-searches button").forEach(
         function (button) {
-
-            button.addEventListener(
-                "click",
-                function () {
-
-                    if (!getNavbarLoggedInUser()) {
-
-                        showNavbarAuthMessage(
-                            "Please login to use Search."
-                        );
-
-                        return;
-
-                    }
-
-
-                    const value =
-                        button.dataset.search || "";
-
-
-                    if (!value.trim()) {
-                        return;
-                    }
-
-
-                    window.location.href =
-                        "shop.html?search=" +
-                        encodeURIComponent(
-                            value.trim()
-                        );
-
-                }
-            );
-
+            button.addEventListener("click", function () {
+                performSearch(button.dataset.search || "");
+            });
         }
     );
 
-
-    /* ------------------------------------
-       ENTER KEY SEARCH
-    ------------------------------------ */
-
-    searchInput.addEventListener(
-        "keydown",
-        function (event) {
-
-            if (event.key !== "Enter") {
-                return;
-            }
-
-
-            if (!getNavbarLoggedInUser()) {
-
-                showNavbarAuthMessage(
-                    "Please login to use Search."
-                );
-
-                return;
-
-            }
-
-
-            const query =
-                searchInput.value.trim();
-
-
-            if (!query) {
-                return;
-            }
-
-
-            window.location.href =
-                "shop.html?search=" +
-                encodeURIComponent(query);
-
+    searchInput.addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+            performSearch(searchInput.value);
         }
-    );
-
+    });
 }
 
 
-/* ========================================
-   GET LOGGED IN USER
-======================================== */
-
-function getNavbarLoggedInUser() {
-
-    try {
-
-        const savedUser =
-            localStorage.getItem(
-                "luxuryJewelryLoggedInUser"
-            );
-
-
-        if (!savedUser) {
-            return null;
-        }
-
-
-        return JSON.parse(savedUser);
-
-    } catch (error) {
-
-        console.error(
-            "Logged in user error:",
-            error
-        );
-
-        return null;
-
-    }
-
-}
-
-
-/* ========================================
-   GET CURRENT USER KEY
-======================================== */
-
-function getNavbarCurrentUserKey() {
-
-    const user =
-        getNavbarLoggedInUser();
-
-
-    if (!user) {
-        return null;
-    }
-
-
-    const userId =
-        user.id ||
-        user.userId ||
-        user.email;
-
-
-    if (!userId) {
-        return null;
-    }
-
-
-    return String(userId)
-        .trim()
-        .toLowerCase()
-        .replace(
-            /[^a-z0-9_-]/g,
-            "_"
-        );
-
-}
-
-
-/* ========================================
-   GET CURRENT USER PROFILE KEY
-======================================== */
-
-function getNavbarProfileStorageKey() {
-
-    const userKey =
-        getNavbarCurrentUserKey();
-
-
-    if (!userKey) {
-        return null;
-    }
-
-
-    return (
-        "luxuryJewelryProfile_" +
-        userKey
-    );
-
-}
-
-
-/* ========================================
-   ACCOUNT FUNCTIONS
-======================================== */
-
+/* =====================================================
+   9. ACCOUNT MENU
+   Shows the account menu, profile link, and logout
+   button according to the current login status.
+===================================================== */
+/* =====================================================
+   9. ACCOUNT MENU
+===================================================== */
 function initializeAccount() {
-
-    const loginNavLink =
-        document.getElementById(
-            "loginNavLink"
-        );
-
-    const signupNavLink =
-        document.getElementById(
-            "signupNavLink"
-        );
-
-    const accountMenu =
-        document.getElementById(
-            "accountMenu"
-        );
-
-    const accountButton =
-        document.getElementById(
-            "accountButton"
-        );
-
-    const accountDropdown =
-        document.getElementById(
-            "accountDropdown"
-        );
-
-    const logoutButton =
-        document.getElementById(
-            "logoutButton"
-        );
-
-
-    const loggedInUser =
-        getNavbarLoggedInUser();
-
-
-    const isLoggedIn =
-        !!loggedInUser;
-
-
-    /* ------------------------------------
-       NOT LOGGED IN
-    ------------------------------------ */
-
-    if (!isLoggedIn) {
-
-        if (loginNavLink) {
-
-            loginNavLink.style.display = "";
-
-        }
-
-
-        if (signupNavLink) {
-
-            signupNavLink.style.display = "";
-
-        }
-
-
-        if (accountMenu) {
-
-            accountMenu.style.display = "none";
-
-        }
-
-
-        resetAccountButton();
-
+    const accountMenu = document.getElementById("accountMenu");
+    const accountButton = document.getElementById("accountButton");
+    const accountDropdown = document.getElementById("accountDropdown");
+    if (!accountMenu || !accountButton || !accountDropdown) {
+        console.warn("Account elements were not found in navbar.html.");
         return;
-
     }
-
-
-    /* ------------------------------------
-       LOGGED IN
-    ------------------------------------ */
-
+    const user = getNavbarLoggedInUser();
+    const isLoggedIn = Boolean(user);
+    const loginNavLink = document.getElementById("loginNavLink");
+    const signupNavLink = document.getElementById("signupNavLink");
+    const accountLoginLink = document.getElementById("accountLoginLink");
+    const accountSignupLink = document.getElementById("accountSignupLink");
+    const profileNavLink = document.getElementById("profileNavLink");
+    const logoutButton = document.getElementById("logoutButton");
+    // Keep the account icon visible for guests and logged-in users.
+    accountMenu.style.display = "";
+    // Hide Login and Sign Up only when the user is logged in.
     if (loginNavLink) {
-
-        loginNavLink.style.display = "none";
-
+        loginNavLink.hidden = isLoggedIn;
+        loginNavLink.style.display = isLoggedIn ? "none" : "";
     }
-
-
     if (signupNavLink) {
-
-        signupNavLink.style.display = "none";
-
+        signupNavLink.hidden = isLoggedIn;
+        signupNavLink.style.display = isLoggedIn ? "none" : "";
     }
-
-
-    if (accountMenu) {
-
-        accountMenu.style.display = "flex";
-
+    // Control the links inside the account dropdown.
+    if (accountLoginLink) {
+        accountLoginLink.hidden = isLoggedIn;
+        accountLoginLink.style.display = isLoggedIn ? "none" : "";
     }
-
-
-    /* ------------------------------------
-       PROFILE PHOTO
-    ------------------------------------ */
-
-    updateAccountProfilePhoto();
-
-
-    /* ------------------------------------
-       ACCOUNT DROPDOWN
-    ------------------------------------ */
-
-    if (
-        accountButton &&
-        accountDropdown
-    ) {
-
-        accountButton.addEventListener(
-            "click",
-            function (event) {
-
-                event.stopPropagation();
-
-
-                accountDropdown.classList.toggle(
-                    "active"
-                );
-
-
-                const isOpen =
-                    accountDropdown.classList.contains(
-                        "active"
-                    );
-
-
-                accountButton.setAttribute(
-                    "aria-expanded",
-                    isOpen
-                        ? "true"
-                        : "false"
-                );
-
-            }
-        );
-
+    if (accountSignupLink) {
+        accountSignupLink.hidden = isLoggedIn;
+        accountSignupLink.style.display = isLoggedIn ? "none" : "";
     }
-
-
-    /* ------------------------------------
-       LOGOUT
-    ------------------------------------ */
-
+    if (profileNavLink) {
+        profileNavLink.hidden = !isLoggedIn;
+        profileNavLink.style.display = isLoggedIn ? "" : "none";
+    }
     if (logoutButton) {
-
-        logoutButton.addEventListener(
-            "click",
-            function () {
-
-                if (accountDropdown) {
-
-                    accountDropdown.classList.remove(
-                        "active"
-                    );
-
-                }
-
-
-                if (accountButton) {
-
-                    accountButton.setAttribute(
-                        "aria-expanded",
-                        "false"
-                    );
-
-                }
-
-
-                localStorage.removeItem(
-                    "luxuryJewelryLoggedInUser"
-                );
-
-
-                resetAccountButton();
-
-
-                window.location.href =
-                    "index.html";
-
-            }
-        );
-
+        logoutButton.hidden = !isLoggedIn;
+        logoutButton.style.display = isLoggedIn ? "" : "none";
     }
-
-
-    /* ------------------------------------
-       CLOSE ACCOUNT DROPDOWN
-    ------------------------------------ */
-
-    document.addEventListener(
-        "click",
-        function (event) {
-
-            if (
-                accountMenu &&
-                !accountMenu.contains(
-                    event.target
-                )
-            ) {
-
-                if (accountDropdown) {
-
-                    accountDropdown.classList.remove(
-                        "active"
-                    );
-
-                }
-
-
-                if (accountButton) {
-
-                    accountButton.setAttribute(
-                        "aria-expanded",
-                        "false"
-                    );
-
-                }
-
+    // Close the dropdown when refreshing account information.
+    accountDropdown.hidden = true;
+    accountDropdown.classList.remove("active");
+    accountButton.setAttribute("aria-expanded", "false");
+    // Preserve the existing profile photo or show the user icon/initial.
+    if (isLoggedIn) {
+        updateAccountProfilePhoto();
+    } else {
+        resetAccountButton();
+    }
+    // Register the account button click handler only once.
+    if (accountButton.dataset.accountHandlerAdded !== "true") {
+        accountButton.dataset.accountHandlerAdded = "true";
+        accountButton.addEventListener("click", function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            if (!isNavbarLoggedIn()) {
+                window.location.href = "login.html";
+                return;
             }
-
-        }
-    );
-
+            const isOpen =
+                accountButton.getAttribute("aria-expanded") === "true";
+            accountDropdown.hidden = isOpen;
+            accountDropdown.classList.toggle("active", !isOpen);
+            accountButton.setAttribute("aria-expanded", String(!isOpen));
+        });
+    }
+    // Close the dropdown when clicking outside the account menu.
+    if (accountMenu.dataset.outsideClickHandlerAdded !== "true") {
+        accountMenu.dataset.outsideClickHandlerAdded = "true";
+        document.addEventListener("click", function (event) {
+            if (!accountMenu.contains(event.target)) {
+                accountDropdown.hidden = true;
+                accountDropdown.classList.remove("active");
+                accountButton.setAttribute("aria-expanded", "false");
+            }
+        });
+    }
+    // Log out without deleting the saved profile photo.
+    if (
+        logoutButton &&
+        logoutButton.dataset.logoutHandlerAdded !== "true"
+    ) {
+        logoutButton.dataset.logoutHandlerAdded = "true";
+        logoutButton.addEventListener("click", function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            const confirmed = window.confirm(
+                "Are you sure you want to log out?"
+            );
+            if (!confirmed) {
+                return;
+            }
+            localStorage.removeItem("luxuryJewelryLoggedInUser");
+            localStorage.removeItem("luxuryJewelryRememberMe");
+            window.dispatchEvent(new Event("loginStatusChanged"));
+            window.location.href = "index.html";
+        });
+    }
 }
 
-
-/* ========================================
-   RESET ACCOUNT BUTTON
-======================================== */
+/* =====================================================
+   10. RESET ACCOUNT BUTTON
+   Restores the default user icon when no avatar is used.
+===================================================== */
 
 function resetAccountButton() {
+    const accountButton = document.getElementById("accountButton");
 
-    const accountButton =
-        document.getElementById(
-            "accountButton"
-        );
-
-
-    if (!accountButton) {
-        return;
-    }
-
+    if (!accountButton) return;
 
     accountButton.innerHTML = `
-        <span
-            class="account-icon"
-            id="accountIcon"
-        >
-            👤
+        <span class="account-icon" id="accountIcon">
+            <i class="fa-solid fa-user" aria-hidden="true"></i>
         </span>
     `;
 
-
-    accountButton.classList.remove(
-        "has-avatar"
-    );
-
-
-    accountButton.setAttribute(
-        "aria-label",
-        "Account"
-    );
-
+    accountButton.classList.remove("has-avatar");
+    accountButton.setAttribute("aria-label", "Account");
 }
 
 
-/* ========================================
-   UPDATE ACCOUNT PROFILE PHOTO
-======================================== */
+/* =====================================================
+   11. UPDATE ACCOUNT PROFILE PHOTO
+   Always displays the latest saved profile photo.
+===================================================== */
 
 function updateAccountProfilePhoto() {
-
     const accountButton =
-        document.getElementById(
-            "accountButton"
-        );
+        document.getElementById("accountButton");
 
+    const user = getNavbarLoggedInUser();
 
-    if (!accountButton) {
-        return;
-    }
+    if (!accountButton) return;
 
-
-    const loggedInUser =
-        getNavbarLoggedInUser();
-
-
-    if (!loggedInUser) {
-
+    if (!user) {
         resetAccountButton();
-
         return;
-
     }
 
+    let photo = "";
 
-    const profileKey =
-        getNavbarProfileStorageKey();
+    // Read the latest photo saved in the profile.
+    const profileKey = getNavbarProfileStorageKey();
 
+    if (profileKey) {
+        try {
+            const savedProfile =
+                localStorage.getItem(profileKey);
 
-    if (!profileKey) {
+            const profile = savedProfile
+                ? JSON.parse(savedProfile)
+                : null;
 
+            if (profile && profile.photo) {
+                photo = profile.photo;
+            }
+        } catch (error) {
+            console.error("Profile photo error:", error);
+        }
+    }
+
+    // Use the signup photo if no profile photo exists.
+    if (!photo) {
+        photo = user.profileImage || user.photo || "";
+    }
+
+    const displayName =
+        user.fullName ||
+        user.name ||
+        user.email ||
+        "My Account";
+
+    // Display the default icon if no photo exists.
+    if (!photo) {
         resetAccountButton();
-
-        return;
-
-    }
-
-
-    let profile = null;
-
-
-    try {
-
-        profile =
-            JSON.parse(
-                localStorage.getItem(
-                    profileKey
-                )
-            );
-
-    } catch (error) {
-
-        console.error(
-            "Profile data error:",
-            error
-        );
-
-        profile = null;
-
-    }
-
-
-    const profilePhoto =
-        profile &&
-        profile.photo
-            ? profile.photo
-            : "";
-
-
-    if (profilePhoto) {
-
-        accountButton.innerHTML = `
-            <img
-                src="${profilePhoto}"
-                class="account-avatar visible"
-                id="accountAvatar"
-                alt="Profile"
-            >
-        `;
-
-
-        accountButton.classList.add(
-            "has-avatar"
-        );
-
 
         accountButton.setAttribute(
             "aria-label",
-            "Profile"
+            "Account: " + displayName
         );
 
-    } else {
+        return;
+    }
 
+    // Create the latest profile avatar.
+    const avatar = document.createElement("img");
+
+    avatar.src = photo;
+    avatar.className = "account-avatar visible";
+    avatar.id = "accountAvatar";
+    avatar.alt = "Profile";
+
+    // Restore the default icon if the image fails to load.
+    avatar.onerror = function () {
         resetAccountButton();
 
-    }
+        accountButton.setAttribute(
+            "aria-label",
+            "Account: " + displayName
+        );
+    };
 
+    accountButton.replaceChildren(avatar);
+    accountButton.classList.add("has-avatar");
+
+    accountButton.setAttribute(
+        "aria-label",
+        "Account: " + displayName
+    );
 }
+/* =====================================================
+   15. REFRESH NAVBAR DATA
+   Updates counters and profile information after changes
+   in the current tab or another browser tab.
+===================================================== */
 
+// Refresh the profile photo after it has been changed.
+window.addEventListener("profilePhotoUpdated", function () {
+    updateAccountProfilePhoto();
+});
 
-/* ========================================
-   PROFILE PHOTO UPDATE EVENT
-======================================== */
+// Refresh the cart after products are added or removed.
+window.addEventListener("cartUpdated", function () {
+    updateCartCount();
+});
 
-window.addEventListener(
-    "profilePhotoUpdated",
-    function () {
+// Refresh favorites after an item is added or removed.
+window.addEventListener("favoritesUpdated", function () {
+    updateFavoriteCount();
+});
 
+// Refresh account information and counters after login/logout.
+window.addEventListener("loginStatusChanged", function () {
+    initializeAccount();
+    updateCartCount();
+    updateFavoriteCount();
+});
+
+// Detect changes made in other browser tabs.
+window.addEventListener("storage", function (event) {
+    if (event.key === "luxuryJewelryLoggedInUser") {
+        initializeAccount();
+        updateCartCount();
+        updateFavoriteCount();
+        return;
+    }
+
+    // Refresh the avatar when the current user's profile changes.
+    if (event.key === getNavbarProfileStorageKey()) {
         updateAccountProfilePhoto();
-
-    }
-);
-
-
-/* ========================================
-   PROFILE PHOTO FROM OTHER TABS
-======================================== */
-
-window.addEventListener(
-    "storage",
-    function (event) {
-
-        const currentProfileKey =
-            getNavbarProfileStorageKey();
-
-
-        if (
-            currentProfileKey &&
-            event.key === currentProfileKey
-        ) {
-
-            updateAccountProfilePhoto();
-
-        }
-
-
-        if (
-            event.key ===
-            "luxuryJewelryLoggedInUser"
-        ) {
-
-            const loggedInUser =
-                getNavbarLoggedInUser();
-
-
-            if (loggedInUser) {
-
-                updateAccountProfilePhoto();
-
-            } else {
-
-                resetAccountButton();
-
-            }
-
-        }
-
-    }
-);
-
-
-/* ========================================
-   GET CURRENT USER CART KEY
-======================================== */
-
-function getNavbarCartStorageKey() {
-
-    const userKey =
-        getNavbarCurrentUserKey();
-
-
-    if (!userKey) {
-        return null;
     }
 
+    // Refresh favorites for any user-specific favorites key.
+    if (
+        event.key &&
+        event.key.startsWith("luxuryJewelryFavorites_")
+    ) {
+        updateFavoriteCount();
+    }
 
-    return (
-        "luxuryJewelryCart_" +
-        userKey
+    // Refresh the cart for any user-specific cart key.
+    if (
+        event.key &&
+        event.key.startsWith("luxuryJewelryCart_")
+    ) {
+        updateCartCount();
+    }
+});
+
+// Refresh the navbar when the user returns to the page.
+document.addEventListener("visibilitychange", function () {
+    if (document.visibilityState === "visible") {
+        updateCartCount();
+        updateFavoriteCount();
+        updateAccountProfilePhoto();
+    }
+});
+
+
+/* =====================================================
+   UPDATE CART COUNT
+===================================================== */
+function updateCartCount() {
+    const cartCountElements = document.querySelectorAll(
+        ".cart-count, #cartCount, [data-cart-count]"
     );
 
-}
+    const user = getNavbarLoggedInUser();
+    const userKey = getNavbarCurrentUserKey();
 
+    let cart = [];
 
-/* ========================================
-   UPDATE CART COUNT
-======================================== */
-
-function updateCartCount() {
-
-    const cartCounts =
-        document.querySelectorAll(
-            ".cart-count"
-        );
-
-
-    if (!cartCounts.length) {
-        return;
-    }
-
-
-    const storageKey =
-        getNavbarCartStorageKey();
-
-
-    /*
-       No logged-in user:
-       Cart count must be 0.
-    */
-
-    if (!storageKey) {
-
-        cartCounts.forEach(
-            function (counter) {
-
-                counter.textContent = "0";
-
-            }
-        );
-
-        return;
-
-    }
-
-
-    try {
-
-        const cart =
-            JSON.parse(
+    if (user && userKey) {
+        try {
+            cart = JSON.parse(
                 localStorage.getItem(
-                    storageKey
-                )
-            ) || [];
-
-
-        const totalItems =
-            cart.reduce(
-                function (total, item) {
-
-                    return total +
-                        (
-                            Number(
-                                item.quantity
-                            ) || 1
-                        );
-
-                },
-                0
+                    "luxuryJewelryCart_" + userKey
+                ) || "[]"
             );
 
-
-        cartCounts.forEach(
-            function (counter) {
-
-                counter.textContent =
-                    totalItems;
-
-            }
-        );
-
-
-    } catch (error) {
-
-        cartCounts.forEach(
-            function (counter) {
-
-                counter.textContent = "0";
-
-            }
-        );
-
-
-        console.error(
-            "Cart count error:",
-            error
-        );
-
+            if (!Array.isArray(cart)) cart = [];
+        } catch (error) {
+            cart = [];
+        }
     }
 
+    const count = cart.reduce(function (total, item) {
+        return total + (Number(item.quantity) || 1);
+    }, 0);
+
+    cartCountElements.forEach(function (element) {
+        element.textContent = count;
+    });
 }
 
-
-/* ========================================
+/* =====================================================
    UPDATE FAVORITES COUNT
-======================================== */
-
+===================================================== */
 function updateFavoriteCount() {
+    const favoriteCountElements = document.querySelectorAll(
+        ".favorite-count, #favoriteCount, [data-favorite-count]"
+    );
 
-    const favoriteCounts =
-        document.querySelectorAll(
-            ".wishlist-count"
-        );
+    const userKey = getNavbarCurrentUserKey();
+    let favorites = [];
 
-
-    if (!favoriteCounts.length) {
-        return;
-    }
-
-
-    try {
-
-        const favorites =
-            JSON.parse(
+    if (userKey) {
+        try {
+            favorites = JSON.parse(
                 localStorage.getItem(
-                    "luxuryJewelryFavorites"
-                )
-            ) || [];
+                    "luxuryJewelryFavorites_" + userKey
+                ) || "[]"
+            );
 
-
-        const totalFavorites =
-            favorites.length;
-
-
-        favoriteCounts.forEach(
-            function (counter) {
-
-                counter.textContent =
-                    totalFavorites;
-
-            }
-        );
-
-
-    } catch (error) {
-
-        favoriteCounts.forEach(
-            function (counter) {
-
-                counter.textContent = "0";
-
-            }
-        );
-
-
-        console.error(
-            "Favorites count error:",
-            error
-        );
-
+            if (!Array.isArray(favorites)) favorites = [];
+        } catch (error) {
+            favorites = [];
+        }
     }
 
+    favoriteCountElements.forEach(function (element) {
+        element.textContent = favorites.length;
+    });
 }
-
-
-/* ========================================
-   UPDATE FAVORITES WHEN IT CHANGES
-======================================== */
-
-window.addEventListener(
-    "favoritesUpdated",
-    function () {
-
-        updateFavoriteCount();
-
-    }
-);
-
-
-/* ========================================
-   UPDATE FAVORITES FROM OTHER TABS
-======================================== */
-
-window.addEventListener(
-    "storage",
-    function (event) {
-
-        if (
-            event.key ===
-            "luxuryJewelryFavorites"
-        ) {
-
-            updateFavoriteCount();
-
-        }
-
-
-        /*
-           Update Cart when another tab
-           changes the current user's cart.
-        */
-
-        const currentCartKey =
-            getNavbarCartStorageKey();
-
-
-        if (
-            currentCartKey &&
-            event.key === currentCartKey
-        ) {
-
-            updateCartCount();
-
-        }
-
-    }
-);
-
-
-/* ========================================
-   UPDATE CART WHEN IT CHANGES
-======================================== */
-
-window.addEventListener(
-    "cartUpdated",
-    function () {
-
-        updateCartCount();
-
-    }
-);
-
-
-/* ========================================
-   UPDATE COUNTS WHEN PAGE BECOMES VISIBLE
-======================================== */
-
-document.addEventListener(
-    "visibilitychange",
-    function () {
-
-        if (
-            document.visibilityState ===
-            "visible"
-        ) {
-
-            updateCartCount();
-
-            updateFavoriteCount();
-
-            updateAccountProfilePhoto();
-
-        }
-
-    }
-);

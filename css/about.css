@@ -4,9 +4,9 @@
 ===================================================== */
 
 
-/* =========================
+/* =====================================================
    ROOT
-========================= */
+===================================================== */
 
 :root {
     --about-gold: #b98532;
@@ -20,16 +20,17 @@
 }
 
 
-/* =========================
+/* =====================================================
    GENERAL
-========================= */
+===================================================== */
 
 .about-hero,
 .about-story,
 .about-values,
 .about-mission,
 .about-quote,
-.about-cta {
+.about-cta,
+.about-reviews {
     width: 100%;
 }
 
@@ -42,19 +43,13 @@
     padding: 100px 0;
 }
 
-.about-page h1,
-.about-page h2,
-.about-page h3 {
-    font-family: "Cormorant Garamond", serif;
-}
 
-
-/* =========================
+/* =====================================================
    ABOUT HERO
-========================= */
+===================================================== */
 
 .about-hero {
-    min-height: 450px;
+    min-height: 500px;
 
     display: flex;
     align-items: center;
@@ -66,7 +61,7 @@
             rgba(18, 13, 8, 0.35),
             rgba(18, 13, 8, 0.15)
         ),
-        url("../images/image2.jpg");
+        url("../images/6208355207985435211_121.jpg");
 
     background-size: cover;
     background-position: center;
@@ -75,6 +70,7 @@
 .about-hero-content {
     width: min(1180px, 90%);
     margin: 0 auto;
+
     color: #ffffff;
 }
 
@@ -96,20 +92,23 @@
     font-size: clamp(50px, 7vw, 82px);
     font-weight: 500;
     line-height: 1;
+
     margin-bottom: 22px;
 }
 
 .about-hero p:last-child {
     max-width: 550px;
+
     color: #eee8df;
+
     font-size: 15px;
     line-height: 1.8;
 }
 
 
-/* =========================
+/* =====================================================
    OUR STORY
-========================= */
+===================================================== */
 
 .about-story {
     background: var(--about-cream);
@@ -117,8 +116,11 @@
 
 .about-story .about-container {
     display: grid;
+
     grid-template-columns: 1fr 1fr;
+
     align-items: center;
+
     gap: 80px;
 }
 
@@ -128,22 +130,22 @@
 }
 
 
-/* =========================
+/* =====================================================
    IMAGE FRAME
-========================= */
+===================================================== */
 
 .image-frame {
     position: relative;
 
     width: 100%;
+    
+
     padding: 12px;
+
     border: 2px solid var(--about-gold);
 
     box-sizing: border-box;
 }
-
-
-/* photo*/
 
 .image-frame img {
     position: relative;
@@ -152,7 +154,7 @@
     display: block;
 
     width: 100%;
-    height: 470px;
+    height: 590px;
 
     object-fit: cover;
     object-position: center;
@@ -163,9 +165,9 @@
 }
 
 
-/* =========================
+/* =====================================================
    STORY CONTENT
-========================= */
+===================================================== */
 
 .about-story-content {
     padding-right: 20px;
@@ -182,10 +184,15 @@
 .about-mission h2,
 .about-cta h2 {
     font-family: "Cormorant Garamond", serif;
+
     font-size: clamp(40px, 5vw, 58px);
+
     font-weight: 500;
+
     line-height: 1.1;
+
     color: var(--about-text);
+
     margin-bottom: 25px;
 }
 
@@ -193,28 +200,35 @@
 .about-mission p,
 .about-cta p {
     color: var(--about-muted);
+
     font-size: 14px;
+
     line-height: 1.9;
+
     margin-bottom: 18px;
 }
 
 
-/* =========================
+/* =====================================================
    BUTTON
-========================= */
+===================================================== */
 
 .about-story-content .btn,
 .about-cta .btn {
     display: inline-flex;
+
     align-items: center;
     justify-content: center;
+
     text-align: center;
+
     margin-top: 15px;
 }
 
-/* =========================
+
+/* =====================================================
    VALUES
-========================= */
+===================================================== */
 
 .about-values {
     background: var(--about-beige);
@@ -222,43 +236,58 @@
 
 .about-values .section-heading {
     text-align: center;
+
     max-width: 700px;
+
     margin: 0 auto 60px;
 }
 
 .about-values .section-subtitle {
     color: var(--about-gold);
+
     margin-bottom: 15px;
 }
 
 .about-values .section-heading h2 {
     font-family: "Cormorant Garamond", serif;
+
     font-size: clamp(40px, 5vw, 58px);
+
     font-weight: 500;
+
     line-height: 1.1;
+
     color: var(--about-text);
+
     margin-bottom: 18px;
 }
 
 .about-values .section-heading p:last-child {
     color: var(--about-muted);
+
     font-size: 14px;
 }
 
 
-/* Values Grid */
+/* =====================================================
+   VALUES GRID
+===================================================== */
 
 .values-grid {
     width: min(1180px, 90%);
+
     margin: 0 auto;
 
     display: grid;
+
     grid-template-columns: repeat(4, 1fr);
+
     gap: 0;
 }
 
 .value-card {
     text-align: center;
+
     padding: 20px 30px 10px;
 
     border-right: 1px solid var(--about-border);
@@ -273,15 +302,18 @@
     height: 62px;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
     margin: 0 auto 22px;
 
     border: 1px solid var(--about-gold);
+
     border-radius: 50%;
 
     color: var(--about-gold);
+
     font-size: 28px;
 
     transition: 0.3s ease;
@@ -289,28 +321,36 @@
 
 .value-card:hover .value-icon {
     background: var(--about-gold);
+
     color: #ffffff;
+
     transform: translateY(-5px);
 }
 
 .value-card h3 {
     font-family: "Cormorant Garamond", serif;
+
     font-size: 25px;
+
     font-weight: 600;
+
     color: var(--about-text);
+
     margin-bottom: 15px;
 }
 
 .value-card p {
     color: var(--about-muted);
+
     font-size: 13px;
+
     line-height: 1.8;
 }
 
 
-/* =========================
+/* =====================================================
    OUR MISSION
-========================= */
+===================================================== */
 
 .about-mission {
     background: var(--about-cream);
@@ -318,8 +358,11 @@
 
 .about-mission .about-container {
     display: grid;
+
     grid-template-columns: 1fr 1fr;
+
     align-items: center;
+
     gap: 80px;
 }
 
@@ -340,14 +383,15 @@
 }
 
 
-/* =========================
+/* =====================================================
    QUOTE
-========================= */
+===================================================== */
 
 .about-quote {
-    min-height: 390px;
+    min-height: 490px;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
@@ -355,49 +399,64 @@
 
     background:
         linear-gradient(
-            rgba(18, 13, 8, 0.72),
+            rgba(18, 13, 8, 0.204),
             rgba(18, 13, 8, 0.72)
         ),
-        url("../images/image3.jpg");
+        url("../images/6208355207985435204_121.jpg");
 
     background-size: cover;
+
     background-position: center;
 }
 
 .quote-content {
     width: min(800px, 90%);
+
     margin: auto;
+
     color: #ffffff;
 }
 
 .quote-icon {
     display: block;
+
     color: var(--about-gold-light);
+
     font-family: Georgia, serif;
+
     font-size: 75px;
+
     line-height: 0.7;
+
     margin-bottom: 25px;
 }
 
 .quote-content h2 {
     font-family: "Cormorant Garamond", serif;
+
     font-size: clamp(35px, 5vw, 55px);
+
     font-weight: 500;
+
     font-style: italic;
+
     line-height: 1.2;
+
     margin-bottom: 25px;
 }
 
 .quote-content p {
     color: #e3d7c8;
+
     font-size: 10px;
+
     letter-spacing: 3px;
 }
 
 
-/* =========================
+/* =====================================================
    CALL TO ACTION
-========================= */
+===================================================== */
 
 .about-cta {
     background: var(--about-cream);
@@ -405,17 +464,17 @@
 
 .about-cta .about-container {
     display: grid;
+
     grid-template-columns: 1fr 1fr;
+
     align-items: center;
+
     gap: 70px;
 }
 
 .cta-image {
     position: relative;
 }
-
-
-/* CTA */
 
 .cta-image::before {
     content: "";
@@ -433,12 +492,14 @@
 
 .cta-image img {
     position: relative;
+
     z-index: 1;
 
     display: block;
 
     width: 100%;
-    height: 270px;
+
+    height: 470px;
 
     object-fit: cover;
 
@@ -456,12 +517,753 @@
 }
 
 
-/* =========================
+/* =====================================================
+   REVIEWS & FEEDBACK
+===================================================== */
+
+.about-reviews {
+    width: 100%;
+
+    padding: 100px 0;
+
+    background: var(--about-cream);
+}
+
+
+/* =====================================================
+   REVIEWS HEADER
+===================================================== */
+
+.reviews-heading {
+    width: min(900px, 90%);
+
+    margin: 0 auto 55px;
+
+    text-align: center;
+}
+
+.reviews-subtitle {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 18px;
+
+    color: var(--about-gold);
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+    letter-spacing: 3px;
+
+    text-transform: uppercase;
+
+    margin-bottom: 14px;
+}
+
+.reviews-subtitle::before,
+.reviews-subtitle::after {
+    content: "";
+
+    width: 55px;
+
+    height: 1px;
+
+    background: var(--about-gold);
+}
+
+.reviews-heading h2 {
+    font-family: "Cormorant Garamond", serif;
+
+    font-size: clamp(45px, 6vw, 65px);
+
+    font-weight: 500;
+
+    line-height: 1.05;
+
+    color: var(--about-text);
+
+    margin-bottom: 18px;
+}
+
+.reviews-heading > p:last-child {
+    color: var(--about-muted);
+
+    font-size: 14px;
+
+    line-height: 1.8;
+}
+
+
+/* =====================================================
+   REVIEWS CONTAINER
+===================================================== */
+
+.reviews-container {
+    width: min(1380px, 94%);
+
+    margin: 0 auto;
+
+    display: grid;
+
+    grid-template-columns: 0.85fr 1.55fr;
+
+    gap: 45px;
+
+    align-items: stretch;
+}
+
+
+/* =====================================================
+   LEFT REVIEW IMAGE
+===================================================== */
+
+.reviews-image {
+    position: relative;
+
+    min-height: 650px;
+
+    overflow: hidden;
+
+    background: #2a2118;
+
+    /*
+       FOUR ROUNDED CORNERS
+    */
+    border-radius: 0px;
+
+    /*
+       GOLD BORDER
+    */
+    border: 2px solid var(--about-gold);
+
+    box-sizing: border-box;
+
+    /*
+       SOFT SHADOW
+    */
+    box-shadow:
+        0 15px 35px rgba(174, 105, 21, 0.1);
+}
+
+
+/*
+   INNER GOLD FRAME
+*/
+
+.reviews-image::before {
+    content: "";
+
+    position: absolute;
+
+    inset: 5px;
+
+    border: 1px solid rgba(216, 176, 106, 0.75);
+
+    border-radius: 0px;
+
+    z-index: 3;
+
+    pointer-events: none;
+}
+
+
+/*
+   IMAGE
+*/
+
+.reviews-image img {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+
+    transition: transform 0.5s ease;
+}
+
+.reviews-image:hover img {
+    transform: scale(1.03);
+}
+
+
+/*
+   IMAGE DARK OVERLAY
+*/
+
+.reviews-image::after {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            to top,
+            rgba(23, 15, 9, 0.9) 0%,
+            rgba(10, 7, 4, 0.42) 42%,
+            rgba(22, 14, 8, 0.08) 78%
+        );
+
+    z-index: 1;
+
+    pointer-events: none;
+}
+
+
+/* =====================================================
+   IMAGE TEXT
+===================================================== */
+
+.reviews-image-overlay {
+    position: absolute;
+
+    z-index: 4;
+
+    left: 40px;
+
+    right: 40px;
+
+    bottom: 45px;
+
+    color: #ffffff;
+}
+
+.review-heart {
+    display: block;
+
+    color: var(--about-gold-light);
+
+    font-size: 50px;
+
+    line-height: 1;
+
+    margin-bottom: 14px;
+}
+
+.reviews-image-overlay h3 {
+    font-family: "Cormorant Garamond", serif;
+
+    font-size: 40px;
+
+    font-weight: 500;
+
+    line-height: 1.1;
+
+    margin-bottom: 12px;
+}
+
+.reviews-image-overlay p {
+    max-width: 390px;
+
+    color: #f1e9df;
+
+    font-size: 14px;
+
+    line-height: 1.8;
+
+    margin-bottom: 25px;
+}
+
+.review-line {
+    display: block;
+
+    width: 80px;
+
+    height: 2px;
+
+    background: var(--about-gold-light);
+}
+
+
+/* =====================================================
+   RIGHT SIDE
+===================================================== */
+
+.reviews-right {
+    min-width: 0;
+}
+
+
+/* =====================================================
+   REVIEW CARDS
+===================================================== */
+
+.review-cards {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 16px;
+
+    margin-bottom: 18px;
+}
+
+.review-card {
+    min-width: 0;
+
+    padding: 24px 20px;
+
+    border: 1px solid var(--about-border);
+
+    background: rgba(255, 255, 255, 0.35);
+
+    border-radius: 10px;
+
+    transition:
+        transform 0.3s ease,
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.review-card:hover {
+    transform: translateY(-5px);
+
+    border-color: var(--about-gold-light);
+
+    box-shadow:
+        0 12px 30px rgba(80, 55, 25, 0.08);
+}
+
+
+/* =====================================================
+   USER
+===================================================== */
+
+.review-user {
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+
+    margin-bottom: 15px;
+}
+
+.review-avatar {
+    width: 48px;
+    height: 48px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: var(--about-beige);
+
+    border: 1px solid var(--about-gold-light);
+
+    color: var(--about-gold);
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    letter-spacing: 1px;
+
+    overflow: hidden;
+}
+
+
+/*
+   IF REAL USER PHOTO IS ADDED
+*/
+
+.review-avatar img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+}
+
+.review-user h4 {
+    color: var(--about-text);
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 13px;
+
+    font-weight: 500;
+
+    margin-bottom: 3px;
+}
+
+.review-user span {
+    color: var(--about-muted);
+
+    font-size: 10px;
+}
+
+
+/* =====================================================
+   STARS
+===================================================== */
+
+.review-stars {
+    color: var(--about-gold);
+
+    font-size: 18px;
+
+    letter-spacing: 2px;
+
+    margin-bottom: 13px;
+}
+
+
+/* =====================================================
+   REVIEW TEXT
+===================================================== */
+
+.review-text {
+    color: var(--about-muted);
+
+    font-size: 12px;
+
+    line-height: 1.8;
+
+    min-height: 130px;
+
+    margin-bottom: 18px;
+}
+
+
+/* =====================================================
+   PRODUCT
+===================================================== */
+
+.review-product {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding-top: 14px;
+
+    border-top: 1px solid var(--about-border);
+}
+
+.product-icon {
+    width: 46px;
+    height: 46px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px;
+
+    background: var(--about-beige);
+
+    color: var(--about-gold);
+
+    font-size: 25px;
+
+    overflow: hidden;
+}
+
+.product-icon img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+}
+
+.review-product strong {
+    display: block;
+
+    color: var(--about-text);
+
+    font-size: 11px;
+
+    font-weight: 500;
+
+    margin-bottom: 3px;
+}
+
+.review-product span {
+    display: block;
+
+    color: var(--about-muted);
+
+    font-size: 9px;
+}
+
+
+/* =====================================================
+   FEEDBACK BOX
+===================================================== */
+
+.feedback-box {
+    padding: 28px 25px;
+
+    border: 1px solid var(--about-border);
+
+    border-radius: 10px;
+
+    background: rgba(255, 255, 255, 0.25);
+
+    box-sizing: border-box;
+}
+
+
+/* =====================================================
+   FEEDBACK HEADING
+===================================================== */
+
+.feedback-heading {
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    margin-bottom: 22px;
+}
+
+.feedback-icon {
+    width: 50px;
+    height: 50px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border: 2px solid var(--about-gold);
+
+    border-radius: 50%;
+
+    color: var(--about-gold);
+
+    font-size: 27px;
+}
+
+.feedback-heading h3 {
+    font-family: "Cormorant Garamond", serif;
+
+    color: var(--about-text);
+
+    font-size: 30px;
+
+    font-weight: 500;
+
+    margin-bottom: 3px;
+}
+
+.feedback-heading p {
+    color: var(--about-muted);
+
+    font-size: 11px;
+
+    line-height: 1.6;
+}
+
+
+/* =====================================================
+   FORM
+===================================================== */
+
+.feedback-row {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 15px;
+
+    margin-bottom: 15px;
+}
+
+.feedback-field {
+    width: 100%;
+
+    box-sizing: border-box;
+}
+
+.feedback-field input,
+.feedback-field select,
+.feedback-field textarea {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    border: 1px solid var(--about-border);
+
+    border-radius: 9px;
+
+    background: transparent;
+
+    color: var(--about-text);
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 11px;
+
+    outline: none;
+
+    transition:
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.feedback-field input,
+.feedback-field select {
+    height: 48px;
+
+    padding: 0 15px;
+}
+
+.feedback-field textarea {
+    min-height: 82px;
+
+    padding: 14px 15px;
+
+    resize: vertical;
+}
+
+.feedback-field input::placeholder,
+.feedback-field textarea::placeholder {
+    color: var(--about-muted);
+}
+
+.feedback-field select {
+    color: var(--about-muted);
+
+    cursor: pointer;
+}
+
+.feedback-field input:focus,
+.feedback-field select:focus,
+.feedback-field textarea:focus {
+    border-color: var(--about-gold);
+
+    box-shadow:
+        0 0 0 3px rgba(185, 133, 50, 0.08);
+}
+
+.feedback-message {
+    margin-bottom: 15px;
+}
+
+
+/* =====================================================
+   FEEDBACK BOTTOM
+===================================================== */
+
+.feedback-bottom {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+.terms-check {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    color: var(--about-muted);
+
+    font-size: 10px;
+
+    cursor: pointer;
+}
+
+.terms-check input {
+    accent-color: var(--about-gold);
+
+    width: 15px;
+    height: 15px;
+}
+
+.terms-check a {
+    color: var(--about-gold);
+
+    text-decoration: underline;
+}
+
+
+/* =====================================================
+   SUBMIT BUTTON
+===================================================== */
+
+.feedback-submit {
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 12px;
+
+    min-width: 190px;
+
+    height: 45px;
+
+    padding: 0 25px;
+
+    border: none;
+
+    border-radius: 30px;
+
+    background: var(--about-gold);
+
+    color: #ffffff;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 11px;
+
+    cursor: pointer;
+
+    transition:
+        background 0.3s ease,
+        transform 0.3s ease;
+}
+
+.feedback-submit span {
+    font-size: 18px;
+
+    transition: 0.3s ease;
+}
+
+.feedback-submit:hover {
+    background: #9d7020;
+
+    transform: translateY(-2px);
+}
+
+.feedback-submit:hover span {
+    transform: translateX(5px);
+}
+
+
+/* =====================================================
    DARK MODE
-========================= */
+===================================================== */
 
 body.dark-mode {
-
     --about-cream: #171411;
     --about-beige: #211d19;
     --about-text: #f5eee5;
@@ -473,7 +1275,8 @@ body.dark-mode {
 
 body.dark-mode .about-story,
 body.dark-mode .about-mission,
-body.dark-mode .about-cta {
+body.dark-mode .about-cta,
+body.dark-mode .about-reviews {
     background: #171411;
 }
 
@@ -485,7 +1288,11 @@ body.dark-mode .about-story-content h2,
 body.dark-mode .about-mission h2,
 body.dark-mode .about-cta h2,
 body.dark-mode .about-values .section-heading h2,
-body.dark-mode .value-card h3 {
+body.dark-mode .value-card h3,
+body.dark-mode .reviews-heading h2,
+body.dark-mode .feedback-heading h3,
+body.dark-mode .review-user h4,
+body.dark-mode .review-product strong {
     color: #f5eee5;
 }
 
@@ -493,14 +1300,49 @@ body.dark-mode .about-story-content p,
 body.dark-mode .about-mission p,
 body.dark-mode .about-cta p,
 body.dark-mode .about-values .section-heading p:last-child,
-body.dark-mode .value-card p {
+body.dark-mode .value-card p,
+body.dark-mode .reviews-heading > p:last-child,
+body.dark-mode .review-text,
+body.dark-mode .feedback-heading p {
     color: #b9afa2;
 }
 
+body.dark-mode .review-card,
+body.dark-mode .feedback-box {
+    background: rgba(255, 255, 255, 0.025);
+}
 
-/* =========================
-   RESPONSIVE DESIGN
-========================= */
+body.dark-mode .reviews-image {
+    background: #211b16;
+}
+
+body.dark-mode .review-avatar,
+body.dark-mode .product-icon {
+    background: #211d19;
+}
+
+body.dark-mode .feedback-field input,
+body.dark-mode .feedback-field select,
+body.dark-mode .feedback-field textarea {
+    background: #171411;
+
+    color: #f5eee5;
+}
+
+body.dark-mode .feedback-field select {
+    color: var(--about-muted);
+}
+
+body.dark-mode .feedback-field select option {
+    background: #171411;
+
+    color: #f5eee5;
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
 
 @media (max-width: 1000px) {
 
@@ -512,6 +1354,7 @@ body.dark-mode .value-card p {
 
     .values-grid {
         grid-template-columns: repeat(2, 1fr);
+
         row-gap: 40px;
     }
 
@@ -522,11 +1365,32 @@ body.dark-mode .value-card p {
     .value-card:nth-child(3),
     .value-card:nth-child(4) {
         border-top: 1px solid var(--about-border);
+
         padding-top: 40px;
     }
 
+
+    /* Reviews */
+
+    .reviews-container {
+        grid-template-columns: 1fr;
+
+        width: min(900px, 90%);
+    }
+
+    .reviews-image {
+        min-height: 520px;
+    }
+
+    .review-cards {
+        grid-template-columns: repeat(3, 1fr);
+    }
 }
 
+
+/* =====================================================
+   TABLET
+===================================================== */
 
 @media (max-width: 768px) {
 
@@ -551,6 +1415,7 @@ body.dark-mode .value-card p {
     .about-story-content,
     .cta-content {
         padding-right: 0;
+
         padding-left: 0;
     }
 
@@ -574,8 +1439,56 @@ body.dark-mode .value-card p {
         grid-template-columns: 1fr 1fr;
     }
 
+
+    /* =================================================
+       REVIEWS
+    ================================================= */
+
+    .about-reviews {
+        padding: 75px 0;
+    }
+
+    .reviews-heading {
+        margin-bottom: 40px;
+    }
+
+    .reviews-container {
+        width: 90%;
+    }
+
+    .reviews-image {
+        min-height: 500px;
+
+        border-radius: 24px;
+    }
+
+    .review-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .review-text {
+        min-height: auto;
+    }
+
+    .feedback-row {
+        grid-template-columns: 1fr;
+    }
+
+    .feedback-bottom {
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+    .feedback-submit {
+        width: 100%;
+    }
 }
 
+
+/* =====================================================
+   MOBILE
+===================================================== */
 
 @media (max-width: 500px) {
 
@@ -605,7 +1518,9 @@ body.dark-mode .value-card p {
 
     .value-card {
         border-right: none;
+
         border-bottom: 1px solid var(--about-border);
+
         padding: 25px 20px 35px;
     }
 
@@ -616,6 +1531,7 @@ body.dark-mode .value-card p {
     .value-card:nth-child(3),
     .value-card:nth-child(4) {
         border-top: none;
+
         padding-top: 25px;
     }
 
@@ -635,4 +1551,133 @@ body.dark-mode .value-card p {
         font-size: 32px;
     }
 
+
+    /* =================================================
+       REVIEWS MOBILE
+    ================================================= */
+
+    .reviews-heading h2 {
+        font-size: 45px;
+    }
+
+    .reviews-heading > p:last-child {
+        font-size: 13px;
+    }
+
+    .reviews-subtitle {
+        gap: 10px;
+    }
+
+    .reviews-subtitle::before,
+    .reviews-subtitle::after {
+        width: 30px;
+    }
+
+    .reviews-container {
+        width: 90%;
+    }
+
+    .reviews-image {
+        min-height: 450px;
+
+        border-radius: 20px;
+    }
+
+    .reviews-image-overlay {
+        left: 28px;
+
+        right: 28px;
+
+        bottom: 30px;
+    }
+
+    .review-heart {
+        font-size: 42px;
+    }
+
+    .reviews-image-overlay h3 {
+        font-size: 35px;
+    }
+
+    .reviews-image-overlay p {
+        font-size: 12px;
+    }
+
+    .feedback-box {
+        padding: 22px 16px;
+    }
+
+    .feedback-heading {
+        align-items: flex-start;
+    }
+
+    .feedback-heading h3 {
+        font-size: 26px;
+    }
+
+    .feedback-heading p {
+        font-size: 10px;
+    }
+}
+
+/* =====================================================
+   LUXURY JEWELRY
+   FEEDBACK SUCCESS & ERROR NOTIFICATION
+===================================================== */
+#feedbackNotification {
+    position: fixed;
+    top: 25px;
+    right: 25px;
+    z-index: 99999;
+    width: max-content;
+    max-width: min(400px, calc(100vw - 40px));
+    padding: 16px 24px;
+    background: #faf8f3;
+    color: #654b20;
+    border: 1px solid #c99a3b;
+    border-left: 5px solid #c99a3b;
+    border-radius: 10px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+    font-family: "Poppins", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.7;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-12px);
+    transition:
+        opacity 0.3s ease,
+        transform 0.3s ease,
+        visibility 0.3s ease;
+    overflow-wrap: anywhere;
+}
+/* Success Message */
+#feedbackNotification.success {
+    background: #f5ead0;
+    color: #654b20;
+    border-color: #c99a3b;
+}
+/* Error Message */
+#feedbackNotification.error {
+    background: #fff0ed;
+    color: #922b21;
+    border-color: #d88b80;
+}
+/* Show Notification */
+#feedbackNotification.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+/* Mobile Responsive */
+@media (max-width: 600px) {
+    #feedbackNotification {
+        top: 15px;
+        right: 15px;
+        left: 15px;
+        width: auto;
+        max-width: none;
+        padding: 14px 18px;
+        font-size: 13px;
+    }
 }

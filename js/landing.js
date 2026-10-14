@@ -7,27 +7,73 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* =====================================================
        AUTHENTICATION
+       Checks the current user's login status.
     ===================================================== */
 
     const checkLogin = () => {
+        return !!localStorage.getItem("luxuryJewelryLoggedInUser");
+    };
 
-        return !!localStorage.getItem(
+    const getLoggedInUser = () => {
+        const userData = localStorage.getItem(
             "luxuryJewelryLoggedInUser"
         );
 
+        if (!userData) return null;
+
+        try {
+            return JSON.parse(userData);
+        } catch (error) {
+            console.error("Invalid logged-in user data.");
+            return null;
+        }
     };
 
+    /* Creates a unique storage key for each user. */
+    const getUserKey = () => {
+        const user = getLoggedInUser();
+
+        if (!user) return null;
+
+        const uniqueId = user.id || user.userId || user.email;
+
+        if (!uniqueId) return null;
+
+        return String(uniqueId)
+            .trim()
+            .toLowerCase()
+            .replace(/\s+/g, "_");
+    };
 
     /* =====================================================
-       LOGIN MESSAGE
-       Displays a message when the user is not logged in.
+       NOTIFICATIONS
+       Displays temporary messages on the page.
     ===================================================== */
 
-    const requireLogin = (event, message) => {
+    function showNotification(message) {
+        let notification = document.getElementById(
+            "luxuryNotification"
+        );
 
-        if (checkLogin()) {
-            return true;
+        if (!notification) {
+            notification = document.createElement("div");
+            notification.id = "luxuryNotification";
+            notification.className = "luxury-notification";
+            document.body.appendChild(notification);
         }
+
+        notification.textContent = message;
+        notification.classList.add("show");
+
+        clearTimeout(notification.hideTimer);
+
+        notification.hideTimer = setTimeout(() => {
+            notification.classList.remove("show");
+        }, 2500);
+    }
+
+    const requireLogin = (event, message) => {
+        if (checkLogin()) return true;
 
         if (event) {
             event.preventDefault();
@@ -40,1228 +86,474 @@ document.addEventListener("DOMContentLoaded", () => {
 
         return false;
     };
-
+    
 
     /* =====================================================
        SEARCH
-       This section allows the user to open and use the
-       search box. Navbar functionality is handled by
-       navbar.js.
+       Search works for all visitors.
     ===================================================== */
 
-    const searchBtn =
-        document.getElementById(
-            "searchBtn"
-        );
-
-
-    const searchBox =
-        document.getElementById(
-            "searchBox"
-        );
-
-
-    const closeSearch =
-        document.getElementById(
-            "closeSearch"
-        );
-
-
-    const homeSearch =
-        document.getElementById(
-            "homeSearch"
-        );
-
+    const searchBtn = document.getElementById("searchBtn");
+    const searchBox = document.getElementById("searchBox");
+    const closeSearch = document.getElementById("closeSearch");
+    const homeSearch = document.getElementById("homeSearch");
 
     if (searchBtn) {
-
-        searchBtn.addEventListener(
-            "click",
-            (event) => {
-
-                if (!checkLogin()) {
-
-                    requireLogin(
-                        event,
-                        "Please login to use Search."
-                    );
-
-                    return;
-
-                }
-
-
-                if (searchBox) {
-
-                    searchBox.classList.add(
-                        "active"
-                    );
-
-                    if (homeSearch) {
-
-                        setTimeout(
-                            () => {
-                                homeSearch.focus();
-                            },
-                            100
-                        );
-
-                    }
-
-                }
-
-            }
-        );
-
-    }
-
-
-    if (closeSearch) {
-
-        closeSearch.addEventListener(
-            "click",
-            () => {
-
-                if (searchBox) {
-
-                    searchBox.classList.remove(
-                        "active"
-                    );
-
-                }
-
+        searchBtn.addEventListener("click", () => {
+            if (searchBox) {
+                searchBox.classList.add("active");
 
                 if (homeSearch) {
-
-                    homeSearch.value = "";
-
+                    setTimeout(() => homeSearch.focus(), 100);
                 }
-
             }
-        );
-
+        });
     }
 
-
-    /* =====================================================
-       SEARCH FUNCTION
-       Searches for products when the user presses enter.
-    ===================================================== */
+    if (closeSearch) {
+        closeSearch.addEventListener("click", () => {
+            if (searchBox) searchBox.classList.remove("active");
+            if (homeSearch) homeSearch.value = "";
+        });
+    }
 
     if (homeSearch) {
+        homeSearch.addEventListener("keydown", (event) => {
+            if (event.key !== "Enter") return;
 
-        homeSearch.addEventListener(
-            "keydown",
-            (event) => {
+            const searchValue = homeSearch.value.trim();
 
-                if (
-                    event.key !== "Enter"
-                ) {
-                    return;
-                }
-
-
-                if (!checkLogin()) {
-
-                    requireLogin(
-                        event,
-                        "Please login to use Search."
-                    );
-
-                    return;
-
-                }
-
-
-                const searchValue =
-                    homeSearch.value.trim();
-
-
-                if (searchValue === "") {
-
-                    showNotification(
-                        "Please enter something to search."
-                    );
-
-                    return;
-
-                }
-
-
-                window.location.href =
-                    "shop.html?search=" +
-                    encodeURIComponent(
-                        searchValue
-                    );
-
+            if (!searchValue) {
+                showNotification("Please enter something to search.");
+                return;
             }
-        );
 
+            window.location.href =
+                "shop.html?search=" +
+                encodeURIComponent(searchValue);
+        });
     }
 
-
     /* =====================================================
-       CART
-       User-specific shopping cart
+       USER-SPECIFIC SHOPPING CART
+       Each user has a separate cart.
     ===================================================== */
 
-    const getLoggedInUser = () => {
-
-        const userData =
-            localStorage.getItem(
-                "luxuryJewelryLoggedInUser"
-            );
-
-        if (!userData) {
-            return null;
-        }
-
-        try {
-
-            return JSON.parse(
-                userData
-            );
-
-        } catch (error) {
-
-            console.error(
-                "Invalid logged-in user data."
-            );
-
-            return null;
-
-        }
-
-    };
-
-
-    const getUserKey = () => {
-
-        const user =
-            getLoggedInUser();
-
-        if (!user) {
-            return null;
-        }
-
-        const uniqueId =
-            user.id ||
-            user.userId ||
-            user.email;
-
-        if (!uniqueId) {
-            return null;
-        }
-
-        return String(uniqueId)
-            .trim()
-            .toLowerCase()
-            .replace(/\s+/g, "_");
-
-    };
-
-
     const getCartStorageKey = () => {
+        const userKey = getUserKey();
 
-        const userKey =
-            getUserKey();
-
-        if (!userKey) {
-            return null;
-        }
-
-        return `luxuryJewelryCart_${userKey}`;
-
+        return userKey
+            ? `luxuryJewelryCart_${userKey}`
+            : null;
     };
-
 
     const getCart = () => {
+        const storageKey = getCartStorageKey();
 
-        const storageKey =
-            getCartStorageKey();
-
-        if (!storageKey) {
-            return [];
-        }
+        if (!storageKey) return [];
 
         try {
-
-            return JSON.parse(
-                localStorage.getItem(
-                    storageKey
-                )
-            ) || [];
-
-        } catch (error) {
-
-            console.error(
-                "Invalid cart data."
+            const cart = JSON.parse(
+                localStorage.getItem(storageKey) || "[]"
             );
 
+            return Array.isArray(cart) ? cart : [];
+        } catch (error) {
+            console.error("Invalid cart data.");
             return [];
-
         }
-
     };
 
-
     const saveCart = (cart) => {
+        const storageKey = getCartStorageKey();
 
-        const storageKey =
-            getCartStorageKey();
-
-        if (!storageKey) {
-            return;
-        }
+        if (!storageKey) return;
 
         localStorage.setItem(
             storageKey,
             JSON.stringify(cart)
         );
 
-        /* Update cart everywhere immediately */
-        window.dispatchEvent(
-            new CustomEvent(
-                "cartUpdated"
-            )
+        window.dispatchEvent(new Event("cartUpdated"));
+    };
+
+    /* Displays zero when no user is logged in. */
+    const updateCartCount = () => {
+        const totalItems = checkLogin()
+            ? getCart().reduce((total, item) => {
+                return total + (Number(item.quantity) || 1);
+            }, 0)
+            : 0;
+
+        document.querySelectorAll(".cart-count").forEach((counter) => {
+            counter.textContent = totalItems;
+        });
+    };
+
+    /* =====================================================
+       USER-SPECIFIC FAVORITES
+       Each user has a separate favorites list.
+    ===================================================== */
+
+    const getFavoritesStorageKey = () => {
+        const userKey = getUserKey();
+
+        return userKey
+            ? `luxuryJewelryFavorites_${userKey}`
+            : null;
+    };
+
+    const getFavorites = () => {
+        if (!checkLogin()) return [];
+
+        const storageKey = getFavoritesStorageKey();
+
+        if (!storageKey) return [];
+
+        try {
+            const favorites = JSON.parse(
+                localStorage.getItem(storageKey) || "[]"
+            );
+
+            return Array.isArray(favorites) ? favorites : [];
+        } catch (error) {
+            console.error("Invalid favorites data.");
+            return [];
+        }
+    };
+
+    const saveFavorites = (favorites) => {
+        if (!checkLogin()) return;
+
+        const storageKey = getFavoritesStorageKey();
+
+        if (!storageKey) return;
+
+        localStorage.setItem(
+            storageKey,
+            JSON.stringify(favorites)
         );
 
+        window.dispatchEvent(new Event("favoritesUpdated"));
     };
 
+    /* Updates the Navbar favorite counter. */
+    const updateFavoriteCount = () => {
+        const totalFavorites = checkLogin()
+            ? getFavorites().length
+            : 0;
 
-    const updateCartCount = () => {
+        document.querySelectorAll(
+            ".favorite-count, .wishlist-count, .favorites-count"
+        ).forEach((counter) => {
+            counter.textContent = totalFavorites;
+        });
 
-        const cart =
-            getCart();
-
-
-        const totalItems =
-            cart.reduce(
-                (total, item) => {
-
-                    return total +
-                        (
-                            Number(
-                                item.quantity
-                            ) || 1
-                        );
-
-                },
-                0
-            );
-
-
-        document
-            .querySelectorAll(
-                ".cart-count"
-            )
-            .forEach(
-                (counter) => {
-
-                    counter.textContent =
-                        totalItems;
-
-                }
-            );
-
+        /* Allows navbar.js or favorite.js to refresh its own counter. */
+        window.dispatchEvent(new CustomEvent("favoritesCountChanged", {
+            detail: { count: totalFavorites }
+        }));
     };
 
+    /* Updates product heart icons for the current user. */
+    const updateFavoriteButtons = () => {
+        const favorites = getFavorites();
+
+        document.querySelectorAll(".wishlist-btn").forEach((button) => {
+            const name = button.dataset.name;
+
+            const exists = checkLogin() && favorites.some(
+                (item) => item.name === name
+            );
+
+            button.classList.toggle("active", exists);
+            button.textContent = exists ? "♥" : "♡";
+
+            button.setAttribute(
+                "aria-label",
+                exists
+                    ? `Remove ${name} from Favorites`
+                    : `Add ${name} to Favorites`
+            );
+        });
+
+        updateFavoriteCount();
+        updateProtectedButtons();
+    };
+
+    /* =====================================================
+       PRODUCT BUTTON LOCK
+       Favorite and Add to Cart require login.
+    ===================================================== */
+
+    const updateProtectedButtons = () => {
+        const isLoggedIn = checkLogin();
+
+        document.querySelectorAll(
+            ".add-cart-btn, .wishlist-btn"
+        ).forEach((button) => {
+            const productCard = button.closest(
+                ".product-card, .featured-product-card"
+            );
+
+            if (!productCard) {
+                button.classList.remove("login-required");
+                button.removeAttribute("aria-disabled");
+                return;
+            }
+
+            button.classList.toggle(
+                "login-required",
+                !isLoggedIn
+            );
+
+            button.setAttribute(
+                "aria-disabled",
+                String(!isLoggedIn)
+            );
+
+            button.title = isLoggedIn
+                ? ""
+                : "Please login to use this feature.";
+        });
+    };
 
     /* =====================================================
        ADD TO CART
-       Just works after Login.
+       Saves products only for the logged-in user.
     ===================================================== */
 
-    const addToCartBtns =
-        document.querySelectorAll(
-            ".add-cart-btn"
-        );
+    document.querySelectorAll(".add-cart-btn").forEach((button) => {
+        button.addEventListener("click", (event) => {
+            event.preventDefault();
+            event.stopPropagation();
 
+            if (!requireLogin(
+                event,
+                "Please login to add products to your cart."
+            )) {
+                return;
+            }
 
-    addToCartBtns.forEach(
-        (button) => {
+            const name = button.dataset.name;
+            const price = parseFloat(button.dataset.price);
+            const image = button.dataset.image || "";
 
-            button.addEventListener(
-                "click",
-                (event) => {
+            if (!name || Number.isNaN(price)) {
+                showNotification("Product information is missing.");
+                return;
+            }
 
-                    event.preventDefault();
-                    event.stopPropagation();
+            const cart = getCart();
 
-
-                    if (!checkLogin()) {
-
-                        requireLogin(
-                            event,
-                            "Please login to add products to your cart."
-                        );
-
-                        return;
-
-                    }
-
-
-                    const name =
-                        button.dataset.name;
-
-
-                    const price =
-                        parseFloat(
-                            button.dataset.price
-                        );
-
-
-                    const image =
-                        button.dataset.image || "";
-
-
-                    if (
-                        !name ||
-                        isNaN(price)
-                    ) {
-
-                        showNotification(
-                            "Product information is missing."
-                        );
-
-                        return;
-
-                    }
-
-
-                    const cart =
-                        getCart();
-
-
-                    const existingProduct =
-                        cart.find(
-                            (item) =>
-                                item.name === name
-                        );
-
-
-                    if (existingProduct) {
-
-                        existingProduct.quantity =
-                            (
-                                Number(
-                                    existingProduct.quantity
-                                ) || 1
-                            ) + 1;
-
-                    } else {
-
-                        cart.push({
-
-                            id: Date.now(),
-
-                            name: name,
-
-                            price: price,
-
-                            image: image,
-
-                            quantity: 1
-
-                        });
-
-                    }
-
-
-                    saveCart(
-                        cart
-                    );
-
-                    updateCartCount();
-
-
-                    showNotification(
-                        `${name} added to your cart.`
-                    );
-
-                }
+            const existingProduct = cart.find(
+                (item) => item.name === name
             );
 
-        }
-    );
+            if (existingProduct) {
+                existingProduct.quantity =
+                    (Number(existingProduct.quantity) || 1) + 1;
+            } else {
+                cart.push({
+                    id: Date.now(),
+                    name,
+                    price,
+                    image,
+                    quantity: 1
+                });
+            }
 
+            saveCart(cart);
+            updateCartCount();
+
+            showNotification(`${name} added to your cart.`);
+        });
+    });
 
     /* =====================================================
-       FAVORITES
-       Handles favorites data, buttons, and saved products.
+       FAVORITE BUTTONS
+       Adds or removes favorites for the current user.
     ===================================================== */
 
-    const getFavorites = () => {
+    document.querySelectorAll(".wishlist-btn").forEach((button) => {
+        button.addEventListener("click", (event) => {
+            event.preventDefault();
+            event.stopPropagation();
 
-        try {
+            if (!requireLogin(
+                event,
+                "Please login to use Favorites."
+            )) {
+                return;
+            }
 
-            return JSON.parse(
-                localStorage.getItem(
-                    "luxuryJewelryFavorites"
-                )
-            ) || [];
+            const name = button.dataset.name;
+            const price = parseFloat(button.dataset.price);
+            const image = button.dataset.image || "";
 
-        } catch (error) {
+            if (!name) {
+                showNotification("Product information is missing.");
+                return;
+            }
 
-            return [];
+            const favorites = getFavorites();
 
-        }
-
-    };
-
-
-    const saveFavorites = (favorites) => {
-
-        localStorage.setItem(
-            "luxuryJewelryFavorites",
-            JSON.stringify(
-                favorites
-            )
-        );
-
-    };
-
-
-    const updateFavoriteButtons = () => {
-
-        const favorites =
-            getFavorites();
-
-
-        document
-            .querySelectorAll(
-                ".wishlist-btn"
-            )
-            .forEach(
-                (button) => {
-
-                    const name =
-                        button.dataset.name;
-
-
-                    const exists =
-                        favorites.some(
-                            (item) =>
-                                item.name === name
-                        );
-
-
-                    button.classList.toggle(
-                        "active",
-                        exists
-                    );
-
-
-                    button.textContent =
-                        exists
-                            ? "♡"
-                            : "♡";
-
-
-                    if (exists) {
-
-                        button.setAttribute(
-                            "aria-label",
-                            `Remove ${name} from Favorites`
-                        );
-
-                    } else {
-
-                        button.setAttribute(
-                            "aria-label",
-                            `Add ${name} to Favorites`
-                        );
-
-                    }
-
-                }
+            const existingIndex = favorites.findIndex(
+                (item) => item.name === name
             );
 
-    };
+            if (existingIndex !== -1) {
+                favorites.splice(existingIndex, 1);
 
-
-    /* =====================================================
-       FAVORITE BUTTON
-       Just works after Login.
-    ===================================================== */
-
-    const favoriteButtons =
-        document.querySelectorAll(
-            ".wishlist-btn"
-        );
-
-
-    favoriteButtons.forEach(
-        (button) => {
-
-            button.addEventListener(
-                "click",
-                (event) => {
-
-                    event.preventDefault();
-                    event.stopPropagation();
-
-
-                    if (!checkLogin()) {
-
-                        requireLogin(
-                            event,
-                            "Please login to use Favorites."
-                        );
-
-                        return;
-
-                    }
-
-
-                    const name =
-                        button.dataset.name;
-
-
-                    const price =
-                        parseFloat(
-                            button.dataset.price
-                        );
-
-
-                    const image =
-                        button.dataset.image || "";
-
-
-                    if (!name) {
-
-                        return;
-
-                    }
-
-
-                    let favorites =
-                        getFavorites();
-
-
-                    const existingIndex =
-                        favorites.findIndex(
-                            (item) =>
-                                item.name === name
-                        );
-
-
-                    if (
-                        existingIndex !== -1
-                    ) {
-
-                        favorites.splice(
-                            existingIndex,
-                            1
-                        );
-
-
-                        showNotification(
-                            `${name} removed from favorites.`
-                        );
-
-                    } else {
-
-                        favorites.push({
-
-                            id: Date.now(),
-
-                            name: name,
-
-                            price: price,
-
-                            image: image
-
-                        });
-
-
-                        showNotification(
-                            `${name} added to favorites.`
-                        );
-
-                    }
-
-
-                    saveFavorites(
-                        favorites
-                    );
-
-
-                    updateFavoriteButtons();
-
-
-                    /* Update Navbar immediately */
-                    window.dispatchEvent(
-                        new Event(
-                            "favoritesUpdated"
-                        )
-                    );
-
-                }
-            );
-
-        }
-    );
-
-
-    /* =====================================================
-       NOTIFICATION
-    ===================================================== */
-
-    const showNotification = (message) => {
-
-        let notification =
-            document.getElementById(
-                "luxuryNotification"
-            );
-
-
-        if (!notification) {
-
-            notification =
-                document.createElement(
-                    "div"
+                showNotification(
+                    `${name} removed from favorites.`
                 );
+            } else {
+                favorites.push({
+                    id: Date.now(),
+                    name,
+                    price: Number.isNaN(price) ? 0 : price,
+                    image
+                });
 
+                showNotification(
+                    `${name} added to favorites.`
+                );
+            }
 
-            notification.id =
-                "luxuryNotification";
-
-
-            notification.className =
-                "luxury-notification";
-
-
-            document.body.appendChild(
-                notification
-            );
-
-        }
-
-
-        notification.textContent =
-            message;
-
-
-        notification.classList.add(
-            "show"
-        );
-
-
-        clearTimeout(
-            notification.hideTimer
-        );
-
-
-        notification.hideTimer =
-            setTimeout(
-                () => {
-
-                    notification.classList.remove(
-                        "show"
-                    );
-
-                },
-                2500
-            );
-
-    };
-
+            saveFavorites(favorites);
+            updateFavoriteButtons();
+        });
+    });
 
     /* =====================================================
        NEWSLETTER
-      THIS SEICTION DISABLED BEFORE LOGIN
+       Allows visitors to subscribe without login.
     ===================================================== */
 
-    const newsletterForm =
-        document.getElementById(
-            "newsletterForm"
-        );
+    const newsletterForm = document.getElementById("newsletterForm");
+    const newsletterEmail = document.getElementById("newsletterEmail");
 
+    if (newsletterForm && newsletterEmail) {
+        newsletterForm.addEventListener("submit", (event) => {
+            event.preventDefault();
 
-    const newsletterEmail =
-        document.getElementById(
-            "newsletterEmail"
-        );
+            const email = newsletterEmail.value.trim();
 
-
-    if (newsletterForm) {
-
-        if (!checkLogin()) {
-
-            if (newsletterEmail) {
-
-                newsletterEmail.disabled =
-                    true;
-
+            if (!email) {
+                showNotification("Please enter your email.");
+                return;
             }
 
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-            const newsletterButton =
-                newsletterForm.querySelector(
-                    "button"
+            if (!emailPattern.test(email)) {
+                showNotification("Please enter a valid email address.");
+                return;
+            }
+
+            let subscribers = [];
+
+            try {
+                const savedSubscribers = JSON.parse(
+                    localStorage.getItem("luxuryJewelrySubscribers") || "[]"
                 );
 
-
-            if (newsletterButton) {
-
-                newsletterButton.disabled =
-                    true;
-
-                newsletterButton.style.opacity =
-                    "0.5";
-
-                newsletterButton.style.cursor =
-                    "not-allowed";
-
+                subscribers = Array.isArray(savedSubscribers)
+                    ? savedSubscribers
+                    : [];
+            } catch (error) {
+                subscribers = [];
             }
 
+            if (subscribers.includes(email)) {
+                showNotification("You are already subscribed.");
+                return;
+            }
 
-            newsletterForm.addEventListener(
-                "submit",
-                (event) => {
+            subscribers.push(email);
 
-                    requireLogin(
-                        event,
-                        "Please login to subscribe to our newsletter."
-                    );
-
-                }
+            localStorage.setItem(
+                "luxuryJewelrySubscribers",
+                JSON.stringify(subscribers)
             );
 
-        } else {
-
-            newsletterForm.addEventListener(
-                "submit",
-                (event) => {
-
-                    event.preventDefault();
-
-
-                    const email =
-                        newsletterEmail.value.trim();
-
-
-                    if (email === "") {
-
-                        showNotification(
-                            "Please enter your email."
-                        );
-
-                        return;
-
-                    }
-
-
-                    const emailPattern =
-                        /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-
-                    if (
-                        !emailPattern.test(
-                            email
-                        )
-                    ) {
-
-                        showNotification(
-                            "Please enter a valid email address."
-                        );
-
-                        return;
-
-                    }
-
-
-                    let subscribers =
-                        [];
-
-
-                    try {
-
-                        subscribers =
-                            JSON.parse(
-                                localStorage.getItem(
-                                    "luxuryJewelrySubscribers"
-                                )
-                            ) || [];
-
-                    } catch (error) {
-
-                        subscribers = [];
-
-                    }
-
-
-                    if (
-                        !subscribers.includes(
-                            email
-                        )
-                    ) {
-
-                        subscribers.push(
-                            email
-                        );
-
-
-                        localStorage.setItem(
-                            "luxuryJewelrySubscribers",
-                            JSON.stringify(
-                                subscribers
-                            )
-                        );
-
-
-                        showNotification(
-                            "Thank you for subscribing to Luxury Jewelry!"
-                        );
-
-                    } else {
-
-                        showNotification(
-                            "You are already subscribed."
-                        );
-
-                    }
-
-
-                    newsletterForm.reset();
-
-                }
+            showNotification(
+                "Thank you for subscribing to Luxury Jewelry!"
             );
 
-        }
-
+            newsletterForm.reset();
+        });
     }
-
-
-    /* =====================================================
-       PROTECTED NAVIGATION
-       These pages do not open before Login.
-    ===================================================== */
-
-    const protectedLinks =
-        document.querySelectorAll(
-            'a[href="shop.html"],' +
-            'a[href="collections.html"],' +
-            'a[href="about.html"],' +
-            'a[href="faq.html"],' +
-            'a[href="shipping-returns.html"],' +
-            'a[href="contact.html"],' +
-            'a[href="cart.html"],' +
-            'a[href="account.html"]'
-        );
-
-
-    protectedLinks.forEach(
-        (link) => {
-
-            link.addEventListener(
-                "click",
-                (event) => {
-
-                    if (!checkLogin()) {
-
-                        requireLogin(
-                            event,
-                            "Please login to access this page."
-                        );
-
-                    }
-
-                }
-            );
-
-        }
-    );
-
-
-    /* =====================================================
-       CATEGORY CARDS
-    ===================================================== */
-
-    const categoryCards =
-        document.querySelectorAll(
-            ".category-card"
-        );
-
-
-    categoryCards.forEach(
-        (card) => {
-
-            card.addEventListener(
-                "click",
-                (event) => {
-
-                    if (!checkLogin()) {
-
-                        requireLogin(
-                            event,
-                            "Please login to view our collections."
-                        );
-
-                    }
-
-                }
-            );
-
-        }
-    );
-
-
-    /* =====================================================
-       HERO BUTTONS
-    ===================================================== */
-
-    const heroButtons =
-        document.querySelectorAll(
-            ".hero a, .luxury-banner a, .featured-products a"
-        );
-
-
-    heroButtons.forEach(
-        (button) => {
-
-            const href =
-                button.getAttribute(
-                    "href"
-                );
-
-
-            if (
-                href &&
-                (
-                    href.includes("shop.html") ||
-                    href.includes("collections.html")
-                )
-            ) {
-
-                button.addEventListener(
-                    "click",
-                    (event) => {
-
-                        if (!checkLogin()) {
-
-                            requireLogin(
-                                event,
-                                "Please login to continue."
-                            );
-
-                        }
-
-                    }
-                );
-
-            }
-
-        }
-    );
-
-
-    /* =====================================================
-       FOOTER PROTECTED LINKS
-    ===================================================== */
-
-    const footerLinks =
-        document.querySelectorAll(
-            ".footer a"
-        );
-
-
-    footerLinks.forEach(
-        (link) => {
-
-            const href =
-                link.getAttribute(
-                    "href"
-                );
-
-
-            if (
-                href &&
-                (
-                    href.includes("shop.html") ||
-                    href.includes("collections.html") ||
-                    href.includes("about.html") ||
-                    href.includes("contact.html") ||
-                    href.includes("faq.html") ||
-                    href.includes("shipping-returns.html") ||
-                    href.includes("cart.html") ||
-                    href.includes("account.html")
-                )
-            ) {
-
-                link.addEventListener(
-                    "click",
-                    (event) => {
-
-                        if (!checkLogin()) {
-
-                            requireLogin(
-                                event,
-                                "Please login to access this page."
-                            );
-
-                        }
-
-                    }
-                );
-
-            }
-
-        }
-    );
-
 
     /* =====================================================
        IMAGE FALLBACK
+       Hides images that fail to load.
     ===================================================== */
 
-    document
-        .querySelectorAll(
-            "img"
-        )
-        .forEach(
-            (image) => {
-
-                image.addEventListener(
-                    "error",
-                    () => {
-
-                        image.style.display =
-                            "none";
-
-                    }
-                );
-
-            }
-        );
-
+    document.querySelectorAll("img").forEach((image) => {
+        image.addEventListener("error", () => {
+            image.style.display = "none";
+        });
+    });
 
     /* =====================================================
        SCROLL REVEAL
+       Reveals sections and cards on scroll.
     ===================================================== */
 
-    const revealElements =
-        document.querySelectorAll(
-            ".section-header, " +
-            ".product-card, " +
-            ".category-card, " +
-            ".about-content, " +
-            ".newsletter-content"
-        );
+    const revealElements = document.querySelectorAll(
+        ".section-header, .product-card, .category-card, " +
+        ".about-content, .newsletter-content"
+    );
 
-
-    if (
-        "IntersectionObserver" in window
-    ) {
-
-        const observer =
-            new IntersectionObserver(
-                (entries) => {
-
-                    entries.forEach(
-                        (entry) => {
-
-                            if (
-                                entry.isIntersecting
-                            ) {
-
-                                entry.target.classList.add(
-                                    "visible"
-                                );
-
-
-                                observer.unobserve(
-                                    entry.target
-                                );
-
-                            }
-
-                        }
-                    );
-
-                },
-                {
-                    threshold: 0.1
+    if ("IntersectionObserver" in window) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("visible");
+                    observer.unobserve(entry.target);
                 }
-            );
+            });
+        }, { threshold: 0.1 });
 
-
-        revealElements.forEach(
-            (element) => {
-
-                element.classList.add(
-                    "reveal"
-                );
-
-
-                observer.observe(
-                    element
-                );
-
-            }
-        );
-
+        revealElements.forEach((element) => {
+            element.classList.add("reveal");
+            observer.observe(element);
+        });
     }
 
-
     /* =====================================================
-       STORAGE EVENT
+       LOGIN / LOGOUT EVENTS
+       Refreshes counts and hearts after account changes.
     ===================================================== */
 
-    window.addEventListener(
-        "storage",
-        (event) => {
+    const refreshUserInterface = () => {
+        updateCartCount();
+        updateFavoriteButtons();
+        updateProtectedButtons();
+    };
 
-            const currentCartKey =
-                getCartStorageKey();
+    window.addEventListener("loginStatusChanged", refreshUserInterface);
+    window.addEventListener("favoritesUpdated", updateFavoriteCount);
+    window.addEventListener("cartUpdated", updateCartCount);
 
-
-            if (
-                currentCartKey &&
-                event.key === currentCartKey
-            ) {
-
-                updateCartCount();
-
-            }
-
-
-            if (
-                event.key ===
-                "luxuryJewelryFavorites"
-            ) {
-
-                updateFavoriteButtons();
-
-            }
-
+    window.addEventListener("storage", (event) => {
+        if (
+            event.key === "luxuryJewelryLoggedInUser" ||
+            event.key === getCartStorageKey() ||
+            event.key === getFavoritesStorageKey()
+        ) {
+            refreshUserInterface();
         }
-    );
-
-
-    /* =====================================================
-       CART UPDATED EVENT
-    ===================================================== */
-
-    window.addEventListener(
-        "cartUpdated",
-        () => {
-
-            updateCartCount();
-
-        }
-    );
-
+    });
 
     /* =====================================================
        INITIALIZE
+       Shows data for the current user only.
     ===================================================== */
 
-    updateCartCount();
-
-    updateFavoriteButtons();
-
+    refreshUserInterface();
 
     console.log(
         checkLogin()

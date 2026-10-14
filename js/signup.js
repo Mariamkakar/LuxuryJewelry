@@ -5,9 +5,9 @@
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    /* =========================
-       ELEMENTS
-    ========================== */
+    /* =======================================================
+       Selects the HTML elements needed for the signup page.
+    ================================================= */
 
     const body = document.body;
 
@@ -39,9 +39,9 @@ document.addEventListener("DOMContentLoaded", () => {
         document.querySelectorAll(".cart-count");
 
 
-    /* =====================================================
-       DARK MODE
-    ===================================================== */
+    /* ===================================================================================
+        Loads the saved theme and allows the user to switch between dark and light mode.
+       ============================================================================ */
 
     const savedTheme =
         localStorage.getItem("luxuryJewelryTheme");
@@ -87,9 +87,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    /* =====================================================
+    /* ===================================================================================
        MOBILE MENU
-    ===================================================== */
+       Opens and closes the mobile navigation menu and closes it after selecting a link.
+    ============================================================================= */
 
     if (menuToggle && navLinks) {
 
@@ -117,9 +118,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    /* =====================================================
-       SEARCH
-    ===================================================== */
+    /* =================================================================================
+       Opens and closes the search box and sends the search keyword to the Shop page.
+      ==========================================================================*/
 
     if (searchBtn && searchBox) {
 
@@ -172,9 +173,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    /* =====================================================
-       SHOW / HIDE PASSWORD
-    ===================================================== */
+    /* ===========================================================================
+       Allows the user to show or hide the password and confirm password fields.
+    ======================================================================= */
 
     function setupPasswordToggle(button, input) {
 
@@ -211,9 +212,10 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
 
-    /* =====================================================
+    /* =======================================================================================
        SIGNUP FORM
-    ===================================================== */
+       Collects user information, validates it, checks the email, and creates a new account.
+    ================================================================================= */
 
     if (signupForm) {
 
@@ -222,9 +224,9 @@ document.addEventListener("DOMContentLoaded", () => {
             event.preventDefault();
 
 
-            /* =========================
-               GET USER INFORMATION
-            ========================== */
+            /* ==============================================================================
+               Gets the user's name, email, password, and confirm password from the form.
+            ====================================================================== */
 
             const fullName =
                 document
@@ -251,6 +253,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             /* =====================================================
                VALIDATE NAME
+                Checks that the user has entered a valid full name.
             ===================================================== */
 
             if (fullName.length < 2) {
@@ -262,8 +265,9 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
 
-            /* =====================================================
+            /* ============================================================
                VALIDATE PASSWORD
+                Checks that the password contains at least 6 characters.
             ===================================================== */
 
             if (password.length < 6) {
@@ -277,8 +281,8 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
 
-            /* =====================================================
-               CONFIRM PASSWORD
+            /* ============================================================
+               Checks that the password and confirm password are the same.
             ===================================================== */
 
             if (password !== confirmPassword) {
@@ -292,6 +296,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             /* =====================================================
                GET EXISTING USERS
+               Gets previously registered users from LocalStorage.
             ===================================================== */
 
             let users = [];
@@ -319,6 +324,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             /* =====================================================
                CHECK DUPLICATE EMAIL
+               Checks whether the email is already registered.
             ===================================================== */
 
             const existingUser =
@@ -342,6 +348,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             /* =====================================================
                PROFILE PHOTO
+               Validates the selected profile image type and file size.
             ===================================================== */
 
             const file =
@@ -395,9 +402,10 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
 
-            /* =====================================================
+            /* =================================================================
                FUNCTION TO CREATE USER
-            ===================================================== */
+               Creates a new user object with the user's account information.
+            ========================================================= */
 
             const createUser = (profileImage) => {
 
@@ -420,9 +428,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 };
 
 
-                /* =========================
+                /* ================================================
                    SAVE USER
-                ========================== */
+                   Saves the new user information in LocalStorage.
+                =========================================== */
 
                 users.push(newUser);
 
@@ -432,18 +441,17 @@ document.addEventListener("DOMContentLoaded", () => {
                 );
 
 
-                /* =========================
-                   SUCCESS MESSAGE
-                ========================== */
+                /* ===========================================================
+                   Shows a message when the account is created successfully.
+                ==================================================== */
 
-                alert(
-                    "Account created successfully! You can now login."
-                );
+                window.location.href = "login.html";
 
 
-                /* =========================
+                /* =====================================================================
                    GO TO LOGIN
-                ========================== */
+                   Redirects the user to the Login page after successful registration.
+                ============================================================= */
 
                 window.location.href =
                     "login.html";
@@ -451,9 +459,10 @@ document.addEventListener("DOMContentLoaded", () => {
             };
 
 
-            /* =====================================================
+            /* =======================================================================================
                SAVE PHOTO
-            ===================================================== */
+               Converts the selected profile image to a Data URL and saves it with the user account.
+            ============================================================================ */
 
             if (file) {
 
@@ -497,9 +506,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    /* =====================================================
+    /* ==========================================================================
        CART COUNT
-    ===================================================== */
+       Gets the cart data and displays the total number of items in the cart.
+    =================================================================== */
 
     function updateCartCount() {
 
@@ -545,9 +555,10 @@ document.addEventListener("DOMContentLoaded", () => {
     updateCartCount();
 
 
-    /* =====================================================
+    /* =========================================================================
        ESCAPE KEY
-    ===================================================== */
+       Closes the search box and mobile menu when the Escape key is pressed.
+    =============================================================== */
 
     document.addEventListener("keydown", (event) => {
 

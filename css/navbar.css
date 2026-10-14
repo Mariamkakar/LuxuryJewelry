@@ -163,7 +163,7 @@
     border: none;
     background: transparent;
 
-    color: var(--text);
+    color: var(--gold);
 
     font-size: 17px;
 
@@ -175,7 +175,13 @@
         color var(--transition),
         background-color var(--transition);
 }
+.theme-toggle { 
+border: 1px solid var(--gold);
 
+    border-radius: 50%;
+
+    background: transparent;
+}
 
 .nav-icon:hover,
 .theme-toggle:hover,
