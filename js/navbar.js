@@ -7,7 +7,6 @@
 
 /* =====================================================
    1. LOAD NAVBAR
-   Loads navbar.html and applies the saved theme.
 ===================================================== */
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -15,46 +14,34 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (!navbarContainer) return;
 
-    // Restore the user's saved theme.
+    // Restore the saved theme.
     const savedTheme = localStorage.getItem("luxuryJewelryTheme");
     document.body.classList.toggle("dark-mode", savedTheme === "dark");
 
-    // Load the shared navbar component.
+    // Load the shared navbar.
     fetch("components/navbar.html")
-
-
         .then(function (response) {
-
             if (!response.ok) {
                 throw new Error("Navbar file could not be loaded.");
             }
 
             return response.text();
-
         })
-
         .then(function (data) {
-
             navbarContainer.innerHTML = data;
-
-
             initializeNavbar();
-
         })
         .catch(function (error) {
             console.error("Navbar Error:", error);
         });
-
 });
 
 
 /* =====================================================
    2. INITIALIZE NAVBAR
-   Starts all navbar features after the HTML is loaded.
 ===================================================== */
 
 function initializeNavbar() {
-    // Highlight the link for the current page.
     const currentPage =
         window.location.pathname.split("/").pop() || "index.html";
 
@@ -67,11 +54,8 @@ function initializeNavbar() {
 
         if (href === currentPage) {
             link.classList.add("active");
-
         }
-
     });
-    
 
     initializeNavbarAuthProtection();
     initializeMobileMenu();
@@ -79,7 +63,6 @@ function initializeNavbar() {
     setupSearch();
     initializeAccount();
 
-    // Show the current user's cart and favorites counts.
     updateCartCount();
     updateFavoriteCount();
 }
@@ -87,8 +70,6 @@ function initializeNavbar() {
 
 /* =====================================================
    3. AUTHENTICATION HELPERS
-   Reads the logged-in user and creates consistent
-   user-specific storage keys.
 ===================================================== */
 
 function getNavbarLoggedInUser() {
@@ -117,7 +98,6 @@ function getNavbarCurrentUserKey() {
 
     if (!user) return null;
 
-    // Use the same user identifier across all project files.
     const userId = user.id || user.userId || user.email;
 
     if (!userId) return null;
@@ -139,7 +119,6 @@ function getNavbarProfileStorageKey() {
 
 /* =====================================================
    4. AUTHENTICATION NOTIFICATION
-   Displays a message when a guest opens a protected link.
 ===================================================== */
 
 function showNavbarAuthMessage(message) {
@@ -151,14 +130,12 @@ function showNavbarAuthMessage(message) {
         notification = document.createElement("div");
         notification.id = "luxuryAuthNotification";
         notification.className = "luxury-auth-notification";
-
         document.body.appendChild(notification);
     }
 
     notification.textContent = message;
     notification.classList.add("show");
 
-    // Clear the previous timer before starting another.
     if (notification.hideTimer) {
         clearTimeout(notification.hideTimer);
     }
@@ -171,7 +148,6 @@ function showNavbarAuthMessage(message) {
 
 /* =====================================================
    5. PROTECT PRIVATE PAGES
-   Requires login before opening account-related pages.
 ===================================================== */
 
 function initializeNavbarAuthProtection() {
@@ -204,7 +180,6 @@ function initializeNavbarAuthProtection() {
 
         if (!protectedPages.includes(linkPage)) return;
 
-        // Prevent the same guard from being added twice.
         if (link.dataset.authGuardAdded === "true") return;
 
         link.dataset.authGuardAdded = "true";
@@ -225,7 +200,6 @@ function initializeNavbarAuthProtection() {
 
 /* =====================================================
    6. MOBILE MENU
-   Opens and closes navigation links on small screens.
 ===================================================== */
 
 function initializeMobileMenu() {
@@ -234,7 +208,6 @@ function initializeMobileMenu() {
 
     if (!menuToggle || !navLinksContainer) return;
 
-    // Avoid adding the same click handler more than once.
     if (menuToggle.dataset.menuHandlerAdded === "true") return;
 
     menuToggle.dataset.menuHandlerAdded = "true";
@@ -261,7 +234,6 @@ function initializeMobileMenu() {
 
 /* =====================================================
    7. DARK / LIGHT MODE
-   Saves the selected theme for future visits.
 ===================================================== */
 
 function initializeThemeToggle() {
@@ -282,7 +254,6 @@ function initializeThemeToggle() {
 
     updateThemeIcon();
 
-    // Prevent duplicate theme click handlers.
     if (themeToggle.dataset.themeHandlerAdded === "true") return;
 
     themeToggle.dataset.themeHandlerAdded = "true";
@@ -304,8 +275,6 @@ function initializeThemeToggle() {
 
 /* =====================================================
    8. SEARCH
-   Opens the search panel and redirects to matching
-   shop results when the user submits a search.
 ===================================================== */
 
 function setupSearch() {
@@ -318,7 +287,6 @@ function setupSearch() {
 
     if (!searchBtn || !searchOverlay || !searchInput) return;
 
-    // Avoid registering duplicate search handlers.
     if (searchBtn.dataset.searchHandlerAdded === "true") return;
 
     searchBtn.dataset.searchHandlerAdded = "true";
@@ -364,14 +332,11 @@ function setupSearch() {
 
     if (closeSearch) {
         closeSearch.addEventListener("click", closeSearchPanel);
-
     }
-
 
     if (searchBackdrop) {
         searchBackdrop.addEventListener("click", closeSearchPanel);
     }
-
 
     document.addEventListener("keydown", function (event) {
         if (
@@ -416,87 +381,107 @@ function setupSearch() {
 
 
 /* =====================================================
-   9. ACCOUNT MENU
-   Shows the account menu, profile link, and logout
-   button according to the current login status.
+   9. ACCOUNT MENU AND AUTOMATIC LOGOUT
 ===================================================== */
-/* =====================================================
-   9. ACCOUNT MENU
-===================================================== */
+
 function initializeAccount() {
     const accountMenu = document.getElementById("accountMenu");
     const accountButton = document.getElementById("accountButton");
     const accountDropdown = document.getElementById("accountDropdown");
+
     if (!accountMenu || !accountButton || !accountDropdown) {
         console.warn("Account elements were not found in navbar.html.");
         return;
     }
+
     const user = getNavbarLoggedInUser();
     const isLoggedIn = Boolean(user);
+
     const loginNavLink = document.getElementById("loginNavLink");
     const signupNavLink = document.getElementById("signupNavLink");
     const accountLoginLink = document.getElementById("accountLoginLink");
     const accountSignupLink = document.getElementById("accountSignupLink");
     const profileNavLink = document.getElementById("profileNavLink");
     const logoutButton = document.getElementById("logoutButton");
-    // Keep the account icon visible for guests and logged-in users.
+
+    // Keep the account icon visible.
     accountMenu.style.display = "";
-    // Hide Login and Sign Up only when the user is logged in.
+
+    // Show or hide the login and signup links.
     if (loginNavLink) {
         loginNavLink.hidden = isLoggedIn;
         loginNavLink.style.display = isLoggedIn ? "none" : "";
     }
+
     if (signupNavLink) {
         signupNavLink.hidden = isLoggedIn;
         signupNavLink.style.display = isLoggedIn ? "none" : "";
     }
-    // Control the links inside the account dropdown.
+
     if (accountLoginLink) {
         accountLoginLink.hidden = isLoggedIn;
         accountLoginLink.style.display = isLoggedIn ? "none" : "";
     }
+
     if (accountSignupLink) {
         accountSignupLink.hidden = isLoggedIn;
         accountSignupLink.style.display = isLoggedIn ? "none" : "";
     }
+
+    // Show the profile link only when logged in.
     if (profileNavLink) {
         profileNavLink.hidden = !isLoggedIn;
         profileNavLink.style.display = isLoggedIn ? "" : "none";
     }
+
+    // Show the logout button only when logged in.
     if (logoutButton) {
         logoutButton.hidden = !isLoggedIn;
         logoutButton.style.display = isLoggedIn ? "" : "none";
     }
+
     // Close the dropdown when refreshing account information.
     accountDropdown.hidden = true;
     accountDropdown.classList.remove("active");
     accountButton.setAttribute("aria-expanded", "false");
-    // Preserve the existing profile photo or show the user icon/initial.
+
+    // Update the account photo or default icon.
     if (isLoggedIn) {
         updateAccountProfilePhoto();
     } else {
         resetAccountButton();
     }
-    // Register the account button click handler only once.
+
+    // Register the account button click handler once.
     if (accountButton.dataset.accountHandlerAdded !== "true") {
         accountButton.dataset.accountHandlerAdded = "true";
+
         accountButton.addEventListener("click", function (event) {
             event.preventDefault();
             event.stopPropagation();
+
             if (!isNavbarLoggedIn()) {
                 window.location.href = "login.html";
                 return;
             }
+
             const isOpen =
                 accountButton.getAttribute("aria-expanded") === "true";
+
             accountDropdown.hidden = isOpen;
             accountDropdown.classList.toggle("active", !isOpen);
-            accountButton.setAttribute("aria-expanded", String(!isOpen));
+
+            accountButton.setAttribute(
+                "aria-expanded",
+                String(!isOpen)
+            );
         });
     }
-    // Close the dropdown when clicking outside the account menu.
+
+    // Close the dropdown when clicking outside.
     if (accountMenu.dataset.outsideClickHandlerAdded !== "true") {
         accountMenu.dataset.outsideClickHandlerAdded = "true";
+
         document.addEventListener("click", function (event) {
             if (!accountMenu.contains(event.target)) {
                 accountDropdown.hidden = true;
@@ -505,32 +490,34 @@ function initializeAccount() {
             }
         });
     }
-    // Log out without deleting the saved profile photo.
+
+    // Automatically log out without a confirmation message.
     if (
         logoutButton &&
         logoutButton.dataset.logoutHandlerAdded !== "true"
     ) {
         logoutButton.dataset.logoutHandlerAdded = "true";
+
         logoutButton.addEventListener("click", function (event) {
             event.preventDefault();
             event.stopPropagation();
-            const confirmed = window.confirm(
-                "Are you sure you want to log out?"
-            );
-            if (!confirmed) {
-                return;
-            }
+
+            // Remove the current login session.
             localStorage.removeItem("luxuryJewelryLoggedInUser");
             localStorage.removeItem("luxuryJewelryRememberMe");
+
+            // Notify other features about the logout.
             window.dispatchEvent(new Event("loginStatusChanged"));
+
+            // Redirect to the homepage immediately.
             window.location.href = "index.html";
         });
     }
 }
 
+
 /* =====================================================
    10. RESET ACCOUNT BUTTON
-   Restores the default user icon when no avatar is used.
 ===================================================== */
 
 function resetAccountButton() {
@@ -551,13 +538,10 @@ function resetAccountButton() {
 
 /* =====================================================
    11. UPDATE ACCOUNT PROFILE PHOTO
-   Always displays the latest saved profile photo.
 ===================================================== */
 
 function updateAccountProfilePhoto() {
-    const accountButton =
-        document.getElementById("accountButton");
-
+    const accountButton = document.getElementById("accountButton");
     const user = getNavbarLoggedInUser();
 
     if (!accountButton) return;
@@ -569,13 +553,11 @@ function updateAccountProfilePhoto() {
 
     let photo = "";
 
-    // Read the latest photo saved in the profile.
     const profileKey = getNavbarProfileStorageKey();
 
     if (profileKey) {
         try {
-            const savedProfile =
-                localStorage.getItem(profileKey);
+            const savedProfile = localStorage.getItem(profileKey);
 
             const profile = savedProfile
                 ? JSON.parse(savedProfile)
@@ -589,7 +571,7 @@ function updateAccountProfilePhoto() {
         }
     }
 
-    // Use the signup photo if no profile photo exists.
+    // Use the signup photo when no profile photo exists.
     if (!photo) {
         photo = user.profileImage || user.photo || "";
     }
@@ -600,7 +582,6 @@ function updateAccountProfilePhoto() {
         user.email ||
         "My Account";
 
-    // Display the default icon if no photo exists.
     if (!photo) {
         resetAccountButton();
 
@@ -612,7 +593,6 @@ function updateAccountProfilePhoto() {
         return;
     }
 
-    // Create the latest profile avatar.
     const avatar = document.createElement("img");
 
     avatar.src = photo;
@@ -620,7 +600,6 @@ function updateAccountProfilePhoto() {
     avatar.id = "accountAvatar";
     avatar.alt = "Profile";
 
-    // Restore the default icon if the image fails to load.
     avatar.onerror = function () {
         resetAccountButton();
 
@@ -638,28 +617,28 @@ function updateAccountProfilePhoto() {
         "Account: " + displayName
     );
 }
+
+
 /* =====================================================
-   15. REFRESH NAVBAR DATA
-   Updates counters and profile information after changes
-   in the current tab or another browser tab.
+   12. REFRESH NAVBAR DATA
 ===================================================== */
 
-// Refresh the profile photo after it has been changed.
+// Refresh the profile photo after it changes.
 window.addEventListener("profilePhotoUpdated", function () {
     updateAccountProfilePhoto();
 });
 
-// Refresh the cart after products are added or removed.
+// Refresh the cart after products change.
 window.addEventListener("cartUpdated", function () {
     updateCartCount();
 });
 
-// Refresh favorites after an item is added or removed.
+// Refresh favorites after items change.
 window.addEventListener("favoritesUpdated", function () {
     updateFavoriteCount();
 });
 
-// Refresh account information and counters after login/logout.
+// Refresh account information after login or logout.
 window.addEventListener("loginStatusChanged", function () {
     initializeAccount();
     updateCartCount();
@@ -675,12 +654,10 @@ window.addEventListener("storage", function (event) {
         return;
     }
 
-    // Refresh the avatar when the current user's profile changes.
     if (event.key === getNavbarProfileStorageKey()) {
         updateAccountProfilePhoto();
     }
 
-    // Refresh favorites for any user-specific favorites key.
     if (
         event.key &&
         event.key.startsWith("luxuryJewelryFavorites_")
@@ -688,7 +665,6 @@ window.addEventListener("storage", function (event) {
         updateFavoriteCount();
     }
 
-    // Refresh the cart for any user-specific cart key.
     if (
         event.key &&
         event.key.startsWith("luxuryJewelryCart_")
@@ -697,7 +673,7 @@ window.addEventListener("storage", function (event) {
     }
 });
 
-// Refresh the navbar when the user returns to the page.
+// Refresh navbar information when returning to the page.
 document.addEventListener("visibilitychange", function () {
     if (document.visibilityState === "visible") {
         updateCartCount();
@@ -708,8 +684,9 @@ document.addEventListener("visibilitychange", function () {
 
 
 /* =====================================================
-   UPDATE CART COUNT
+   13. UPDATE CART COUNT
 ===================================================== */
+
 function updateCartCount() {
     const cartCountElements = document.querySelectorAll(
         ".cart-count, #cartCount, [data-cart-count]"
@@ -743,9 +720,11 @@ function updateCartCount() {
     });
 }
 
+
 /* =====================================================
-   UPDATE FAVORITES COUNT
+   14. UPDATE FAVORITES COUNT
 ===================================================== */
+
 function updateFavoriteCount() {
     const favoriteCountElements = document.querySelectorAll(
         ".favorite-count, #favoriteCount, [data-favorite-count]"

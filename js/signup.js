@@ -5,12 +5,8 @@
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    /* =======================================================
-       Selects the HTML elements needed for the signup page.
-    ================================================= */
-
+    /* GET HTML ELEMENTS */
     const body = document.body;
-
     const themeToggle = document.getElementById("themeToggle");
     const menuToggle = document.getElementById("menuToggle");
     const navLinks = document.querySelector(".nav-links");
@@ -21,350 +17,218 @@ document.addEventListener("DOMContentLoaded", () => {
     const homeSearch = document.getElementById("homeSearch");
 
     const signupForm = document.getElementById("signupForm");
-
     const passwordInput = document.getElementById("password");
-    const confirmPasswordInput =
-        document.getElementById("confirmPassword");
+    const confirmPasswordInput = document.getElementById("confirmPassword");
 
-    const togglePassword =
-        document.getElementById("togglePassword");
-
+    const togglePassword = document.getElementById("togglePassword");
     const toggleConfirmPassword =
         document.getElementById("toggleConfirmPassword");
 
-    const profileImageInput =
-        document.getElementById("profileImage");
+    const profileImageInput = document.getElementById("profileImage");
+    const cartCountElements = document.querySelectorAll(".cart-count");
 
-    const cartCountElements =
-        document.querySelectorAll(".cart-count");
-
-
-    /* ===================================================================================
-        Loads the saved theme and allows the user to switch between dark and light mode.
-       ============================================================================ */
-
-    const savedTheme =
-        localStorage.getItem("luxuryJewelryTheme");
-
-    if (savedTheme === "dark") {
-
-        body.classList.add("dark-mode");
-
-        if (themeToggle) {
-            themeToggle.textContent = "☀";
+    /* HASH PASSWORD USING SHA-256 */
+    async function hashPassword(password) {
+        if (!window.crypto || !window.crypto.subtle) {
+            throw new Error(
+                "Password hashing requires localhost or HTTPS."
+            );
         }
 
-    } else {
+        const data = new TextEncoder().encode(password);
+        const hashBuffer = await crypto.subtle.digest("SHA-256", data);
 
-        body.classList.remove("dark-mode");
-
-        if (themeToggle) {
-            themeToggle.textContent = "☾";
-        }
-
+        return Array.from(new Uint8Array(hashBuffer))
+            .map(byte => byte.toString(16).padStart(2, "0"))
+            .join("");
     }
 
+    /* READ REGISTERED USERS */
+    function getUsers() {
+        const savedUsers = localStorage.getItem("luxuryJewelryUsers");
+        const users = savedUsers ? JSON.parse(savedUsers) : [];
 
+        if (!Array.isArray(users)) {
+            throw new Error("Registered users data is invalid.");
+        }
+
+        return users;
+    }
+
+    /* MIGRATE OLD PASSWORDS TO HASHES */
+    async function migrateOldPasswords(users) {
+        let changed = false;
+
+        for (const user of users) {
+            if (
+                user &&
+                typeof user.password === "string" &&
+                user.password.length > 0
+            ) {
+                user.passwordHash = await hashPassword(user.password);
+                delete user.password;
+                changed = true;
+            }
+        }
+
+        if (changed) {
+            localStorage.setItem(
+                "luxuryJewelryUsers",
+                JSON.stringify(users)
+            );
+        }
+
+        return users;
+    }
+
+    /* REMOVE PASSWORD DATA FROM THE SAVED SESSION */
+    function cleanSavedSession() {
+        const savedSession =
+            localStorage.getItem("luxuryJewelryLoggedInUser");
+
+        if (!savedSession) return;
+
+        try {
+            const sessionUser = JSON.parse(savedSession);
+
+            if (sessionUser && typeof sessionUser === "object") {
+                delete sessionUser.password;
+                delete sessionUser.passwordHash;
+
+                localStorage.setItem(
+                    "luxuryJewelryLoggedInUser",
+                    JSON.stringify(sessionUser)
+                );
+            }
+        } catch (error) {
+            console.error("Could not clean saved session:", error);
+        }
+    }
+
+    /* LOAD SAVED THEME */
+    const savedTheme = localStorage.getItem("luxuryJewelryTheme");
+
+    if (savedTheme === "dark") {
+        body.classList.add("dark-mode");
+        if (themeToggle) themeToggle.textContent = "☀";
+    } else {
+        body.classList.remove("dark-mode");
+        if (themeToggle) themeToggle.textContent = "☾";
+    }
+
+    /* TOGGLE THEME */
     if (themeToggle) {
-
         themeToggle.addEventListener("click", () => {
-
             body.classList.toggle("dark-mode");
 
-            const isDark =
-                body.classList.contains("dark-mode");
+            const isDark = body.classList.contains("dark-mode");
 
             localStorage.setItem(
                 "luxuryJewelryTheme",
                 isDark ? "dark" : "light"
             );
 
-            themeToggle.textContent =
-                isDark ? "☀" : "☾";
-
+            themeToggle.textContent = isDark ? "☀" : "☾";
         });
-
     }
 
-
-    /* ===================================================================================
-       MOBILE MENU
-       Opens and closes the mobile navigation menu and closes it after selecting a link.
-    ============================================================================= */
-
+    /* MOBILE MENU */
     if (menuToggle && navLinks) {
-
         menuToggle.addEventListener("click", () => {
-
             navLinks.classList.toggle("active");
-
             menuToggle.classList.toggle("active");
-
         });
-
 
         navLinks.querySelectorAll("a").forEach(link => {
-
             link.addEventListener("click", () => {
-
                 navLinks.classList.remove("active");
-
                 menuToggle.classList.remove("active");
-
             });
-
         });
-
     }
 
-
-    /* =================================================================================
-       Opens and closes the search box and sends the search keyword to the Shop page.
-      ==========================================================================*/
-
+    /* OPEN SEARCH */
     if (searchBtn && searchBox) {
-
         searchBtn.addEventListener("click", () => {
-
             searchBox.classList.add("active");
-
-            if (homeSearch) {
-                homeSearch.focus();
-            }
-
+            if (homeSearch) homeSearch.focus();
         });
-
     }
 
-
+    /* CLOSE SEARCH */
     if (closeSearch && searchBox) {
-
         closeSearch.addEventListener("click", () => {
-
             searchBox.classList.remove("active");
-
         });
-
     }
 
-
+    /* SEARCH PRODUCTS */
     if (homeSearch) {
+        homeSearch.addEventListener("keydown", event => {
+            if (event.key !== "Enter") return;
 
-        homeSearch.addEventListener("keydown", (event) => {
+            const searchValue = homeSearch.value.trim();
 
-            if (event.key === "Enter") {
-
-                const searchValue =
-                    homeSearch.value.trim();
-
-                if (searchValue !== "") {
-
-                    window.location.href =
-                        `shop.html?search=${encodeURIComponent(
-                            searchValue
-                        )}`;
-
-                }
-
+            if (searchValue) {
+                window.location.href =
+                    "shop.html?search=" +
+                    encodeURIComponent(searchValue);
             }
-
         });
-
     }
 
-
-    /* ===========================================================================
-       Allows the user to show or hide the password and confirm password fields.
-    ======================================================================= */
-
+    /* SHOW OR HIDE PASSWORD */
     function setupPasswordToggle(button, input) {
+        if (!button || !input) return;
 
-        if (button && input) {
-
-            button.addEventListener("click", () => {
-
-                if (input.type === "password") {
-
-                    input.type = "text";
-                    button.textContent = "Hide";
-
-                } else {
-
-                    input.type = "password";
-                    button.textContent = "Show";
-
-                }
-
-            });
-
-        }
-
+        button.addEventListener("click", () => {
+            const showing = input.type === "password";
+            input.type = showing ? "text" : "password";
+            button.textContent = showing ? "Hide" : "Show";
+        });
     }
 
-    setupPasswordToggle(
-        togglePassword,
-        passwordInput
-    );
+    setupPasswordToggle(togglePassword, passwordInput);
+    setupPasswordToggle(toggleConfirmPassword, confirmPasswordInput);
 
-    setupPasswordToggle(
-        toggleConfirmPassword,
-        confirmPasswordInput
-    );
-
-
-    /* =======================================================================================
-       SIGNUP FORM
-       Collects user information, validates it, checks the email, and creates a new account.
-    ================================================================================= */
-
+    /* SIGNUP FORM */
     if (signupForm) {
-
-        signupForm.addEventListener("submit", (event) => {
-
+        signupForm.addEventListener("submit", async event => {
             event.preventDefault();
 
-
-            /* ==============================================================================
-               Gets the user's name, email, password, and confirm password from the form.
-            ====================================================================== */
-
             const fullName =
-                document
-                    .getElementById("fullName")
-                    .value
-                    .trim();
-
+                document.getElementById("fullName")?.value.trim() || "";
 
             const email =
-                document
-                    .getElementById("email")
-                    .value
-                    .trim()
-                    .toLowerCase();
+                document.getElementById("email")?.value.trim().toLowerCase() || "";
 
+            const password = passwordInput?.value ?? "";
+            const confirmPassword = confirmPasswordInput?.value ?? "";
 
-            const password =
-                passwordInput.value.trim();
-
-
-            const confirmPassword =
-                confirmPasswordInput.value.trim();
-
-
-            /* =====================================================
-               VALIDATE NAME
-                Checks that the user has entered a valid full name.
-            ===================================================== */
-
+            /* VALIDATE FORM */
             if (fullName.length < 2) {
-
                 alert("Please enter your full name.");
-
                 return;
-
             }
 
-
-            /* ============================================================
-               VALIDATE PASSWORD
-                Checks that the password contains at least 6 characters.
-            ===================================================== */
+            if (!email) {
+                alert("Please enter your email address.");
+                return;
+            }
 
             if (password.length < 6) {
-
-                alert(
-                    "Password must be at least 6 characters long."
-                );
-
+                alert("Password must be at least 6 characters long.");
                 return;
-
             }
-
-
-            /* ============================================================
-               Checks that the password and confirm password are the same.
-            ===================================================== */
 
             if (password !== confirmPassword) {
-
                 alert("Passwords do not match.");
-
                 return;
-
             }
 
-
-            /* =====================================================
-               GET EXISTING USERS
-               Gets previously registered users from LocalStorage.
-            ===================================================== */
-
-            let users = [];
-
-            try {
-
-                users =
-                    JSON.parse(
-                        localStorage.getItem(
-                            "luxuryJewelryUsers"
-                        )
-                    ) || [];
-
-            } catch (error) {
-
-                console.error(
-                    "Could not read users:",
-                    error
-                );
-
-                users = [];
-
-            }
-
-
-            /* =====================================================
-               CHECK DUPLICATE EMAIL
-               Checks whether the email is already registered.
-            ===================================================== */
-
-            const existingUser =
-                users.find(
-                    user =>
-                        user.email &&
-                        user.email.toLowerCase() === email
-                );
-
-
-            if (existingUser) {
-
-                alert(
-                    "An account with this email already exists."
-                );
-
-                return;
-
-            }
-
-
-            /* =====================================================
-               PROFILE PHOTO
-               Validates the selected profile image type and file size.
-            ===================================================== */
-
-            const file =
-                profileImageInput
-                    ? profileImageInput.files[0]
-                    : null;
-
-
-            /*
-               If the user selects a photo,
-               convert it to Base64 so it can be
-               stored in localStorage.
-            */
+            const file = profileImageInput?.files?.[0] || null;
 
             if (file) {
-
                 const allowedTypes = [
                     "image/jpeg",
                     "image/png",
@@ -372,220 +236,123 @@ document.addEventListener("DOMContentLoaded", () => {
                     "image/gif"
                 ];
 
-
                 if (!allowedTypes.includes(file.type)) {
-
-                    alert(
-                        "Please choose a JPG, PNG, WEBP or GIF image."
-                    );
-
+                    alert("Please choose a JPG, PNG, WEBP or GIF image.");
                     return;
-
                 }
-
-
-                /*
-                   Keep image size reasonable because
-                   localStorage has limited storage.
-                */
 
                 if (file.size > 2 * 1024 * 1024) {
-
-                    alert(
-                        "Please choose a profile photo smaller than 2 MB."
-                    );
-
+                    alert("Please choose a profile photo smaller than 2 MB.");
                     return;
-
                 }
-
             }
 
+            try {
+                /* READ USERS AND MIGRATE LEGACY PASSWORDS */
+                let users = getUsers();
+                users = await migrateOldPasswords(users);
 
-            /* =================================================================
-               FUNCTION TO CREATE USER
-               Creates a new user object with the user's account information.
-            ========================================================= */
-
-            const createUser = (profileImage) => {
-
-                const newUser = {
-
-                    id: Date.now(),
-
-                    fullName: fullName,
-
-                    email: email,
-
-                    password: password,
-
-                    profileImage:
-                        profileImage || "",
-
-                    createdAt:
-                        new Date().toISOString()
-
-                };
-
-
-                /* ================================================
-                   SAVE USER
-                   Saves the new user information in LocalStorage.
-                =========================================== */
-
-                users.push(newUser);
-
-                localStorage.setItem(
-                    "luxuryJewelryUsers",
-                    JSON.stringify(users)
+                /* CHECK DUPLICATE EMAIL */
+                const existingUser = users.find(user =>
+                    typeof user?.email === "string" &&
+                    user.email.trim().toLowerCase() === email
                 );
 
+                if (existingUser) {
+                    alert("An account with this email already exists.");
+                    return;
+                }
 
-                /* ===========================================================
-                   Shows a message when the account is created successfully.
-                ==================================================== */
+                /* HASH THE PASSWORD BEFORE SAVING */
+                const passwordHash = await hashPassword(password);
 
-                window.location.href = "login.html";
+                /* SAVE PROFILE IMAGE */
+                const saveUser = profileImage => {
+                    const newUser = {
+                        id: Date.now(),
+                        fullName,
+                        email,
+                        passwordHash,
+                        profileImage: profileImage || "",
+                        createdAt: new Date().toISOString()
+                    };
 
+                    users.push(newUser);
 
-                /* =====================================================================
-                   GO TO LOGIN
-                   Redirects the user to the Login page after successful registration.
-                ============================================================= */
+                    try {
+                        localStorage.setItem(
+                            "luxuryJewelryUsers",
+                            JSON.stringify(users)
+                        );
 
-                window.location.href =
-                    "login.html";
-
-            };
-
-
-            /* =======================================================================================
-               SAVE PHOTO
-               Converts the selected profile image to a Data URL and saves it with the user account.
-            ============================================================================ */
-
-            if (file) {
-
-                const reader =
-                    new FileReader();
-
-
-                reader.onload = function () {
-
-                    createUser(
-                        reader.result
-                    );
-
+                        alert("Account created successfully. Please log in.");
+                        window.location.href = "login.html";
+                    } catch (error) {
+                        console.error("Could not save account:", error);
+                        alert(
+                            "Unable to save the account. Storage may be full."
+                        );
+                    }
                 };
 
+                if (file) {
+                    const reader = new FileReader();
 
-                reader.onerror = function () {
+                    reader.onload = () => saveUser(reader.result);
 
-                    alert(
-                        "There was a problem reading the profile photo."
-                    );
+                    reader.onerror = () => {
+                        alert("There was a problem reading the profile photo.");
+                    };
 
-                };
-
-
-                reader.readAsDataURL(file);
-
-            } else {
-
-                /*
-                   No photo selected.
-                   User account is still created.
-                */
-
-                createUser("");
-
+                    reader.readAsDataURL(file);
+                } else {
+                    saveUser("");
+                }
+            } catch (error) {
+                console.error("Signup failed:", error);
+                alert(
+                    "Unable to create the account. Please use localhost or HTTPS and try again."
+                );
             }
-
         });
-
     }
 
-
-    /* ==========================================================================
-       CART COUNT
-       Gets the cart data and displays the total number of items in the cart.
-    =================================================================== */
-
+    /* UPDATE CART COUNT */
     function updateCartCount() {
-
         let cart = [];
 
         try {
+            cart = JSON.parse(
+                localStorage.getItem("luxuryJewelryCart") || "[]"
+            );
 
-            cart =
-                JSON.parse(
-                    localStorage.getItem(
-                        "luxuryJewelryCart"
-                    )
-                ) || [];
-
+            if (!Array.isArray(cart)) cart = [];
         } catch (error) {
-
             cart = [];
-
         }
-
 
         let totalItems = 0;
 
-
         cart.forEach(item => {
-
-            totalItems +=
-                Number(item.quantity) || 1;
-
+            totalItems += Number(item.quantity) || 1;
         });
-
 
         cartCountElements.forEach(element => {
-
-            element.textContent =
-                totalItems;
-
+            element.textContent = totalItems;
         });
-
     }
-
 
     updateCartCount();
 
+    /* CLOSE MENU AND SEARCH WITH ESCAPE */
+    document.addEventListener("keydown", event => {
+        if (event.key !== "Escape") return;
 
-    /* =========================================================================
-       ESCAPE KEY
-       Closes the search box and mobile menu when the Escape key is pressed.
-    =============================================================== */
-
-    document.addEventListener("keydown", (event) => {
-
-        if (event.key === "Escape") {
-
-            if (searchBox) {
-
-                searchBox.classList.remove("active");
-
-            }
-
-
-            if (navLinks) {
-
-                navLinks.classList.remove("active");
-
-            }
-
-
-            if (menuToggle) {
-
-                menuToggle.classList.remove("active");
-
-            }
-
-        }
-
+        if (searchBox) searchBox.classList.remove("active");
+        if (navLinks) navLinks.classList.remove("active");
+        if (menuToggle) menuToggle.classList.remove("active");
     });
 
+    /* CLEAN ANY EXISTING SESSION DATA */
+    cleanSavedSession();
 });

@@ -102,7 +102,9 @@ document.addEventListener("DOMContentLoaded", function () {
         } catch (error) {
             console.error(`Unable to read ${key}:`, error);
             return [];
+
         }
+        
     }
 
     function saveStorageArray(key, data) {
@@ -200,6 +202,7 @@ document.addEventListener("DOMContentLoaded", function () {
             card.dataset.image ||
             imageElement?.getAttribute("src") ||
             "";
+
 
         const category =
             card.dataset.category ||
